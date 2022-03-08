@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/*
+    nav containers
+*/
+
+.swipers {
+    visibility: hidden;
+}
+
+/* アイテムうち、表示範囲の矩形 */
+.swiper-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 全アイテム分の矩形 */
+.swiper-wrapper {
+    /* display: flex; */
+    align-items: center !important;
+}
+
+
+
+.swiper-slide {
+    text-align: center;
+    /* font-size: 18px; */
+    background: #fff;
+    height: 100%;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center !important;
+}
+
+.swiper-slide {
+    font-size: 0.8em;
+    font-weight: bold;
+    height: 80px;
+}
+
+
+
+/*
+    prev-next nav
+*/
+
+.swiper-button-next,
+.swiper-button-prev {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-top: 0 !important;
+    border-width: thin;
+    border-style: solid;
+}
+
+.swiper-button-prev,
+.swiper-container-rtl .swiper-button-next {
+    float: right !important;
+    top: 35%;
+}
+
+.swiper-button-next,
+.swiper-container-rtl .swiper-button-prev {
+    float: left !important;
+    top: 35%;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 0.4rem !important;
+    font-weight: bold !important;
+    color: #FFF !important;
+}
+
+.swiper-slide {
+    /* background-color: transparent; */
+    background: rgba(0, 0, 0, .2);
+    color: #999;
+}
+
+.swiper-slide-active {
+    /* background-color: transparent; */
+    background: rgba(0, 0, 0, .8);
+    color: #FFF;
+}
+
+/* .swiper-slide-active {
+    background: #000;
+    color: #FFF;
+} */

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.5rem;
+  color: #AAA;
+}
+
+.btn-secondary {
+  background-color: #333;
+  border-color: #666;
+}
+
+
+
+
+
+
+/* .vertical-center {
+  display: inline-block;
+  vertical-align: middle;
+} */
+
+/* .border-top-color,
+.border-bottom-color,
+.border-left-color,
+.border-right-color {
+  border-color: #FFF;
+} */
+
+
+
