@@ -1,2 +1,12 @@
 @charset "UTF-8";
 
+#labelDivers, #labelDivers {
+    position: absolute;
+    text-align: center;
+    font-size: 0.6em;
+    z-index: 400;
+    left: 50%;
+    margin-left: -50px;
+    top: 0%;
+    margin-top: 0px;
+}

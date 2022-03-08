@@ -4,10 +4,6 @@
     nav containers
 */
 
-.swipers {
-    visibility: hidden;
-}
-
 /* アイテムうち、表示範囲の矩形 */
 .swiper-container {
     width: 100%;
