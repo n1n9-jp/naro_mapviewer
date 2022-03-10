@@ -79,7 +79,7 @@ var initNav = function() {
     console.log("initNav");
 
     Promise.all([
-        d3.csv("assets/data/filelist.csv")
+        d3.csv("assets/data_lib/filelist.csv")
     ]).then(function (_data) {
     
         fullpath = _.cloneDeep(_data[0]);
@@ -256,7 +256,7 @@ var loadBasemap = function() {
     console.log("loadBasemap");
 
     Promise.all([
-        d3.json("assets/data/" + "N03-19_190101_edit_final_1mm.json")
+        d3.json("assets/data_lib/" + "japanmap.json")
     ]).then(function (_data) {
         dataObjMap = _.cloneDeep(_data[0]);
 
