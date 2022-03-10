@@ -270,7 +270,7 @@ var loadThemeData = function() {
     console.log("loadThemeData");
 
     // detect swiper
-    var _filepath = "assets/data/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index];
+    var _filepath = "assets/data_index/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
 
     // load: theme data
     Promise.all([
@@ -368,7 +368,7 @@ var drawMap = function() {
 
             //console.log( "image name: ",dir1[dir1Index] + "_" + dir2[dir2Index] + "_" + dir3[dir3Index] + "_" + _selected + ".png");
 
-            console.log( "assets/img/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
+            console.log( "assets/data_detail/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
 
 
             var lightbox = lity('popup.html');
