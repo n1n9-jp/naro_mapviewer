@@ -14,12 +14,17 @@ var maxColor = "#FFFFFF";
 var minHeight = 0;
 var maxHeight = 50000;
 
+/* Map Tile */
+maptileURL = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
 
 /* API token */
 mapboxgl.accessToken = 'pk.eyJ1IjoieXVpY2h5IiwiYSI6ImNrcW43dXA0YTA4eTEyb28yN25jeTN0ZHMifQ.7v7OJoeJXp2fqX5vloX-PQ';
 
-const POI = [
-    { "city": "Tokyo Station", "longitude": 139.767125, "latitude": 35.681236, "zoom": 12, "bearing": 0 }
+
+
+
+var POI = [
+    { "city": "Tokyo Station", "longitude": 139.767125, "latitude": 35.681236, "zoom": 6, "bearing": 0 }
 ];
 
 
@@ -49,7 +54,7 @@ var probIndex = 0;
 var fl_firsttime = true;
 
 /* misc */
-// var hoveredStateId = null;
+var hoveredStateId = null;
 
 
 
@@ -68,7 +73,7 @@ var initBaseMap = function() {
         "bearing": POI[0]["bearing"], 
         "hash": true,
         "interactive": true,
-        "style": 'https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W',
+        "style": maptileURL
         });
 
     PubSub.publish('init:nav');
@@ -88,12 +93,16 @@ var initNav = function() {
             var _t = _data[0][i].filepath.split('/');
             dir1.push(_t[0]);
             dir2.push(_t[1]);
-            dir3.push(_t[2]);            
+            dir3.push(_t[2]);
         }
 
         dir1 = _.uniq(dir1);
         dir2 = _.uniq(dir2);
         dir3 = _.uniq(dir3);
+
+        for (i=0; i<dir3.length; i++) {
+            dir3[0] = dir3[0].replace(".csv", "");
+        }
 
         console.log( dir1 );
         console.log( dir2 );
@@ -355,7 +364,7 @@ var drawMap = function() {
                 // 'fill-extrusion-opacity': [
                 //     'case',
                 //     ['boolean', ['feature-state', 'hover'], false],
-                //     1,
+                //     1.0,
                 //     0.5
                 // ],
             }
