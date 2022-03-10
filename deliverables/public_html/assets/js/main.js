@@ -361,19 +361,110 @@ var drawMap = function() {
             }
         });
 
+
         mapObject.on('click', 'naro_prob', function (e) {
-            // console.log("clicked!");
+            //console.log("local ID: ", e.features[0].properties.N03_007);
+            var _selected = e.features[0].properties.N03_007;
+
+            //console.log( "image name: ",dir1[dir1Index] + "_" + dir2[dir2Index] + "_" + dir3[dir3Index] + "_" + _selected + ".png");
+
+            console.log( "assets/img/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
+
+
+            var lightbox = lity('popup.html');
+
+            window.setTimeout(function(){
+
+                console.log("_selected", _selected);
+
+                // console.log( "hello", document.getElementsByTagName('iframe')[1].contentDocument );
+
+                //console.log( "hello", document.getElementByID('popup')[0].contentDocument.getElementByID('selectedID').text(_selected) );
+                //var _s = document.getElementById('popup');
+
+
+                // console.log("_s", document.getElementsByTagName('iframe')[1]["attributes"]["src"]["nodeValue"] );
+
+                // var _s = document.getElementsByTagName('iframe')[1];
+                // console.log("_s", _s.contentDocument );
+
+                // _s.contentDocument.getElementByID("#selectedID").text(_selected);
+                // _s.getElementByID("#popup");
+                // _s.getElementByID("#selectedID").text(_selected);
+
+                
+                var iframeElem = document.getElementsByTagName('iframe');
+                var iframeDocument = iframeElem[1].contentDocument || iframeElem[1].contentWindow.document;
+
+                var _pElem1 = iframeDocument.getElementsByClassName('kirakirakira')[0];
+                _pElem1.textContent = _selected;
+
+
+
+                //pElem.find(".kirakirakira").text = _selected;
+                // var _iframes = document.getElementsByTagName('iframe');
+                // var _selected;
+
+                // for (i=0; i<_iframes.length; i++) {
+                //     if (_iframes[i]["attributes"]["src"]["nodeValue"] != undefined) {
+                //         if (_iframes[i]["attributes"]["src"]["nodeValue"] == "popup.html") {
+                //             _selected = i;
+                //         }
+                //     }
+                // }
+                // console.log( document.getElementsByTagName('iframe')[_selected] );
+
+
+                // var _s = $('#popup').find('#selectedID');
+                // console.log("_s", _s.text("BBB"));
+
+                //_s.getElementById('selectedID').textContent  =_selected;
+
+                // $('#popup').contents().find('body').find("#selectedID").text(_selected);
+                //$('#popup').contents().find('body').html('<div> blah </div>');
+
+                // var _s = $("#popup").contents();
+                // _s.$("#selectedID").text(_selected);
+                // $(".swiperTitle").text(_selected);
+
+            }, 3000);
+
+
+
+            
+
         });
+
+
+
+
 
         mapObject.on('mousemove', 'naro_prob', (e) => {
 
+            mapObject.getCanvas().style.cursor = 'pointer';
+
+            // if (e.features.length > 0) {
+            //     if (hoveredStateId !== null) {
+            //         mapObject.setFeatureState(
+            //         { source: 'naro', id: hoveredStateId },
+            //         { hover: false }
+            //         );
+            //     }
+            //     console.log("e.features[0]", e.features[0]);
+            //     hoveredStateId = e.features[0].properties.N03_007;
+            //     mapObject.setFeatureState(
+            //         { source: 'naro', id: hoveredStateId },
+            //         { hover: true }
+            //     );
+            // }
+
         });
 
-        mapObject.on('mouseenter', 'naro_prob', function () {
-            mapObject.getCanvas().style.cursor = 'pointer';
-        });
+        // mapObject.on('mouseenter', 'naro_prob', function () {
+        //     mapObject.getCanvas().style.cursor = 'pointer';
+        // });
              
-        mapObject.on('mouseleave', 'naro_prob', function () {
+        mapObject.on('mouseout', 'naro_prob', function () {
             mapObject.getCanvas().style.cursor = 'auto';
         });
 
