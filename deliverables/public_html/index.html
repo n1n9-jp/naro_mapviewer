@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>都市多様性の可視化</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/lib/bootstrap_overwrite.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+JP:400,700&display=swap&subset=japanese" rel="stylesheet">
+<link href="assets/css/lib/swiper-bundle.css" rel="stylesheet" />
+<link href="assets/css/lib/swiper_overwrite.css" rel="stylesheet" />
+
+<!-- <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css" /> -->
+<!-- <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@2.0.1/dist/maplibre-gl.css' /> -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+
+<link href="assets/css/container.css" rel="stylesheet" />
+<link href="assets/css/misc.css" rel="stylesheet" />
+<link href="assets/css/svg.css" rel="stylesheet" />
+</head>
+<body class="bg-dark">
+
+
+<div id="themeMap"></div>
+
+<div class="container-fluid " id="footerContainer">
+  <div class="row text-white">
+
+    <!-- nav -->
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir1"></div>
+    </div>
+    <div class="col-1">
+          <!-- Slider -->
+          <div class="swiper-container swipers" id="swiper-container-dir1">
+            <div class="swiperTitle"> Dir1 </div>
+            <div class="swiper-wrapper" id="swiperDir1">
+            </div>
+          </div>
+          <!-- Slider -->
+    </div>
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir1"></div>
+    </div>
+
+
+
+    <!-- nav -->
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir2"></div>
+    </div>
+    <div class="col-1">
+          <!-- Slider -->
+          <div class="swiper-container swipers" id="swiper-container-dir2">
+            <div class="swiperTitle"> Dir2 </div>
+            <div class="swiper-wrapper" id="swiperDir2">
+            </div>
+          </div>
+          <!-- Slider -->
+    </div>
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir2"></div>
+    </div>
+
+
+
+    <!-- nav -->
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir3"></div>
+    </div>
+    <div class="col-1">
+          <!-- Slider -->
+          <div class="swiper-container swipers" id="swiper-container-dir3">
+            <div class="swiperTitle"> Dir3 </div>
+            <div class="swiper-wrapper" id="swiperDir3">
+            </div>
+          </div>
+          <!-- Slider -->
+    </div>
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir3"></div>
+    </div>
+
+
+
+    <!-- nav -->
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-prob"></div>
+    </div>
+    <div class="col-1">
+          <!-- Slider -->
+          <div class="swiper-container swipers" id="swiper-container-prob">
+            <div class="swiperTitle"> Probability </div>
+            <div class="swiper-wrapper" id="swiperProbability">
+            </div>
+          </div>
+          <!-- Slider -->
+    </div>
+    <div class="col-1">
+      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-prob"></div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
+
+<!-- common -->
+<script src="assets/js/lib/popper.min.js" crossorigin="anonymous"></script>
+<script src="assets/js/lib/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="assets/js/lib/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="assets/js/lib/lodash.js"></script>
+<script src="assets/js/lib/swiper-bundle.min.js"></script>
+<script src="assets/js/lib/pubsub.js"></script>
+<!-- /common -->
+
+<!-- dataviz -->
+<!-- <script src='//unpkg.com/d3@5.16.0/dist/d3.min.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script> -->
+<script src='assets/js/lib/d3.min.js'></script><!--v5-->
+<!-- <script src='assets/js/lib/mapbox-gl.js'></script> -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+<!-- <script src="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js"></script> -->
+<!-- <script src='https://unpkg.com/maplibre-gl@2.0.1/dist/maplibre-gl.js'></script> -->
+<!-- <script src='assets/js/mapbox-gl-gsidem.js'></script> -->
+<!-- /dataviz -->
+
+<!-- original -->
+<script src="assets/js/main.js"></script>
+<!-- /original -->
+
+</body>
+</html>
