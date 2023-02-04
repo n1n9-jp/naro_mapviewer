@@ -28,6 +28,9 @@ var maxColor = "#FFFFFF";
 /* Height Scale */
 var minHeight = 0;
 var maxHeight = 50000;
+/* --------------------
+ 設定パラメータ
+-------------------- */
 
 /* Map Tile */
 maptileURL = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
@@ -391,6 +394,7 @@ var drawMap = function() {
 
     if (fl_firsttime){
 
+        /* Mapbox setup */
         mapObject.addSource('naro', {
             'type': 'geojson',
             'data': dataObjMap
@@ -425,6 +429,7 @@ var drawMap = function() {
 
 
 
+        /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
             //console.log("local ID: ", e.features[0].properties.N03_007);
             var _selected = e.features[0].properties.N03_007;
