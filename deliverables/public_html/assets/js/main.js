@@ -16,6 +16,7 @@
 /* --------------------
  描画コンテナー
 -------------------- */
+var legendGroup, legendTitle;
 
 
 
@@ -62,6 +63,15 @@ var maxHeight = 50000;
 var colorScale = d3.scaleLinear()
     .domain([minData, maxData])
     .range([minColor, maxColor]);
+/* --------------------
+ 凡例
+-------------------- */
+var defs;
+var legendGradientId;
+var gradient; 
+var legendWidth = 200;
+var legendHeight = 20;
+var legendGradient;
 /* --------------------
  Initialize: Variables
 -------------------- */
@@ -501,6 +511,13 @@ var drawMap = function() {
         });
 
 
+        /* Legend setup */
+        legendGradient = legendGroup.append("rect")
+            .attr("y", 60)
+            .attr("width", legendWidth)
+            .attr("height", legendHeight)
+            // .style("fill", "#FF0000");
+            .style("fill", `url(#${legendGradientId})`);
         fl_firsttime = false;
     } else {
         console.log("false");
