@@ -44,7 +44,6 @@ var POI = [
 
 
 
-
 /* --------------------
  Initialize: Variables
 -------------------- */
@@ -400,22 +399,6 @@ var drawMap = function() {
             window.setTimeout(function(){
 
                 console.log("_selected", _selected);
-
-                // console.log( "hello", document.getElementsByTagName('iframe')[1].contentDocument );
-
-                //console.log( "hello", document.getElementByID('popup')[0].contentDocument.getElementByID('selectedID').text(_selected) );
-                //var _s = document.getElementById('popup');
-
-
-                // console.log("_s", document.getElementsByTagName('iframe')[1]["attributes"]["src"]["nodeValue"] );
-
-                // var _s = document.getElementsByTagName('iframe')[1];
-                // console.log("_s", _s.contentDocument );
-
-                // _s.contentDocument.getElementByID("#selectedID").text(_selected);
-                // _s.getElementByID("#popup");
-                // _s.getElementByID("#selectedID").text(_selected);
-
                 
                 var iframeElem = document.getElementsByTagName('iframe');
                 var iframeDocument = iframeElem[1].contentDocument || iframeElem[1].contentWindow.document;
@@ -423,39 +406,9 @@ var drawMap = function() {
                 var _pElem1 = iframeDocument.getElementsByClassName('kirakirakira')[0];
                 _pElem1.textContent = _selected;
 
-
-
-                //pElem.find(".kirakirakira").text = _selected;
-                // var _iframes = document.getElementsByTagName('iframe');
-                // var _selected;
-
-                // for (i=0; i<_iframes.length; i++) {
-                //     if (_iframes[i]["attributes"]["src"]["nodeValue"] != undefined) {
-                //         if (_iframes[i]["attributes"]["src"]["nodeValue"] == "popup.html") {
-                //             _selected = i;
-                //         }
-                //     }
-                // }
-                // console.log( document.getElementsByTagName('iframe')[_selected] );
-
-
-                // var _s = $('#popup').find('#selectedID');
-                // console.log("_s", _s.text("BBB"));
-
-                //_s.getElementById('selectedID').textContent  =_selected;
-
-                // $('#popup').contents().find('body').find("#selectedID").text(_selected);
-                //$('#popup').contents().find('body').html('<div> blah </div>');
-
-                // var _s = $("#popup").contents();
-                // _s.$("#selectedID").text(_selected);
-                // $(".swiperTitle").text(_selected);
-
             }, 3000);
 
-
-
-            
+  
 
         });
 
