@@ -14,20 +14,11 @@
 
 
 /* --------------------
- 設定パラメータ
+ 描画コンテナー
 -------------------- */
 
-/* Data Scale */
-var minData = 0;
-var maxData = 100;
 
-/* Color Scale */
-var minColor = "#333333";
-var maxColor = "#FFFFFF";
 
-/* Height Scale */
-var minHeight = 0;
-var maxHeight = 50000;
 /* --------------------
  設定パラメータ
 -------------------- */
@@ -52,6 +43,25 @@ var POI = [
 
 
 
+/* --------------------
+ スケール
+-------------------- */
+
+/* Data Scale */
+var minData = 0;
+var maxData = 100;
+
+/* Color Scale */
+var minColor = "#333333";
+var maxColor = "#FFFFFF";
+
+/* Height Scale */
+var minHeight = 0;
+var maxHeight = 50000;
+
+var colorScale = d3.scaleLinear()
+    .domain([minData, maxData])
+    .range([minColor, maxColor]);
 /* --------------------
  Initialize: Variables
 -------------------- */
