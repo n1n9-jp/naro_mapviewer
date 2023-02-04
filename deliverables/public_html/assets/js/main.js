@@ -273,10 +273,45 @@ var initMapUI = function() {
     var nav = new mapboxgl.NavigationControl();
     mapObject.addControl(nav, 'top-right');
 
-    PubSub.publish('load:basemap');
+    PubSub.publish('init:color');
 }
 
 
+
+
+var initColor = function() {
+    console.log("initColor");
+
+    /* Legend Container */
+    legendGroup = d3.select("#mapContainer")
+        .append("div").attr("id", "legendContainer")
+        .append("svg").style("fill", "#FFFFFF")
+        .attr("transform", "translate("
+        + 200 + ","
+        + 200
+        + ")")
+        .append("g");
+
+    legendTitle = legendGroup.append("text").attr("y", 60)
+        .attr("class", "legend-title")
+        .style("font-size", "1.4em")
+        .style("fill", "#FFFFFF")
+        .text("Population growth")
+
+    /* Gradiation Init */
+    defs = legendGroup.append("defs")
+    legendGradientId = "legend-gradient";
+    gradient = defs.append("linearGradient") .attr("id", legendGradientId)
+        .selectAll("stop")
+        .data(colorScale.range())
+        .enter().append("stop")
+        .attr("stop-color", d => d) 
+        .attr("offset", (d, i) => `${
+          i * 100 / 2 //2 is one less than our array's length
+        }%`)
+
+    PubSub.publish('load:basemap');
+}
 
 
 
@@ -496,6 +531,7 @@ var hideDetail = function() {
 PubSub.subscribe('init:basemap', initBaseMap);
 PubSub.subscribe('init:nav', initNav);
 PubSub.subscribe('init:mapui', initMapUI);
+PubSub.subscribe('init:color', initColor);
 
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
