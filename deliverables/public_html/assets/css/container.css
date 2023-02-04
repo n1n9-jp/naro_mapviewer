@@ -14,6 +14,19 @@ body {
     z-index: 1;
 }
 
+#mapboxContainer {
+    top:0; 
+    height: 100vh; 
+    width: 100vw; 
+    position: fixed; 
+    z-index: 10;
+}
+
+#legendContainer {
+    z-index: 30;
+    position: absolute;
+}
+
 #footerContainer {
     position: fixed;
     z-index: 490;
@@ -22,4 +35,3 @@ body {
     height: 80px;
     background-color: #010D12 !important;
 }
-

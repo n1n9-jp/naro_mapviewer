@@ -81,7 +81,7 @@ var initBaseMap = function() {
     console.log("initBaseMap");
 
     mapObject = new mapboxgl.Map({
-        "container": "mapContainer",
+        "container": "mapboxContainer",
         "center": [POI[0]["longitude"], POI[0]["latitude"]],
         "zoom": POI[0]["zoom"],
         "minZoom": 6,
