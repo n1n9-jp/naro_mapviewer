@@ -37,9 +37,14 @@ mapboxgl.accessToken = 'pk.eyJ1IjoieXVpY2h5IiwiYSI6ImNrcW43dXA0YTA4eTEyb28yN25je
 
 
 
-
 var POI = [
-    { "city": "Tokyo Station", "longitude": 139.767125, "latitude": 35.681236, "zoom": 6, "bearing": 0 }
+  {
+    city: "Tokyo Station",
+    longitude: 139.767125,
+    latitude: 35.681236,
+    zoom: 6,
+    bearing: 0,
+  },
 ];
 
 
@@ -76,7 +81,7 @@ var initBaseMap = function() {
     console.log("initBaseMap");
 
     mapObject = new mapboxgl.Map({
-        "container": "themeMap",
+        "container": "mapContainer",
         "center": [POI[0]["longitude"], POI[0]["latitude"]],
         "zoom": POI[0]["zoom"],
         "minZoom": 6,
@@ -358,7 +363,6 @@ var drawMap = function() {
     
         mapObject.addLayer({
             'id': 'naro_prob',
-            //'type': 'fill',
             'type': 'fill-extrusion',
             'source': 'naro',
             'layout': {},
@@ -383,6 +387,7 @@ var drawMap = function() {
                 // ],
             }
         });
+
 
 
         mapObject.on('click', 'naro_prob', function (e) {
@@ -496,8 +501,6 @@ PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
 PubSub.subscribe('draw:map', drawMap);
 PubSub.subscribe('update:map', updateMap);
-
-
 
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
