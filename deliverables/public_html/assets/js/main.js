@@ -296,14 +296,14 @@ var initMapUI = function() {
     var nav = new mapboxgl.NavigationControl();
     mapObject.addControl(nav, 'top-right');
 
-    PubSub.publish('init:color');
+    PubSub.publish('init:legend');
 }
 
 
 
 
-var initColor = function() {
-    console.log("initColor");
+var initLegend = function() {
+    console.log("initLegend");
 
     /* Legend Container */
     legendGroup = d3.select("#mapContainer")
@@ -563,7 +563,7 @@ var hideDetail = function() {
 PubSub.subscribe('init:basemap', initBaseMap);
 PubSub.subscribe('init:nav', initNav);
 PubSub.subscribe('init:mapui', initMapUI);
-PubSub.subscribe('init:color', initColor);
+PubSub.subscribe('init:legend', initLegend);
 
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
