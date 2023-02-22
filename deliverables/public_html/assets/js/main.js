@@ -293,8 +293,8 @@ var initNav = function() {
 var initMapUI = function() {
     console.log("initMapUI");
 
-    var nav = new mapboxgl.NavigationControl();
-    mapObject.addControl(nav, 'top-right');
+    var _nav = new mapboxgl.NavigationControl();
+    mapObject.addControl(_nav, 'top-right');
 
     PubSub.publish('init:legend');
 }
