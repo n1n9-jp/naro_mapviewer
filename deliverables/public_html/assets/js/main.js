@@ -16,7 +16,6 @@
 /* --------------------
  描画コンテナー
 -------------------- */
-var legendGroup, legendTitle;
 
 
 
@@ -66,12 +65,11 @@ var colorScale = d3.scaleLinear()
 /* --------------------
  凡例
 -------------------- */
-var defs;
+var legendGroup, legendTitle, legendGradient, legendValueRight, legendValueLeft;
+var defsLegend;
 var legendGradientId;
-var gradient; 
 var legendWidth = 200;
 var legendHeight = 20;
-var legendGradient;
 /* --------------------
  Initialize: Variables
 -------------------- */
@@ -315,16 +313,11 @@ var initLegend = function() {
         + ")")
         .append("g");
 
-    legendTitle = legendGroup.append("text").attr("y", 60)
-        .attr("class", "legend-title")
-        .style("font-size", "1.4em")
-        .style("fill", "#FFFFFF")
-        .text("Population growth")
-
     /* Gradiation Init */
-    defs = legendGroup.append("defs")
+    defsLegend = legendGroup.append("defs")
     legendGradientId = "legend-gradient";
-    gradient = defs.append("linearGradient") .attr("id", legendGradientId)
+
+    defsLegend.append("linearGradient") .attr("id", legendGradientId)
         .selectAll("stop")
         .data(colorScale.range())
         .enter().append("stop")
@@ -512,12 +505,36 @@ var drawMap = function() {
 
 
         /* Legend setup */
+
+        legendTitle = legendGroup.append("text")
+            .attr("y", 60)
+            .attr("class", "legend-title")
+            .style("font-size", "1.4em")
+            .style("fill", "#FFFFFF")
+            .text("Population growth");
+
         legendGradient = legendGroup.append("rect")
             .attr("y", 60)
             .attr("width", legendWidth)
             .attr("height", legendHeight)
             // .style("fill", "#FF0000");
             .style("fill", `url(#${legendGradientId})`);
+
+        legendValueRight = legendGroup.append("text") 
+            .attr("class", "legend-value")
+            .attr("x", 0)
+            .attr("y", 100)
+            .style("fill", "#FFFFFF")
+            .text(minData);
+        
+        legendValueLeft = legendGroup.append("text")
+            .attr("class", "legend-value")
+            .attr("x", legendWidth)
+            .attr("y", 100)
+            .style("fill", "#FFFFFF")
+            .style("text-anchor", "end")
+            .text(maxData);
+
         fl_firsttime = false;
     } else {
         console.log("false");
