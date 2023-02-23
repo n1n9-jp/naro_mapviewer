@@ -442,6 +442,22 @@ var drawMap = function() {
 
 
 
+        mapObject.addLayer({
+            'id': 'naro_prob_text',
+            'type': 'symbol',
+            'source': 'naro',
+            'layout': {
+                'text-field': ['get', 'N03_004'],
+                'text-size': 20,
+                'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                'text-radial-offset': 0.5,
+                'text-justify': 'auto',
+                'icon-image': ['get', 'icon']
+            },
+            'paint': {
+                'text-color': "#FFF"
+            }
+        });
         /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
             //console.log("local ID: ", e.features[0].properties.N03_007);
