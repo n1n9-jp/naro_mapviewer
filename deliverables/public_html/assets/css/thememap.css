@@ -1,2 +1,12 @@
 @charset "UTF-8";
 
+.mapboxgl-popup {
+    max-width: 400px;
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.legend-value {
+    fill: #576574;
+    dominant-baseline: middle;
+    font-size: 0.8em;
+}

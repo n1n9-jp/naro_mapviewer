@@ -477,6 +477,11 @@ var drawMap = function() {
                 'text-color': "#FFF"
             }
         });
+        // ポップアップ
+        const popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
         /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
             //console.log("local ID: ", e.features[0].properties.N03_007);
@@ -505,28 +510,59 @@ var drawMap = function() {
 
         });
 
-
-
-
-
         mapObject.on('mousemove', 'naro_prob', (e) => {
 
-            mapObject.getCanvas().style.cursor = 'pointer';
+                // console.log(this);
 
-            // if (e.features.length > 0) {
-            //     if (hoveredStateId !== null) {
-            //         mapObject.setFeatureState(
-            //         { source: 'naro', id: hoveredStateId },
-            //         { hover: false }
-            //         );
-            //     }
-            //     console.log("e.features[0]", e.features[0]);
-            //     hoveredStateId = e.features[0].properties.N03_007;
-            //     mapObject.setFeatureState(
-            //         { source: 'naro', id: hoveredStateId },
-            //         { hover: true }
-            //     );
-            // }
+                mapObject.getCanvas().style.cursor = 'pointer';
+                console.log("e", e.features[0].properties["N03_007"]);
+
+                var _addressB = e.features[0].properties["N03_007"];
+
+
+
+                // 対象自治体の住所を生成
+                if (e.features[0].properties["N03_001"]) {
+                    var _address_1 = e.features[0].properties["N03_001"];
+                } else {
+                    var _address_1 = "";
+                }
+
+                if (e.features[0].properties["N03_002"]) {
+                    var _address_2 = e.features[0].properties["N03_002"];
+                } else {
+                    var _address_2 = "";
+                }
+
+                if (e.features[0].properties["N03_003"]) {
+                    var _address_3 = e.features[0].properties["N03_003"];
+                } else {
+                    var _address_3 = "";
+                }
+
+                if (e.features[0].properties["N03_004"]) {
+                    var _address_4 = e.features[0].properties["N03_004"];
+                } else {
+                    var _address_4 = "";
+                }
+                var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
+
+
+
+                // 対象自治体の中心点を取得
+                const coordinates = e.features[0].geometry.coordinates.slice();
+
+                var _line = turf.lineString(coordinates[0]);
+                var _bbox = turf.bbox(_line);
+                var _bboxPolygon = turf.bboxPolygon(_bbox);
+
+                var _lng = (_bboxPolygon.bbox[2] + _bboxPolygon.bbox[0]) /2;
+                var _lat = (_bboxPolygon.bbox[3] + _bboxPolygon.bbox[1]) /2;
+
+
+
+                // ポップアップを表示
+                popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + _addressB).addTo(mapObject);
 
         });
 
@@ -536,6 +572,8 @@ var drawMap = function() {
              
         mapObject.on('mouseout', 'naro_prob', function () {
             mapObject.getCanvas().style.cursor = 'auto';
+            popup.remove();
+
         });
 
 
