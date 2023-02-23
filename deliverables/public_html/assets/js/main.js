@@ -439,6 +439,7 @@ var drawMap = function() {
                 //     1.0,
                 //     0.5
                 // ],
+                'fill-extrusion-vertical-gradient': true
             }
         });
 
