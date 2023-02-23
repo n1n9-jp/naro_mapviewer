@@ -444,6 +444,20 @@ var drawMap = function() {
         });
 
 
+        // 境界線レイヤー
+        mapObject.addLayer({
+            'id': 'naro_prob_line',
+            'type': 'line',
+            'source': 'naro',
+            'layout': {
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-width': 1,
+                'line-color': '#FFF',
+                'line-opacity': 0.4
+            }
+        });
 
         mapObject.addLayer({
             'id': 'naro_prob_text',
