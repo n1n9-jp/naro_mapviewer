@@ -415,6 +415,7 @@ var drawMap = function() {
             'data': dataObjMap
         });
     
+        // 3D押出しレイヤー
         mapObject.addLayer({
             'id': 'naro_prob',
             'type': 'fill-extrusion',
@@ -459,6 +460,7 @@ var drawMap = function() {
             }
         });
 
+        // 地名テキストレイヤーs
         mapObject.addLayer({
             'id': 'naro_prob_text',
             'type': 'symbol',
