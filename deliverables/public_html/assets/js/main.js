@@ -579,34 +579,73 @@ var drawMap = function() {
 
         /* Legend setup */
 
-        legendTitle = legendGroup.append("text")
+        var _legendTitle = legendGroup.append("text")
             .attr("y", 60)
             .attr("class", "legend-title")
             .style("font-size", "1.4em")
             .style("fill", "#FFFFFF")
             .text("Population growth");
 
-        legendGradient = legendGroup.append("rect")
+        var _legendGradient = legendGroup.append("rect")
             .attr("y", 60)
             .attr("width", legendWidth)
             .attr("height", legendHeight)
             // .style("fill", "#FF0000");
             .style("fill", `url(#${legendGradientId})`);
 
-        legendValueRight = legendGroup.append("text") 
-            .attr("class", "legend-value")
+        
+        // Legend Min Value
+        let _legendValueMin = legendGroup.selectAll(".legendMinText")
+            .data([minData]);
+
+        _legendValueMin.exit()
+            .transition()
+            .duration(1000)
+            .style("font-size", "0rem")
+            .remove();
+
+        _legendValueMin.enter()
+            .append("text")
+            .attr("class", "legendMinText")
             .attr("x", 0)
             .attr("y", 100)
-            .style("fill", "#FFFFFF")
-            .text(minData);
-        
-        legendValueLeft = legendGroup.append("text")
-            .attr("class", "legend-value")
-            .attr("x", legendWidth)
+            .merge(_legendValueMin)
+            .transition()
+            .duration(2000)
+            .attr("x", 0)
             .attr("y", 100)
-            .style("fill", "#FFFFFF")
-            .style("text-anchor", "end")
-            .text(maxData);
+            .attr("text-anchor", "start")
+            .text(function(d) {
+                return d;
+            });
+        // Legend Max Value
+        let _legendValueMax = legendGroup.selectAll(".legendMaxText")
+            .data([maxData]);
+
+        _legendValueMax.exit()
+            .transition()
+            .duration(1000)
+            .style("font-size", "0rem")
+            .remove();
+
+        _legendValueMax.enter()
+            .append("text")
+            .attr("class", "legendMaxText")
+            .attr("x", function(d){
+                return legendWidth;
+            })
+            .attr("y", 100)
+            .merge(_legendValueMax)
+            .transition()
+            .duration(2000)
+            .attr("x", function(d){
+                return legendWidth;
+            })
+            .attr("y", 100)
+            .attr("text-anchor", "end")
+            .text(function(d) {
+                return d;
+            });
 
         fl_firsttime = false;
     } else {
