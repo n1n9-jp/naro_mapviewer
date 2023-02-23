@@ -22,6 +22,8 @@
 /* --------------------
  設定パラメータ
 -------------------- */
+/* MapObject */
+var mapObject;
 
 /* Map Tile */
 maptileURL = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
@@ -82,8 +84,8 @@ var dir3Index = 0;
 var fullpath=[];
 
 /* Data Object */
-var dataObjTheme;
-var dataObjMap;
+var dataObjMap;     // Base Map
+var dataObjTheme;   // Theme Data
 
 /* Swiper UI */
 var probArray = ["L0","H0"]
