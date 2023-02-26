@@ -9,7 +9,8 @@ body {
 
 h1 {
   font-size: 1.5rem;
-  color: #AAA;
+  color: #FFF;
+  font-weight: 300;
 }
 
 .btn-secondary {
