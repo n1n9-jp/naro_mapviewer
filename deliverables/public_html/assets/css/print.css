@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+#printBtn {
+    width: 100%;
+}
+
+@media print {
+    body {
+        background-color: #FFF;
+    }
+}
