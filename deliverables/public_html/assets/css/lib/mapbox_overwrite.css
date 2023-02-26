@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+.mapboxgl-ctrl-top-right {
+    top: 0;
+    right: 0;
+    margin-right: 15%;
+}
+
+.mapboxgl-ctrl-bottom-right {
+    display: none;
+}
