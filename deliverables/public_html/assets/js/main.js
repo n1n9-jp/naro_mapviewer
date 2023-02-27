@@ -92,6 +92,9 @@ var probArray = ["L0","H0"]
 var probLabelArray = ["Low 0","High 0"]
 var probIndex = 0;
 
+/* Swiper UI Visualization Scale */
+var scaleArray = ["Relative","Absolute"]
+var scaleIndex = 0;
 /* Flag */
 var fl_firsttime = true;
 
@@ -284,6 +287,38 @@ var initNav = function() {
         PubSub.publish('update:map');
     });
 
+
+
+    /* Visualization Scale Var Slider */
+    var scaleItems = d3.select("#swiperVisualizationScale")
+        .selectAll("div")
+        .data(scaleArray)
+        .enter();
+
+    scaleItems.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return scaleArray[i];
+        });
+
+    swiperVisualization = new Swiper('#swiper-container-scale', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-scale',
+            prevEl: '#swiper-button-prev-scale',
+        },
+    });
+
+    swiperVisualization.on('slideChange', function (e) {
+        // console.log("", e.activeIndex);
+        scaleIndex = e.activeIndex;
+        console.log("scaleIndex", scaleIndex);
+        // PubSub.publish('update:map');
+    });
 
 
 }
