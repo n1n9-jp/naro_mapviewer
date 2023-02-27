@@ -69,11 +69,11 @@ var colorScale = d3.scaleLinear()
 /* --------------------
  凡例
 -------------------- */
-var legendGroup, legendTitle, legendGradient, legendValueRight, legendValueLeft;
+var legendGroup;
 var defsLegend;
-var legendGradientId;
+var legendGradientId = "legend-gradient";
 var legendWidth = 200;
-var legendHeight = 20;
+var legendHeight = 10;
 /* --------------------
  Initialize: Variables
 -------------------- */
@@ -343,7 +343,7 @@ var initLegend = function() {
     console.log("initLegend");
 
     /* Legend Container */
-    legendGroup = d3.select("#mapContainer")
+    legendGroup = d3.select("#legendBar")
         .append("div").attr("id", "legendContainer")
         .append("svg").style("fill", "#FFFFFF")
         .attr("transform", "translate("
@@ -614,85 +614,38 @@ var drawMap = function() {
         });
 
 
-        /* Legend setup */
 
-        var _legendTitle = legendGroup.append("text")
-            .attr("y", 60)
-            .attr("class", "legend-title")
-            .style("font-size", "1.4em")
-            .style("fill", "#FFFFFF")
-            .text("Population growth");
+        /* Print Button */
+        document.querySelector('#printBtn').addEventListener('click', () => {
+            mapObject.setStyle(maptileURL[1]);
 
-        var _legendGradient = legendGroup.append("rect")
-            .attr("y", 60)
-            .attr("width", legendWidth)
-            .attr("height", legendHeight)
-            // .style("fill", "#FF0000");
-            .style("fill", `url(#${legendGradientId})`);
-
-        
-        // Legend Min Value
-        let _legendValueMin = legendGroup.selectAll(".legendMinText")
-            .data([minData]);
-
-        _legendValueMin.exit()
-            .transition()
-            .duration(1000)
-            .style("font-size", "0rem")
-            .remove();
-
-        _legendValueMin.enter()
-            .append("text")
-            .attr("class", "legendMinText")
-            .attr("x", 0)
-            .attr("y", 100)
-            .merge(_legendValueMin)
-            .transition()
-            .duration(2000)
-            .attr("x", 0)
-            .attr("y", 100)
-            .attr("text-anchor", "start")
-            .text(function(d) {
-                return d;
+            mapObject.on('styledata', (e) => {
+                console.log("print?");
+                console.log("dataType?", e.dataType);
+                if (e.isSourceLoaded == true) {
+                    console.log("print!");
+                    window.print();
+                } else {
+                    console.log("no print...");
+                }
             });
-        // Legend Max Value
-        let _legendValueMax = legendGroup.selectAll(".legendMaxText")
-            .data([maxData]);
+        });
 
-        _legendValueMax.exit()
-            .transition()
-            .duration(1000)
-            .style("font-size", "0rem")
-            .remove();
 
-        _legendValueMax.enter()
-            .append("text")
-            .attr("class", "legendMaxText")
-            .attr("x", function(d){
-                return legendWidth;
-            })
-            .attr("y", 100)
-            .merge(_legendValueMax)
-            .transition()
-            .duration(2000)
-            .attr("x", function(d){
-                return legendWidth;
-            })
-            .attr("y", 100)
-            .attr("text-anchor", "end")
-            .text(function(d) {
-                return d;
-            });
 
         fl_firsttime = false;
     } else {
         console.log("false");
+
+
+
+
+
         mapObject.getSource('naro').setData(dataObjMap);
     }
 
-
-
-    console.log("dataObjMap", dataObjMap);
+    PubSub.publish('update:legend');
+    // console.log("dataObjMap", dataObjMap);
 }
 
 
@@ -708,10 +661,124 @@ var updateMap = function() {
             minData, minHeight,
             maxData, maxHeight]
     );
+
+    PubSub.publish('update:legend');
 }
 
 
 
+
+var updateLegend = function() {
+    console.log("updateLegend");
+
+
+
+    var _legendGradient = legendGroup.append("rect")
+        .attr("y", 60)
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        // .style("fill", "#FF0000");
+        .style("fill", `url(#${legendGradientId})`);
+
+
+
+    var _wt = document.getElementById("legendCon").offsetWidth / 2 - 20;
+    // var _wt = d3.select("#legendCon").node().getBBox()["width"];
+    console.log("_wt", _wt);
+
+
+
+    var _legendTitle = legendGroup.selectAll(".legend-title")
+    .data(["Selected value: "]);
+
+    _legendTitle.exit()
+        .transition()
+        .duration(1000)
+        .style("font-size", "0rem")
+        .remove();
+
+    _legendTitle.enter()
+        .append("text")
+        .attr("class", "legend-title")
+        .attr("x", function(){
+            return _wt;
+        })
+        .attr("y", 40)
+        .style("font-size", "0.8em")
+        .style("font-weight", "bold")
+        .style("fill", "#FFFFFF")
+        .merge(_legendTitle)
+        .transition()
+        .duration(2000)
+        .attr("x", function(){
+            return _wt;
+        })
+        .attr("y", 40)
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+            console.log("enter/exit probArray[probIndex]" + probArray[probIndex]);
+            return probArray[probIndex];
+        });
+
+
+
+    // Legend Min Value
+    let _legendValueMin = legendGroup.selectAll(".legendMinText")
+        .data([minData]);
+
+    _legendValueMin.exit()
+        .transition()
+        .duration(1000)
+        .style("font-size", "0rem")
+        .remove();
+
+    _legendValueMin.enter()
+        .append("text")
+        .attr("class", "legendMinText")
+        .attr("x", 0)
+        .attr("y", 100)
+        .merge(_legendValueMin)
+        .transition()
+        .duration(2000)
+        .attr("x", 0)
+        .attr("y", 100)
+        .attr("text-anchor", "start")
+        .text(function(d) {
+            return d;
+        });
+
+
+
+    // Legend Max Value
+    let _legendValueMax = legendGroup.selectAll(".legendMaxText")
+        .data([maxData]);
+
+    _legendValueMax.exit()
+        .transition()
+        .duration(1000)
+        .style("font-size", "0rem")
+        .remove();
+
+    _legendValueMax.enter()
+        .append("text")
+        .attr("class", "legendMaxText")
+        .attr("x", function(d){
+            return legendWidth;
+        })
+        .attr("y", 100)
+        .merge(_legendValueMax)
+        .transition()
+        .duration(2000)
+        .attr("x", function(d){
+            return legendWidth;
+        })
+        .attr("y", 100)
+        .attr("text-anchor", "end")
+        .text(function(d) {
+            return d;
+        });
+
+}
 var showDetail = function() {
     console.log("showDetail");
 
@@ -735,7 +802,7 @@ PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
 PubSub.subscribe('draw:map', drawMap);
 PubSub.subscribe('update:map', updateMap);
-
+PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
 
