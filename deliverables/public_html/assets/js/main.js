@@ -409,7 +409,9 @@ var loadThemeData = function() {
 var drawMap = function() {
     console.log("drawMap");
 
-    // combine base map& theme data
+
+
+    /* combine base map& theme data */
 
     for(var i=0; i<dataObjMap.features.length; i++) {
 
@@ -544,7 +546,7 @@ var drawMap = function() {
 
         mapObject.on('mousemove', 'naro_prob', (e) => {
 
-                // console.log(this);
+                // console.log("e", e.features[0].properties);
 
                 mapObject.getCanvas().style.cursor = 'pointer';
                 console.log("e", e.features[0].properties["N03_007"]);
@@ -614,14 +616,14 @@ var drawMap = function() {
         document.querySelector('#printBtn').addEventListener('click', () => {
             mapObject.setStyle(maptileURL[1]);
 
-            mapObject.on('styledata', (e) => {
-                console.log("print?");
-                console.log("dataType?", e.dataType);
+            mapObject.on('data', (e) => {
+                // console.log("print?");
+                // console.log("dataType?", e.dataType);
                 if (e.isSourceLoaded == true) {
-                    console.log("print!");
+                    // console.log("print!");
                     window.print();
                 } else {
-                    console.log("no print...");
+                    // console.log("no print...");
                 }
             });
         });
