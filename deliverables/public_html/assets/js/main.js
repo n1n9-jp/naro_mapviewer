@@ -157,12 +157,12 @@ var initNav = function() {
 
 
         /* Dir1 Var Slider */
-        var dir1Items = d3.select("#swiperDir1")
+        var _dir1Items = d3.select("#swiperDir1")
             .selectAll("div")
             .data(dir1)
             .enter();
 
-        dir1Items.append("div")
+        _dir1Items.append("div")
             .attr('class', function () {
                 return "swiper-slide";
             })
@@ -189,12 +189,12 @@ var initNav = function() {
 
 
         /* Dir2 Var Slider */
-        var dir2Items = d3.select("#swiperDir2")
+        var _dir2Items = d3.select("#swiperDir2")
             .selectAll("div")
             .data(dir2)
             .enter();
 
-        dir2Items.append("div")
+        _dir2Items.append("div")
             .attr('class', function () {
                 return "swiper-slide";
             })
@@ -221,12 +221,12 @@ var initNav = function() {
 
 
         /* Dir3 Var Slider */
-        var dir3Items = d3.select("#swiperDir3")
+        var _dir3Items = d3.select("#swiperDir3")
             .selectAll("div")
             .data(dir3)
             .enter();
 
-        dir3Items.append("div")
+        _dir3Items.append("div")
             .attr('class', function () {
                 return "swiper-slide";
             })
@@ -257,12 +257,12 @@ var initNav = function() {
 
 
     /* Probability Var Slider */
-    var probItems = d3.select("#swiperProbability")
+    var _probItems = d3.select("#swiperProbability")
         .selectAll("div")
         .data(probArray)
         .enter();
 
-    probItems.append("div")
+    _probItems.append("div")
         .attr('class', function () {
             return "swiper-slide";
         })
