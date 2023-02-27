@@ -118,7 +118,17 @@ var initBaseMap = function() {
         "style": maptileURL[0]
         });
 
-    PubSub.publish('init:nav');
+
+
+    var _stylecount = 0;
+
+    mapObject.on('styledata', () => {
+        _stylecount++;
+        if (_stylecount == 2) {
+            PubSub.publish('init:nav');
+        }
+    });
+
 }
 
 
