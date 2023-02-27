@@ -677,9 +677,9 @@ var updateLegend = function() {
 
 
 
-    var _wt = document.getElementById("legendCon").offsetWidth / 2 - 20;
-    // var _wt = d3.select("#legendCon").node().getBBox()["width"];
-    console.log("_wt", _wt);
+    var _columnWidth = document.getElementById("legendCon").offsetWidth / 2 - 20;
+    // var _columnWidth = d3.select("#legendCon").node().getBBox()["width"];
+    // console.log("_columnWidth", _columnWidth);
 
 
 
@@ -696,7 +696,7 @@ var updateLegend = function() {
         .append("text")
         .attr("class", "legend-title")
         .attr("x", function(){
-            return _wt;
+            return _columnWidth;
         })
         .attr("y", 40)
         .style("font-size", "0.8em")
@@ -706,7 +706,7 @@ var updateLegend = function() {
         .transition()
         .duration(2000)
         .attr("x", function(){
-            return _wt;
+            return _columnWidth;
         })
         .attr("y", 40)
         .attr("text-anchor", "middle")
