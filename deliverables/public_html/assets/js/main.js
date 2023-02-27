@@ -14,14 +14,9 @@
 
 
 /* --------------------
- 描画コンテナー
+ 地図設定パラメータ
 -------------------- */
 
-
-
-/* --------------------
- 設定パラメータ
--------------------- */
 /* MapObject */
 var mapObject;
 
@@ -89,7 +84,7 @@ var fullpath=[];
 var dataObjMap;     // Base Map
 var dataObjTheme;   // Theme Data
 
-/* Swiper UI */
+/* Swiper UI Probability */
 var probArray = ["L0","H0"]
 var probLabelArray = ["Low 0","High 0"]
 var probIndex = 0;
@@ -404,7 +399,7 @@ var loadThemeData = function() {
             }
         }
 
-        console.log("dataObjTheme", dataObjTheme);
+        console.log("probArray[probIndex]", probArray[probIndex]);
         PubSub.publish('draw:map');
     });
 }
