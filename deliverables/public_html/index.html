@@ -19,72 +19,143 @@
 
 <link href="assets/css/container.css" rel="stylesheet" />
 <link href="assets/css/thememap.css" rel="stylesheet" />
-<link href="assets/css/footer.css" rel="stylesheet" />
+<link href="assets/css/misc.css" rel="stylesheet" />
 <link href="assets/css/print.css" rel="stylesheet" />
 </head>
 <body class="bg-dark">
 
+<!-- <div class="position-relative"> -->
+  <div id="sidebarContainer" class="position-absolute right-0 end-0 vh-100">
 
-<div id="mapContainer">
-  <div id="mapboxContainer"></div>
-</div>
-
-<div id="footerContainer" class="container-fluid">
-  <div class="row text-white">
-
-    <!-- nav -->
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir1"></div>
-    </div>
-    <div class="col-1">
-          <!-- Slider -->
-          <div class="swiper-container swipers" id="swiper-container-dir1">
-            <div class="swiperTitle"> Dir1 </div>
-            <div class="swiper-wrapper" id="swiperDir1">
-            </div>
+    <div class="container-fluid mb-4">
+      <div class="row">
+        <div class="col-9">
+          <div id="siteTitle">
+            <h1>Impacts of <span class="bold">Climate Change</span> Projections</h1>
           </div>
-          <!-- Slider -->
-    </div>
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir1"></div>
+          <!-- <div id="txtDir1"></div>
+          <div id="txtDir2"></div>
+          <div id="txtDir3"></div>
+          <div id="txtDir4"></div> -->
+        </div>
+      </div>
     </div>
 
-
-
-    <!-- nav -->
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir2"></div>
-    </div>
-    <div class="col-1">
-          <!-- Slider -->
-          <div class="swiper-container swipers" id="swiper-container-dir2">
-            <div class="swiperTitle"> Dir2 </div>
-            <div class="swiper-wrapper" id="swiperDir2">
+    <div class="container-fluid mb-4">
+      <div class="row">
+        <div class="col-10">
+          <div class="text-center">Dir1</div>
+        </div>
+      </div>
+      <div class="row">
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir1"></div>
             </div>
-          </div>
-          <!-- Slider -->
-    </div>
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir2"></div>
-    </div>
-
-
-
-    <!-- nav -->
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir3"></div>
-    </div>
-    <div class="col-1">
-          <!-- Slider -->
-          <div class="swiper-container swipers" id="swiper-container-dir3">
-            <div class="swiperTitle"> Dir3 </div>
-            <div class="swiper-wrapper" id="swiperDir3">
+            <div class="col-9">
+                  <!-- Slider -->
+                  <div class="swiper-container swipers" id="swiper-container-dir1">
+                    <!-- <div class="swiperTitle"> Dir1 </div> -->
+                    <div class="swiper-wrapper" id="swiperDir1">
+                    </div>
+                  </div>
+                  <!-- Slider -->
             </div>
-          </div>
-          <!-- Slider -->
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir1"></div>
+            </div>
+        </div>
     </div>
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir3"></div>
+
+    <div class="container-fluid mb-4">
+        <div class="row">
+          <div class="col-10">
+            <div class="text-center">Dir2</div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir2"></div>
+            </div>
+            <div class="col-9">
+                  <!-- Slider -->
+                  <div class="swiper-container swipers" id="swiper-container-dir2">
+                    <!-- <div class="swiperTitle"> Dir2 </div> -->
+                    <div class="swiper-wrapper" id="swiperDir2">
+                    </div>
+                  </div>
+                  <!-- Slider -->
+            </div>
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-4">
+        <div class="row">
+          <div class="col-10">
+            <div class="text-center">Dir3</div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir3"></div>
+            </div>
+            <div class="col-9">
+                  <!-- Slider -->
+                  <div class="swiper-container swipers" id="swiper-container-dir3">
+                    <div class="swiper-wrapper" id="swiperDir3">
+                    </div>
+                  </div>
+                  <!-- Slider -->
+            </div>
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-4">
+        <div class="row">
+          <div class="col-10">
+            <div class="text-center">Probability</div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-prob"></div>
+            </div>
+            <div class="col-9">
+                  <div class="swiper-container swipers" id="swiper-container-prob">
+                    <div class="swiper-wrapper" id="swiperProbability">
+                    </div>
+                  </div>
+            </div>
+            <div class="col-1">
+              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-prob"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-4">
+      <div class="row">
+        <div class="col-12">
+          <button type="button" id="printBtn" class="btn btn-secondary">Print this map</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="legendCon" class="container-fluid mb-4 ">
+      <div class="row">
+        <div class="col-10">
+          <div class="text-center">Legend</div>
+        </div>
+      </div>
+      <div class="row">
+        <div id="legendBar"></div>
+      </div>
+    </div>
+
     <div class="container-fluid mb-4 ">
       <div class="row">
         <div class="col-10">
@@ -95,26 +166,16 @@
 
 
 
-    <!-- nav -->
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-prob"></div>
-    </div>
-    <div class="col-1">
-          <!-- Slider -->
-          <div class="swiper-container swipers" id="swiper-container-prob">
-            <div class="swiperTitle"> Probability </div>
-            <div class="swiper-wrapper" id="swiperProbability">
-            </div>
-          </div>
-          <!-- Slider -->
-    </div>
-    <div class="col-1">
-      <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-prob"></div>
-    </div>
+
+
 
 
 
   </div>
+<!-- </div> -->
+
+<div id="mapContainer">
+  <div id="mapboxContainer"></div>
 </div>
 
 
@@ -140,6 +201,7 @@
 <!-- <script src="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js"></script> -->
 <!-- <script src='https://unpkg.com/maplibre-gl@2.0.1/dist/maplibre-gl.js'></script> -->
 <!-- <script src='assets/js/mapbox-gl-gsidem.js'></script> -->
+<!-- <script src='https://api.mapbox.com/mapbox-gl-js/v1.13.1/mapbox-gl.js'></script> -->
 
 <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
 <!-- /dataviz -->

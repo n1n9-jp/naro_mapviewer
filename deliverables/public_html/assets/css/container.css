@@ -6,6 +6,19 @@ body {
     font-feature-settings: "palt";
 }
 
+#sidebarContainer {
+    z-index: 500;
+    width: 15%!important;
+    color: #ffffff;
+    /* background-color: #797979 !important; */
+    background-color: rgba(0,0,0,0.8) !important;
+}
+
+#txtDir1, #txtDir2, #txtDir3, #txtDir14 {
+    float: left;
+    margin-right: 1em;
+}
+
 #mapContainer {
     top:0; 
     height: 100vh; 
@@ -25,13 +38,4 @@ body {
 #legendContainer {
     z-index: 30;
     position: absolute;
-}
-
-#footerContainer {
-    position: fixed;
-    z-index: 490;
-    bottom: 0;
-    width: 100%;
-    height: 80px;
-    background-color: #010D12 !important;
 }
