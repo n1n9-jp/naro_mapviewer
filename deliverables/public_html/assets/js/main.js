@@ -26,7 +26,9 @@
 var mapObject;
 
 /* Map Tile */
-maptileURL = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
+maptileURL = [];
+maptileURL[0] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
+maptileURL[1] = "https://api.maptiler.com/maps/positron/style.json?key=p3yGzZkqo3eCxtEynu6W";
 
 /* API token */
 mapboxgl.accessToken = 'pk.eyJ1IjoieXVpY2h5IiwiYSI6ImNrcW43dXA0YTA4eTEyb28yN25jeTN0ZHMifQ.7v7OJoeJXp2fqX5vloX-PQ';
@@ -118,7 +120,7 @@ var initBaseMap = function() {
         "bearing": POI[0]["bearing"], 
         "hash": true,
         "interactive": true,
-        "style": maptileURL
+        "style": maptileURL[0]
         });
 
     PubSub.publish('init:nav');
