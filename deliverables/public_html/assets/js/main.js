@@ -290,12 +290,12 @@ var initNav = function() {
 
 
     /* Visualization Scale Var Slider */
-    var scaleItems = d3.select("#swiperVisualizationScale")
+    var _scaleItems = d3.select("#swiperVisualizationScale")
         .selectAll("div")
         .data(scaleArray)
         .enter();
 
-    scaleItems.append("div")
+    _scaleItems.append("div")
         .attr('class', function () {
             return "swiper-slide";
         })
