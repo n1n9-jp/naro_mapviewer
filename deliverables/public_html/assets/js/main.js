@@ -81,7 +81,8 @@ var dir3Index = 0;
 var fullpath=[];
 
 /* Data Object */
-var dataObjMap;     // Base Map
+var dataBaseMapSimple;     // Base Map Simple
+var dataBaseMapDetailed;     // Base Map Detail
 var dataObjTheme;   // Theme Data
 
 /* Swiper UI Probability */
@@ -383,7 +384,8 @@ var loadBasemap = function() {
         d3.json("assets/data_lib/" + "JapanMapDetail_light.json"),
         d3.json("assets/data_lib/" + "JapanMapSimple.json")
     ]).then(function (_data) {
-        dataObjMap = _.cloneDeep(_data[0]);
+        dataBaseMapDetailed = _.cloneDeep(_data[0]);
+        dataBaseMapSimple = _.cloneDeep(_data[1]);
 
         PubSub.publish('load:themedata');
     });
@@ -409,6 +411,12 @@ var loadThemeData = function() {
             if (dataObjTheme[i]["MuniCode"].length == 4){
                 dataObjTheme[i]["MuniCode"] = "0" + dataObjTheme[i]["MuniCode"];
             }
+            dataObjTheme[i]["MuniCode"] = parseInt(dataObjTheme[i]["MuniCode"]);
+            dataObjTheme[i]["mean"] = parseFloat(dataObjTheme[i]["mean"]);
+            dataObjTheme[i]["sd"] = parseFloat(dataObjTheme[i]["sd"]);
+
+            dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
+            dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
         }
 
         console.log("probArray[probIndex]", probArray[probIndex]);
@@ -425,26 +433,26 @@ var drawMap = function() {
 
     /* combine base map& theme data */
 
-    for(var i=0; i<dataObjMap.features.length; i++) {
+    for(var i=0; i<dataBaseMapDetailed.features.length; i++) {
 
-        var _muniid = dataObjMap.features[i]["properties"]["N03_007"];
+        var _muniid = dataBaseMapDetailed.features[i]["properties"]["N03_007"];
 
         var _fl = false;
         for(var j=0; j<dataObjTheme.length; j++) {
             if (dataObjTheme[j]["MuniCode"] == _muniid){
-                dataObjMap.features[i]["properties"]["mean"] = parseFloat(dataObjTheme[j]["mean"]);
-                dataObjMap.features[i]["properties"]["sd"] = parseFloat(dataObjTheme[j]["sd"]);
-                dataObjMap.features[i]["properties"]["L0"] = parseFloat(dataObjTheme[j]["L0"]);
-                dataObjMap.features[i]["properties"]["H0"] = parseFloat(dataObjTheme[j]["H0"]);
+                dataBaseMapDetailed.features[i]["properties"]["mean"] = parseFloat(dataObjTheme[j]["mean"]);
+                dataBaseMapDetailed.features[i]["properties"]["sd"] = parseFloat(dataObjTheme[j]["sd"]);
+                dataBaseMapDetailed.features[i]["properties"]["L0"] = parseFloat(dataObjTheme[j]["L0"]);
+                dataBaseMapDetailed.features[i]["properties"]["H0"] = parseFloat(dataObjTheme[j]["H0"]);
                 _fl = true;
             }
         }
 
         if (!_fl){
-            dataObjMap.features[i]["properties"]["mean"] = 0;
-            dataObjMap.features[i]["properties"]["sd"] = 0;
-            dataObjMap.features[i]["properties"]["L0"] = 0;
-            dataObjMap.features[i]["properties"]["H0"] = 0;
+            dataBaseMapDetailed.features[i]["properties"]["mean"] = 0;
+            dataBaseMapDetailed.features[i]["properties"]["sd"] = 0;
+            dataBaseMapDetailed.features[i]["properties"]["L0"] = 0;
+            dataBaseMapDetailed.features[i]["properties"]["H0"] = 0;
         }
     }
     console.log("dataObjMap", dataObjMap);
@@ -458,9 +466,13 @@ var drawMap = function() {
         /* Mapbox setup */
         mapObject.addSource('naro', {
             'type': 'geojson',
-            'data': dataObjMap
+            'data': dataBaseMapDetailed
         });
     
+        mapObject.addSource('naro_simple', {
+            'type': 'geojson',
+            'data': dataBaseMapSimple
+        });
         // 3D押出しレイヤー
         mapObject.addLayer({
             'id': 'naro_prob',
@@ -508,19 +520,13 @@ var drawMap = function() {
 
         // 地名テキストレイヤーs
         mapObject.addLayer({
-            'id': 'naro_prob_text',
-            'type': 'symbol',
-            'source': 'naro',
-            'layout': {
-                'text-field': ['get', 'N03_004'],
-                'text-size': 20,
-                'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-                'text-radial-offset': 0.5,
-                'text-justify': 'auto',
-                'icon-image': ['get', 'icon']
-            },
+            'id': 'naro_prob_line_simple',
+            'type': 'fill-extrusion',
+            'source': 'naro_simple',
+            'layout': {},
             'paint': {
-                'text-color': "#FFF"
+                'fill-extrusion-height': 500,        
+                'fill-extrusion-vertical-gradient': true
             }
         });
         // ポップアップ
