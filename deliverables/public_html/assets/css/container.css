@@ -8,15 +8,10 @@ body {
 
 #sidebarContainer {
     z-index: 500;
-    width: 15%!important;
+    width: 300px !important;
     color: #ffffff;
     /* background-color: #797979 !important; */
     background-color: rgba(0,0,0,0.8) !important;
-}
-
-#txtDir1, #txtDir2, #txtDir3, #txtDir14 {
-    float: left;
-    margin-right: 1em;
 }
 
 #mapContainer {
@@ -38,4 +33,17 @@ body {
 #legendContainer {
     z-index: 30;
     position: absolute;
+}
+
+#smallMapLeft, #smallMapRight {
+    width: 138px;
+    height: 50px;
+    float: left;
+    margin-right: 0 !important;
+    background-color: #CCCCCC;
+}
+
+#txtDir1, #txtDir2, #txtDir3, #txtDir14 {
+    float: left;
+    margin-right: 1em;
 }

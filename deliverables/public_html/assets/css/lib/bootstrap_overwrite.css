@@ -18,10 +18,23 @@ h1 {
   border-color: #666;
 }
 
+.row {
+  background-color: #000000;
+}
 
+.row.header {
+  height: 20px;
+  background-color: #222222;
+}
 
+.row.body {
+  height: 80px;
+  background-color: #222222;
+}
 
-
+.row.button {
+  height: 50px;
+}
 
 /* .vertical-center {
   display: inline-block;

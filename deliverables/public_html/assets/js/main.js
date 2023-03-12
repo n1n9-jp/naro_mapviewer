@@ -18,7 +18,7 @@
 -------------------- */
 
 /* MapObject */
-var mapObject;
+var mapObject, smallmMapObject;
 
 /* Map Tile */
 maptileURL = [];
@@ -28,8 +28,6 @@ maptileURL[1] = "https://api.maptiler.com/maps/positron/style.json?key=p3yGzZkqo
 /* API token */
 mapboxgl.accessToken = 'pk.eyJ1IjoieXVpY2h5IiwiYSI6ImNrcW43dXA0YTA4eTEyb28yN25jeTN0ZHMifQ.7v7OJoeJXp2fqX5vloX-PQ';
 
-
-
 var POI = [
   {
     city: "Tokyo Station",
@@ -38,7 +36,18 @@ var POI = [
     zoom: 6,
     bearing: 0,
   },
+  {
+    city: "NARO",
+    longitude: 140.102143,
+    latitude: 36.028125,
+    zoom: 10,
+    bearing: 0,
+  },
 ];
+
+
+var legendYPos = [26, 50, 80];
+var _columnWidth = 0;
 
 
 
@@ -47,20 +56,41 @@ var POI = [
 -------------------- */
 
 /* Data Scale */
-var minData = 0;
-var maxData = 100;
+var minDataOrigin = 0.0;
+var maxDataOrigin = 100.0;
+var dataScaleArray = [];
+var _obj1 = {minData: minDataOrigin, maxData: maxDataOrigin};
+var _obj2 = {minData: 0.0, maxData: 100.0};
+dataScaleArray.push(_obj1);
+dataScaleArray.push(_obj2);
+var scaleIndex = 0;
+
+
+
+
+
 
 /* Color Scale */
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
+// var minColor = "rgba(120, 120, 120, 0.2)";
+// var maxColor = "rgba(255, 255, 255, 1.0)";
 
 /* Height Scale */
 var minHeight = 0;
 var maxHeight = 50000;
 
+// var colorScale = d3.scaleLinear()
+//     .domain([minData, maxData])
+//     .range([minColor, maxColor]);
+
 var colorScale = d3.scaleLinear()
-    .domain([minData, maxData])
+    .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
     .range([minColor, maxColor]);
+
+
+
+
 /* --------------------
  凡例
 -------------------- */
@@ -69,6 +99,9 @@ var defsLegend;
 var legendGradientId = "legend-gradient";
 var legendWidth = 200;
 var legendHeight = 10;
+
+
+
 /* --------------------
  Initialize: Variables
 -------------------- */
@@ -93,6 +126,7 @@ var probIndex = 0;
 /* Swiper UI Visualization Scale */
 var scaleArray = ["Relative","Absolute"]
 var scaleIndex = 0;
+
 /* Flag */
 var fl_firsttime = true;
 
@@ -117,12 +151,28 @@ var initBaseMap = function() {
         "hash": true,
         "interactive": true,
         "style": maptileURL[0]
-        });
+    });
+
+
+
+    smallmMapObject = new mapboxgl.Map({
+        "container": "smallMapLeft",
+        "center": [POI[1]["longitude"], POI[1]["latitude"]],
+        "zoom": POI[1]["zoom"],
+        "minZoom": 6,
+        "maxZoom": 16,
+        "pitch": POI[1]["pitch"], 
+        "minPitch": 0,
+        "maxPitch": 85,
+        "bearing": POI[1]["bearing"], 
+        "hash": true,
+        "interactive": false,
+        "style": maptileURL[0]
+    });
 
 
 
     var _stylecount = 0;
-
     mapObject.on('styledata', () => {
         _stylecount++;
         if (_stylecount == 2) {
@@ -258,6 +308,9 @@ var initNav = function() {
             PubSub.publish('load:themedata');
         });
 
+        _data = null;
+
+
 
         PubSub.publish('init:mapui');
     });
@@ -325,7 +378,7 @@ var initNav = function() {
         // console.log("", e.activeIndex);
         scaleIndex = e.activeIndex;
         console.log("scaleIndex", scaleIndex);
-        // PubSub.publish('update:map');
+        PubSub.publish('update:map');
     });
 
 
@@ -339,9 +392,10 @@ var initMapUI = function() {
     var _nav = new mapboxgl.NavigationControl();
     mapObject.addControl(_nav, 'top-right');
 
+
+
     PubSub.publish('init:legend');
 }
-
 
 
 
@@ -353,14 +407,13 @@ var initLegend = function() {
         .append("div").attr("id", "legendContainer")
         .append("svg").style("fill", "#FFFFFF")
         .attr("transform", "translate("
-        + 200 + ","
-        + 200
+        + 0 + ","
+        + 0
         + ")")
         .append("g");
 
     /* Gradiation Init */
     defsLegend = legendGroup.append("defs")
-    legendGradientId = "legend-gradient";
 
     defsLegend.append("linearGradient") .attr("id", legendGradientId)
         .selectAll("stop")
@@ -370,6 +423,10 @@ var initLegend = function() {
         .attr("offset", (d, i) => `${
           i * 100 / 2 //2 is one less than our array's length
         }%`)
+
+
+
+
 
     PubSub.publish('load:basemap');
 }
@@ -420,6 +477,10 @@ var loadThemeData = function() {
         }
 
         console.log("probArray[probIndex]", probArray[probIndex]);
+        _data = null;
+
+
+
         PubSub.publish('draw:map');
     });
 }
@@ -455,55 +516,101 @@ var drawMap = function() {
             dataBaseMapDetailed.features[i]["properties"]["H0"] = 0;
         }
     }
-    console.log("dataObjMap", dataObjMap);
+    console.log("dataBaseMapDetailed", dataBaseMapDetailed);
 
 
 
-    // draw: basemap
+    /* update: scale */
+
+    // d3.select("#txtDir1").text(dir1[dir1Index]);
+    // d3.select("#txtDir2").text(dir2[dir2Index]);
+    // d3.select("#txtDir3").text(dir3[dir3Index]);
+    // d3.select("#txtDir4").text(probArray[probIndex]);
+
+
+    // colorScale
+    //     .domain([minData, maxData])
+    //     .range([minColor, maxColor]);
+
+    colorScale = d3.scaleLinear()
+        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
+        .range([minColor, maxColor]);
+
+
+
+    /* draw: basemap */
 
     if (fl_firsttime){
 
-        /* Mapbox setup */
+        /* Add Source */
         mapObject.addSource('naro', {
             'type': 'geojson',
             'data': dataBaseMapDetailed
         });
-    
+
         mapObject.addSource('naro_simple', {
             'type': 'geojson',
             'data': dataBaseMapSimple
         });
+
+        smallmMapObject.addSource('naro_legend', {
+            'type': 'geojson',
+            'data': dataBaseMapDetailed
+        });
+
+
+
+        /* --------------------
+            メイン用
+        -------------------- */
+
         // 3D押出しレイヤー
         mapObject.addLayer({
             'id': 'naro_prob',
             'type': 'fill-extrusion',
             'source': 'naro',
             'layout': {},
-            "paint": {
+            'paint': {
                 'fill-extrusion-color': [
                     'interpolate', ['linear'],
                     ['get', probArray[probIndex]],
-                    minData, minColor,
-                    maxData, maxColor
+                    // minData, minColor,
+                    dataScaleArray[scaleIndex].minData, minColor,
+                    dataScaleArray[scaleIndex].maxData, maxColor
                 ],
                 'fill-extrusion-height': [
                     'interpolate', ['linear'],
                     ['get', probArray[probIndex]],
-                    minData, 0,
-                    maxData, 50000
+                    dataScaleArray[scaleIndex].minData, 0,
+                    dataScaleArray[scaleIndex].maxData, 50000
+                    // minData, 0,
+                    // maxData, 50000
                 ],
-                // 'fill-extrusion-opacity': [
-                //     'case',
-                //     ['boolean', ['feature-state', 'hover'], false],
-                //     1.0,
-                //     0.5
-                // ],
                 'fill-extrusion-vertical-gradient': true
+            },
+            // 'filter': ['==', 'N03_001', '東京都']
+        });
+
+
+
+        // 境界線レイヤー（広域自治体）
+        mapObject.addLayer({
+            'id': 'naro_prob_line_simple',
+            'type': 'line',
+            'source': 'naro_simple',
+            'layout': {
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-width': 1,
+                'line-color': '#FFF',
+                'line-opacity': 1.0
             }
         });
 
 
-        // 境界線レイヤー
+
+        // 境界線レイヤー（基礎自治体）
         mapObject.addLayer({
             'id': 'naro_prob_line',
             'type': 'line',
@@ -514,26 +621,92 @@ var drawMap = function() {
             'paint': {
                 'line-width': 1,
                 'line-color': '#FFF',
-                'line-opacity': 0.4
+                'line-opacity': 0.2
             }
         });
 
-        // 地名テキストレイヤーs
-        mapObject.addLayer({
-            'id': 'naro_prob_line_simple',
+
+
+        // mapObject.addLayer({
+        //     'id': 'naro_prob_line_simple',
+        //     'type': 'fill-extrusion',
+        //     'source': 'naro_simple',
+        //     'layout': {},
+        //     'paint': {
+        //         // 'fill-extrusion-height': [
+        //         //     'interpolate', ['linear'],
+        //         //     ['get', probArray[probIndex]],
+        //         //     dataScaleArray[scaleIndex].minData, 0,
+        //         //     dataScaleArray[scaleIndex].maxData, 50000
+        //         //     // minData, 0,
+        //         //     // maxData, 50000
+        //         // ],
+        //         'fill-extrusion-height': 500,        
+        //         'fill-extrusion-vertical-gradient': true
+        //     }
+        // });
+
+
+
+
+        /* --------------------
+            凡例用
+        -------------------- */
+
+        // 凡例用3D押出しレイヤー
+        smallmMapObject.addLayer({
+            'id': 'naro_prob_legend',
             'type': 'fill-extrusion',
-            'source': 'naro_simple',
+            'source': 'naro_legend',
             'layout': {},
             'paint': {
-                'fill-extrusion-height': 500,        
+                'fill-extrusion-color': [
+                    'interpolate', ['linear'],
+                    ['get', probArray[probIndex]],
+                    // minData, minColor,
+                    dataScaleArray[scaleIndex].minData, minColor,
+                    dataScaleArray[scaleIndex].maxData, maxColor
+                ],
+                'fill-extrusion-height': [
+                    'interpolate', ['linear'],
+                    ['get', probArray[probIndex]],
+                    dataScaleArray[scaleIndex].minData, 0,
+                    dataScaleArray[scaleIndex].maxData, 50000
+                    // minData, 0,
+                    // maxData, 50000
+                ],
                 'fill-extrusion-vertical-gradient': true
-            }
+            },'filter': ['==', 'N03_004', 'つくば市']
         });
+
+
+        // 地名テキストレイヤー
+        // mapObject.addLayer({
+        //     'id': 'naro_prob_text',
+        //     'type': 'symbol',
+        //     'source': 'naro',
+        //     'layout': {
+        //         'text-field': ['get', 'N03_004'],
+        //         'text-size': 12,
+        //         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+        //         'text-radial-offset': 0.5,
+        //         'text-justify': 'auto',
+        //         'icon-image': ['get', 'icon']
+        //     },
+        //     'paint': {
+        //         'text-color': "#FFF"
+        //     }
+        // });
+
+
+
         // ポップアップ
         const popup = new mapboxgl.Popup({
             closeButton: false,
             closeOnClick: false
         });
+
+
         /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
             //console.log("local ID: ", e.features[0].properties.N03_007);
@@ -558,8 +731,6 @@ var drawMap = function() {
 
             }, 3000);
 
-  
-
         });
 
         mapObject.on('mousemove', 'naro_prob', (e) => {
@@ -567,9 +738,6 @@ var drawMap = function() {
                 // console.log("e", e.features[0].properties);
 
                 mapObject.getCanvas().style.cursor = 'pointer';
-                console.log("e", e.features[0].properties["N03_007"]);
-
-                var _addressB = e.features[0].properties["N03_007"];
 
 
 
@@ -597,14 +765,22 @@ var drawMap = function() {
                 } else {
                     var _address_4 = "";
                 }
+
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
+                var _addressB = e.features[0].properties["N03_007"];
 
 
 
                 // 対象自治体の中心点を取得
                 const coordinates = e.features[0].geometry.coordinates.slice();
+                // console.log("coordinates[0]", coordinates[0]);
 
-                var _line = turf.lineString(coordinates[0]);
+                if (coordinates[0].length == 1) {
+                    var _line = turf.lineString(coordinates[0][0]);
+                } else {
+                    var _line = turf.lineString(coordinates[0]);
+                }
+
                 var _bbox = turf.bbox(_line);
                 var _bboxPolygon = turf.bboxPolygon(_bbox);
 
@@ -616,6 +792,24 @@ var drawMap = function() {
                 // ポップアップを表示
                 popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + _addressB).addTo(mapObject);
 
+
+
+                // if (e.features.length > 0) {
+                //     if (hoveredStateId !== null) {
+                //         mapObject.setFeatureState(
+                //         { source: 'naro', id: hoveredStateId },
+                //         { hover: false }
+                //         );
+                //     }
+                //     console.log("e.features[0]", e.features[0]);
+
+                //     hoveredStateId = e.features[0].properties.N03_007;
+                    
+                //     mapObject.setFeatureState(
+                //         { source: 'naro', id: hoveredStateId },
+                //         { hover: true }
+                //     );
+                // }
         });
 
         // mapObject.on('mouseenter', 'naro_prob', function () {
@@ -623,6 +817,7 @@ var drawMap = function() {
         // });
              
         mapObject.on('mouseout', 'naro_prob', function () {
+
             mapObject.getCanvas().style.cursor = 'auto';
             popup.remove();
 
@@ -652,15 +847,66 @@ var drawMap = function() {
     } else {
         console.log("false");
 
+        /* Legend update */
+        
+
+        // mapObject.setPaintProperty('naro_prob', 'fill-extrusion-height', [
+        //     'interpolate', 
+        //     ['linear'],
+        //     ['get', probArray[probIndex]],
+        //     minData, 0,
+        //     maxData, 50000
+        // ]);
+
+        mapObject.getSource('naro').setData(dataBaseMapDetailed);
+
+
+
+        /* 一旦updateMapの冒頭をコピペ */
+        if (scaleIndex == 0) {
+
+            dataScaleArray[scaleIndex].minData = minDataOrigin;
+            dataScaleArray[scaleIndex].maxData = maxDataOrigin;
+
+        } else if (scaleIndex == 1) {
+
+                if (probArray[probIndex] == "L0") {
+
+                    console.log("L0 -----");
+                    dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                        return d["L0"];
+                    });
+                    dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                        return d["L0"];
+                    });
+            
+                } else if (probArray[probIndex] == "H0") {
+            
+                    console.log("H0 -----");
+                    dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                        return d["H0"];
+                    });
+                    dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                        return d["H0"];
+                    });
+                }
+        }
+
+        colorScale
+            .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
+            .range([minColor, maxColor]);
+
+
+        PubSub.publish('update:legend');
 
 
 
 
-        mapObject.getSource('naro').setData(dataObjMap);
+
     }
 
     PubSub.publish('update:legend');
-    // console.log("dataObjMap", dataObjMap);
+    // console.log("dataBaseMapDetailed", dataBaseMapDetailed);
 }
 
 
@@ -668,132 +914,87 @@ var drawMap = function() {
 var updateMap = function() {
     console.log("updateMap");
 
+
+//     var minDataOrigin = 0.0;
+// var maxDataOrigin = 100.0;
+
+
+
+    if (scaleIndex == 0) {
+
+            dataScaleArray[scaleIndex].minData = minDataOrigin;
+            dataScaleArray[scaleIndex].maxData = maxDataOrigin;
+
+    } else if (scaleIndex == 1) {
+
+            if (probArray[probIndex] == "L0") {
+
+                console.log("L0 -----");
+                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                    return d["L0"];
+                });
+                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                    return d["L0"];
+                });
+        
+            } else if (probArray[probIndex] == "H0") {
+        
+                console.log("H0 -----");
+                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                    return d["H0"];
+                });
+                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                    return d["H0"];
+                });
+            }
+    }
+
+
+
+    colorScale
+        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
+        .range([minColor, maxColor]);
+
+
+
     mapObject.setPaintProperty(
-        "maine",
+        "naro_prob",
         'fill-extrusion-height',
             ['interpolate', ['linear'],
             ['get', probArray[probIndex]],
-            minData, minHeight,
-            maxData, maxHeight]
+            dataScaleArray[scaleIndex].minData, minHeight,
+            dataScaleArray[scaleIndex].maxData, maxHeight]
+            // minData, minHeight,
+            // maxData, maxHeight]
     );
 
     PubSub.publish('update:legend');
+    // d3.select("#txtDir4").text(probArray[probIndex]);
 }
+
 
 
 
 
 var updateLegend = function() {
     console.log("updateLegend");
+    console.log("dataScaleArray[scaleIndex]", dataScaleArray[scaleIndex]);
 
 
-
-    var _legendGradient = legendGroup.append("rect")
-        .attr("y", 60)
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        // .style("fill", "#FF0000");
-        .style("fill", `url(#${legendGradientId})`);
-
-
-
-    var _columnWidth = document.getElementById("legendCon").offsetWidth / 2 - 20;
+    /* detect Width */
+    _columnWidth = document.getElementById("legendCon").offsetWidth -20;
     // var _columnWidth = d3.select("#legendCon").node().getBBox()["width"];
     // console.log("_columnWidth", _columnWidth);
 
 
-
-    var _legendTitle = legendGroup.selectAll(".legend-title")
-    .data(["Selected value: "]);
-
-    _legendTitle.exit()
-        .transition()
-        .duration(1000)
-        .style("font-size", "0rem")
-        .remove();
-
-    _legendTitle.enter()
-        .append("text")
-        .attr("class", "legend-title")
-        .attr("x", function(){
-            return _columnWidth;
-        })
-        .attr("y", 40)
-        .style("font-size", "0.8em")
-        .style("font-weight", "bold")
-        .style("fill", "#FFFFFF")
-        .merge(_legendTitle)
-        .transition()
-        .duration(2000)
-        .attr("x", function(){
-            return _columnWidth;
-        })
-        .attr("y", 40)
-        .attr("text-anchor", "middle")
-        .text(function(d) {
-            console.log("enter/exit probArray[probIndex]" + probArray[probIndex]);
-            return probArray[probIndex];
-        });
-
-
-
-    // Legend Min Value
-    let _legendValueMin = legendGroup.selectAll(".legendMinText")
-        .data([minData]);
-
-    _legendValueMin.exit()
-        .transition()
-        .duration(1000)
-        .style("font-size", "0rem")
-        .remove();
-
-    _legendValueMin.enter()
-        .append("text")
-        .attr("class", "legendMinText")
-        .attr("x", 0)
-        .attr("y", 100)
-        .merge(_legendValueMin)
-        .transition()
-        .duration(2000)
-        .attr("x", 0)
-        .attr("y", 100)
-        .attr("text-anchor", "start")
-        .text(function(d) {
-            return d;
-        });
-
-
-
-    // Legend Max Value
-    let _legendValueMax = legendGroup.selectAll(".legendMaxText")
-        .data([maxData]);
-
-    _legendValueMax.exit()
-        .transition()
-        .duration(1000)
-        .style("font-size", "0rem")
-        .remove();
-
-    _legendValueMax.enter()
-        .append("text")
-        .attr("class", "legendMaxText")
-        .attr("x", function(d){
-            return legendWidth;
-        })
-        .attr("y", 100)
-        .merge(_legendValueMax)
-        .transition()
-        .duration(2000)
-        .attr("x", function(d){
-            return legendWidth;
-        })
-        .attr("y", 100)
-        .attr("text-anchor", "end")
-        .text(function(d) {
-            return d;
-        });
+    legendText();
 
 }
+
+
+
+
+
 var showDetail = function() {
     console.log("showDetail");
 
@@ -815,8 +1016,9 @@ PubSub.subscribe('init:legend', initLegend);
 
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
-PubSub.subscribe('draw:map', drawMap);
-PubSub.subscribe('update:map', updateMap);
+
+PubSub.subscribe('draw:map', drawMap); /* データの読み込みが発生するDir1-3の変更時 */
+PubSub.subscribe('update:map', updateMap); /* Probability, Visualization Scaleの変更時 */
 PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
