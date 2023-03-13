@@ -856,29 +856,8 @@ var drawMap = function() {
 
 
 
-        /* プリント・ダイアログ閉じたあとの挙動 */
-        window.addEventListener('afterprint', (event) => {
-            console.log('After print');
-            d3.selectAll(".sidebar").style("display", "block");
-            d3.selectAll("#info4print").style("display", "none");
-            d3.select(".mapboxgl-ctrl-top-right").style("display", "block");
-        });
 
-        /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
-        document.querySelector('#printBtn').addEventListener('click', () => {
-            console.log('print');
-            d3.selectAll(".sidebar").style("display", "none");
-            d3.selectAll("#info4print").style("display", "block");
-            d3.select(".mapboxgl-ctrl-top-right").style("display", "none");
-
-            d3.selectAll("#dir1print").text(dir1[dir1Index]);
-            d3.selectAll("#dir2print").text(dir2[dir2Index]);
-            d3.selectAll("#dir3print").text(dir3[dir3Index]);
-            d3.selectAll("#probprint").text("Probability: " + probLabelArray[probIndex]);
-            d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
-
-            window.print();
-        });
+        PubSub.publish('init:print');
 
 
 
@@ -986,6 +965,38 @@ var hideDetail = function() {
 
 
 
+var initPrint = function() {
+    console.log("initPrint");
+
+        /* プリント・ダイアログ閉じたあとの挙動 */
+        window.addEventListener('afterprint', (event) => {
+            console.log('After print');
+
+            d3.selectAll(".sidebar").style("display", "block");
+            d3.selectAll("#info4print").style("display", "none");
+            d3.select("#mapboxContainer .mapboxgl-control-container").style("display", "block");
+        });
+
+        /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
+        document.querySelector('#printBtn').addEventListener('click', () => {
+            console.log('print');
+
+            d3.selectAll(".sidebar").style("display", "none");
+            d3.selectAll("#info4print").style("display", "block");
+            d3.select("#mapboxContainer .mapboxgl-control-container").style("display", "none");
+
+            d3.selectAll("#dir1print").text(dir1[dir1Index]);
+            d3.selectAll("#dir2print").text(dir2[dir2Index]);
+            d3.selectAll("#dir3print").text(dir3[dir3Index]);
+            d3.selectAll("#probprint").text("Probability: " + probLabelArray[probIndex]);
+            d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
+
+            window.print();
+        });
+}
+
+
+
 var changeColorScale = function() {
     console.log("changeColorScale");
     
@@ -1046,6 +1057,8 @@ PubSub.subscribe('update:map', updateMap); /* Probability, Visualization Scale�
 PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
+
+PubSub.subscribe('init:print', initPrint);
 PubSub.subscribe('change:colorscale', changeColorScale);
 
 PubSub.publish('init:basemap');
