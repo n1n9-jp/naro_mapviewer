@@ -49,10 +49,6 @@ var POI = [
 
 
 
-var legendYPos = [22, 45, 70];
-var _columnWidth = 0;
-var tsukubaHeight = 0;
-var _tempGeoJson = [];
 
 
 
@@ -104,6 +100,10 @@ var defsLegend;
 var legendGradientId = "legend-gradient";
 var legendWidth = 200;
 var legendHeight = 10;
+var legendYPos = [22, 45, 70];
+var columnWidth = 0;
+var tsukubaHeight = 0;
+var tsukubaGeoJson = [];
 
 
 
@@ -530,12 +530,12 @@ var joinData = function() {
 
 
 
-    _tempGeoJson = [];
+    tsukubaGeoJson = [];
     for (i=0; i<dataBaseMapDetailed.features.length; i++) {
         // console.log(dataBaseMapDetailed.features[i].properties.N03_004);
 
         if (dataBaseMapDetailed.features[i].properties.N03_004 == 'つくば市') {
-            _tempGeoJson.push(dataBaseMapDetailed.features[i]);
+            tsukubaGeoJson.push(dataBaseMapDetailed.features[i]);
         }
     }
     console.log("_tempGeoJson", _tempGeoJson);
@@ -797,6 +797,7 @@ var drawMap = function() {
                     var _address_4 = "";
                 }
 
+                var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
                 var _addressB = e.features[0].properties["N03_007"];
 
@@ -935,14 +936,15 @@ var updateLegend = function() {
 
 
     /* detect Width */
-    _columnWidth = document.getElementById("legendCon").offsetWidth -20;
     // var _columnWidth = d3.select("#legendCon").node().getBBox()["width"];
     // console.log("_columnWidth", _columnWidth);
+    columnWidth = document.getElementById("legendCon").offsetWidth -20;
 
-    var _p = _tempGeoJson[0].properties[probArray[probIndex]];
+
+
+    /* つくば市のデータ値 */
+    var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
     d3.select("#heightLegend").text("Tsukuba City: " + _p);
-
-
 
 }
 
