@@ -18,7 +18,7 @@
 -------------------- */
 
 /* MapObject */
-var mapObject, smallmMapObject;
+var mapObject, smallMapObject;
 
 /* Map Tile */
 maptileURL = [];
@@ -34,20 +34,25 @@ var POI = [
     longitude: 139.767125,
     latitude: 35.681236,
     zoom: 6,
-    bearing: 0,
+    pitch: 45,
+    bearing: 70,
   },
   {
     city: "NARO",
-    longitude: 140.102143,
-    latitude: 36.028125,
-    zoom: 10,
-    bearing: 0,
-  },
+    longitude: 140.110249,
+    latitude: 36.027363,
+    zoom: 6,
+    pitch: 85,
+    bearing: 70,
+  }
 ];
 
 
-var legendYPos = [26, 50, 80];
+
+var legendYPos = [22, 45, 70];
 var _columnWidth = 0;
+var tsukubaHeight = 0;
+var _tempGeoJson = [];
 
 
 
@@ -150,13 +155,13 @@ var initBaseMap = function() {
         "bearing": POI[0]["bearing"], 
         "hash": true,
         "interactive": true,
-        "style": maptileURL[0]
+        "style": maptileURL[1]
     });
 
 
 
-    smallmMapObject = new mapboxgl.Map({
-        "container": "smallMapLeft",
+    smallMapObject = new mapboxgl.Map({
+        "container": "smallMapLegend",
         "center": [POI[1]["longitude"], POI[1]["latitude"]],
         "zoom": POI[1]["zoom"],
         "minZoom": 6,
@@ -166,8 +171,8 @@ var initBaseMap = function() {
         "maxPitch": 85,
         "bearing": POI[1]["bearing"], 
         "hash": true,
-        "interactive": false,
-        "style": maptileURL[0]
+        "interactive": true,
+        "style": maptileURL[1]
     });
 
 
@@ -520,6 +525,15 @@ var drawMap = function() {
 
 
 
+    _tempGeoJson = [];
+    for (i=0; i<dataBaseMapDetailed.features.length; i++) {
+        // console.log(dataBaseMapDetailed.features[i].properties.N03_004);
+
+        if (dataBaseMapDetailed.features[i].properties.N03_004 == 'つくば市') {
+            _tempGeoJson.push(dataBaseMapDetailed.features[i]);
+        }
+    }
+    console.log("_tempGeoJson", _tempGeoJson);
     /* update: scale */
 
     // d3.select("#txtDir1").text(dir1[dir1Index]);
@@ -553,7 +567,7 @@ var drawMap = function() {
             'data': dataBaseMapSimple
         });
 
-        smallmMapObject.addSource('naro_legend', {
+        smallMapObject.addSource('naro_legend', {
             'type': 'geojson',
             'data': dataBaseMapDetailed
         });
@@ -653,8 +667,11 @@ var drawMap = function() {
             凡例用
         -------------------- */
 
+        smallMapObject.setCenter([POI[1]["longitude"], POI[1]["latitude"]]);
+        smallMapObject.setPitch(POI[1]["pitch"]);
+
         // 凡例用3D押出しレイヤー
-        smallmMapObject.addLayer({
+        smallMapObject.addLayer({
             'id': 'naro_prob_legend',
             'type': 'fill-extrusion',
             'source': 'naro_legend',
@@ -830,6 +847,7 @@ var drawMap = function() {
             console.log('After print');
             d3.selectAll(".sidebar").style("display", "block");
             d3.selectAll("#info4print").style("display", "none");
+            d3.select(".mapboxgl-ctrl-top-right").style("display", "block");
         });
 
         /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
@@ -837,8 +855,11 @@ var drawMap = function() {
             console.log('print');
             d3.selectAll(".sidebar").style("display", "none");
             d3.selectAll("#info4print").style("display", "block");
+            d3.select(".mapboxgl-ctrl-top-right").style("display", "none");
 
-            d3.selectAll("#dirprint").text(dir1[dir1Index] + " / " + dir2[dir2Index] + " / " + dir3[dir3Index]);
+            d3.selectAll("#dir1print").text(dir1[dir1Index]);
+            d3.selectAll("#dir2print").text(dir2[dir2Index]);
+            d3.selectAll("#dir3print").text(dir3[dir3Index]);
             d3.selectAll("#probprint").text("Probability: " + probLabelArray[probIndex]);
             d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
 
@@ -972,6 +993,16 @@ var updateMap = function() {
             // maxData, maxHeight]
     );
 
+    smallMapObject.setPaintProperty(
+        "naro_prob_legend",
+        'fill-extrusion-height',
+            ['interpolate', ['linear'],
+            ['get', probArray[probIndex]],
+            dataScaleArray[scaleIndex].minData, minHeight,
+            dataScaleArray[scaleIndex].maxData, maxHeight]
+    );
+
+
     PubSub.publish('update:legend');
     // d3.select("#txtDir4").text(probArray[probIndex]);
 }
@@ -989,6 +1020,9 @@ var updateLegend = function() {
     _columnWidth = document.getElementById("legendCon").offsetWidth -20;
     // var _columnWidth = d3.select("#legendCon").node().getBBox()["width"];
     // console.log("_columnWidth", _columnWidth);
+
+    var _p = _tempGeoJson[0].properties[probArray[probIndex]];
+    d3.select("#heightLegend").text("Tsukuba City: " + _p);
 
 
     legendText();
