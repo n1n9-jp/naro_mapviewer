@@ -35,8 +35,8 @@ body {
     position: absolute;
 }
 
-#smallMapLeft, #smallMapRight {
-    width: 138px;
+#smallMapLegend {
+    width: 276px;
     height: 50px;
     float: left;
     margin-right: 0 !important;
@@ -46,4 +46,13 @@ body {
 #txtDir1, #txtDir2, #txtDir3, #txtDir14 {
     float: left;
     margin-right: 1em;
+}
+
+#heightLegend {
+    width: 276px;
+    height: 20px;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;
 }

@@ -39,8 +39,8 @@ function legendText() {
         .attr("y", legendYPos[0])
         .attr("text-anchor", "middle")
         .text(function(d) {
-            console.log("enter/exit probArray[probIndex]" + probArray[probIndex]);
-            return legendTitlePre + probArray[probIndex];
+            // console.log("enter/exit probArray[probIndex]" + probLabelArray[probIndex]);
+            return legendTitlePre + probLabelArray[probIndex];
         });
 
 
