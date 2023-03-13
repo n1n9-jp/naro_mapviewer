@@ -943,11 +943,11 @@ var updateLegend = function() {
     d3.select("#heightLegend").text("Tsukuba City: " + _p);
 
 
-    legendText();
 
 }
 
 
+    PubSub.publish('draw:legendbar');
 
 
 
@@ -1055,6 +1055,7 @@ PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap); /* データの読み込みが発生するDir1-3の変更時 */
 PubSub.subscribe('update:map', updateMap); /* Probability, Visualization Scaleの変更時 */
 PubSub.subscribe('update:legend', updateLegend);
+PubSub.subscribe('draw:legendbar', drawLegendBar);
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
 

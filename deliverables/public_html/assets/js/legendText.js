@@ -1,4 +1,6 @@
-function legendText() {
+var drawLegendBar = function() {
+
+
 
     /* Bar */
     var _legendGradient = legendGroup.append("rect")
@@ -99,8 +101,6 @@ function legendText() {
         .text(function(d) {
             return d;
         });
-
-
 
 
 
