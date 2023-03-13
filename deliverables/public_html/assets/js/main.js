@@ -9,7 +9,18 @@
 
 // ナビ操作のたびに実行
 // loadThemeData() ... テーマデータの読み込み
-// drawMap() ... テーマデータの描画
+// joinData() ... ベースマップとテーマデータの結合
+// changeColorScale() ... カラースケールの更新
+// drawMap() ... テーマデータの描画（データの読み込みが発生するDir1-3の変更時）
+// updateMap() ... テーマデータの描画（Probability, Visualization Scaleの変更時）
+
+// 凡例
+// initLegend() ... 凡例の初期化
+// updateLegend() ... 凡例の更新
+// drawLegendBar() ... 凡例の更新（バー部分）
+
+// 印刷
+// initPrint() ... 印刷関係
 
 
 
