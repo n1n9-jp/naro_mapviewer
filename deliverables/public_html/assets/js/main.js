@@ -798,9 +798,15 @@ var drawMap = function() {
                     var _address_4 = "";
                 }
 
+                if (e.features[0].properties[probArray[probIndex]]) {
+                    var _addressB = e.features[0].properties[probArray[probIndex]];
+                } else {
+                    var _addressB = "undefined";
+                }
+
                 var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
-                var _addressB = e.features[0].properties["N03_007"];
+                // var _addressB = e.features[0].properties["N03_007"];
 
 
 
@@ -823,7 +829,7 @@ var drawMap = function() {
 
 
                 // ポップアップを表示
-                popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + _addressB).addTo(mapObject);
+                popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + "value: " + _addressB).addTo(mapObject);
 
 
 
