@@ -36,6 +36,15 @@ h1 {
   height: 50px;
 }
 
+small.caption a {
+  color: #666;
+}
+
+small.caption a:hover {
+  color: #666;
+  text-decoration: none;
+}
+
 /* .vertical-center {
   display: inline-block;
   vertical-align: middle;
