@@ -134,6 +134,7 @@ var scaleIndex = 0;
 
 /* Flag */
 var fl_firsttime = true;
+var fl_map = "";
 
 /* misc */
 var hoveredStateId = null;
@@ -350,7 +351,10 @@ var initNav = function() {
         // console.log("", e.activeIndex);
         probIndex = e.activeIndex;
         // console.log("probIndex", probIndex);
-        PubSub.publish('update:map');
+
+        // PubSub.publish('update:map');
+        fl_map = "updateMap";
+        PubSub.publish('change:colorscale');
     });
 
 
@@ -383,7 +387,10 @@ var initNav = function() {
         // console.log("", e.activeIndex);
         scaleIndex = e.activeIndex;
         console.log("scaleIndex", scaleIndex);
-        PubSub.publish('update:map');
+
+        // PubSub.publish('update:map');
+        fl_map = "updateMap";
+        PubSub.publish('change:colorscale');
     });
 
 
@@ -486,16 +493,14 @@ var loadThemeData = function() {
 
 
 
-        PubSub.publish('draw:map');
+        PubSub.publish('join:data');
     });
 }
 
 
 
-var drawMap = function() {
-    console.log("drawMap");
-
-
+var joinData = function() {
+    console.log("joinData");
 
     /* combine base map& theme data */
 
@@ -534,6 +539,15 @@ var drawMap = function() {
         }
     }
     console.log("_tempGeoJson", _tempGeoJson);
+
+    fl_map = "drawMap";
+    PubSub.publish('change:colorscale');
+}
+
+
+var drawMap = function() {
+    console.log("drawMap");
+
     /* update: scale */
 
     // d3.select("#txtDir1").text(dir1[dir1Index]);
@@ -546,9 +560,9 @@ var drawMap = function() {
     //     .domain([minData, maxData])
     //     .range([minColor, maxColor]);
 
-    colorScale = d3.scaleLinear()
-        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-        .range([minColor, maxColor]);
+    // colorScale = d3.scaleLinear()
+    //     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
+    //     .range([minColor, maxColor]);
 
 
 
@@ -887,42 +901,8 @@ var drawMap = function() {
 
 
 
-        /* 一旦updateMapの冒頭をコピペ */
-        if (scaleIndex == 0) {
+        /* カラースケールの更新 */
 
-            dataScaleArray[scaleIndex].minData = minDataOrigin;
-            dataScaleArray[scaleIndex].maxData = maxDataOrigin;
-
-        } else if (scaleIndex == 1) {
-
-                if (probArray[probIndex] == "L0") {
-
-                    console.log("L0 -----");
-                    dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
-                        return d["L0"];
-                    });
-                    dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
-                        return d["L0"];
-                    });
-            
-                } else if (probArray[probIndex] == "H0") {
-            
-                    console.log("H0 -----");
-                    dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
-                        return d["H0"];
-                    });
-                    dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
-                        return d["H0"];
-                    });
-                }
-        }
-
-        colorScale
-            .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-            .range([minColor, maxColor]);
-
-
-        PubSub.publish('update:legend');
 
 
 
@@ -938,47 +918,6 @@ var drawMap = function() {
 
 var updateMap = function() {
     console.log("updateMap");
-
-
-//     var minDataOrigin = 0.0;
-// var maxDataOrigin = 100.0;
-
-
-
-    if (scaleIndex == 0) {
-
-            dataScaleArray[scaleIndex].minData = minDataOrigin;
-            dataScaleArray[scaleIndex].maxData = maxDataOrigin;
-
-    } else if (scaleIndex == 1) {
-
-            if (probArray[probIndex] == "L0") {
-
-                console.log("L0 -----");
-                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
-                    return d["L0"];
-                });
-                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
-                    return d["L0"];
-                });
-        
-            } else if (probArray[probIndex] == "H0") {
-        
-                console.log("H0 -----");
-                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
-                    return d["H0"];
-                });
-                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
-                    return d["H0"];
-                });
-            }
-    }
-
-
-
-    colorScale
-        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-        .range([minColor, maxColor]);
 
 
 
@@ -1047,6 +986,52 @@ var hideDetail = function() {
 
 
 
+var changeColorScale = function() {
+    console.log("changeColorScale");
+    
+    if (scaleIndex == 0) {
+
+        dataScaleArray[scaleIndex].minData = minDataOrigin;
+        dataScaleArray[scaleIndex].maxData = maxDataOrigin;
+
+    } else if (scaleIndex == 1) {
+
+            if (probArray[probIndex] == "L0") {
+
+                console.log("L0 -----");
+                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                    return d["L0"];
+                });
+                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                    return d["L0"];
+                });
+        
+            } else if (probArray[probIndex] == "H0") {
+        
+                console.log("H0 -----");
+                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                    return d["H0"];
+                });
+                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                    return d["H0"];
+                });
+            }
+    }
+
+    colorScale
+        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
+        .range([minColor, maxColor]);
+
+    console.log("changeColorScale fl_map", fl_map)
+    if (fl_map == "drawMap") {
+        PubSub.publish('draw:map');
+    } else if (fl_map == "updateMap") {
+        PubSub.publish('update:map');
+    }
+}
+
+
+
 PubSub.subscribe('init:basemap', initBaseMap);
 PubSub.subscribe('init:nav', initNav);
 PubSub.subscribe('init:mapui', initMapUI);
@@ -1055,10 +1040,12 @@ PubSub.subscribe('init:legend', initLegend);
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
 
+PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap); /* データの読み込みが発生するDir1-3の変更時 */
 PubSub.subscribe('update:map', updateMap); /* Probability, Visualization Scaleの変更時 */
 PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
+PubSub.subscribe('change:colorscale', changeColorScale);
 
 PubSub.publish('init:basemap');
