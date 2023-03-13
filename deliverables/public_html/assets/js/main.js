@@ -41,7 +41,7 @@ var POI = [
     city: "NARO",
     longitude: 140.110249,
     latitude: 36.027363,
-    zoom: 6,
+    zoom: 8,
     pitch: 85,
     bearing: 70,
   }
@@ -77,9 +77,6 @@ var maxColor = "#FFFFFF";
 // var minColor = "rgba(120, 120, 120, 0.2)";
 // var maxColor = "rgba(255, 255, 255, 1.0)";
 
-/* Height Scale */
-var minHeight = 0;
-var maxHeight = 50000;
 
 // var colorScale = d3.scaleLinear()
 //     .domain([minData, maxData])
@@ -89,6 +86,9 @@ var colorScale = d3.scaleLinear()
     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
     .range([minColor, maxColor]);
 
+/* Height Scale */
+var minHeight = 0;
+var maxHeight = 50000;
 
 
 
@@ -148,7 +148,7 @@ var initBaseMap = function() {
         "container": "mapboxContainer",
         "center": [POI[0]["longitude"], POI[0]["latitude"]],
         "zoom": POI[0]["zoom"],
-        "minZoom": 6,
+        "minZoom": 4,
         "maxZoom": 16,
         "pitch": POI[0]["pitch"], 
         "minPitch": 0,
@@ -165,8 +165,8 @@ var initBaseMap = function() {
         "container": "smallMapLegend",
         "center": [POI[1]["longitude"], POI[1]["latitude"]],
         "zoom": POI[1]["zoom"],
-        "minZoom": 6,
-        "maxZoom": 16,
+        "minZoom": POI[1]["zoom"],
+        "maxZoom": POI[1]["zoom"],
         "pitch": POI[1]["pitch"], 
         "minPitch": 0,
         "maxPitch": 85,
@@ -683,6 +683,7 @@ var drawMap = function() {
 
         smallMapObject.setCenter([POI[1]["longitude"], POI[1]["latitude"]]);
         smallMapObject.setPitch(POI[1]["pitch"]);
+        smallMapObject.setZoom(POI[1]["zoom"]);
 
         // 凡例用3D押出しレイヤー
         smallMapObject.addLayer({
@@ -855,6 +856,7 @@ var drawMap = function() {
 
         });
 
+        fl_firsttime = false;
 
 
 
@@ -862,36 +864,16 @@ var drawMap = function() {
 
 
 
-        fl_firsttime = false;
     } else {
         console.log("false");
 
-        /* Legend update */
-        
-
-        // mapObject.setPaintProperty('naro_prob', 'fill-extrusion-height', [
-        //     'interpolate', 
-        //     ['linear'],
-        //     ['get', probArray[probIndex]],
-        //     minData, 0,
-        //     maxData, 50000
-        // ]);
-
         mapObject.getSource('naro').setData(dataBaseMapDetailed);
-
-
-
-        /* カラースケールの更新 */
-
-
-
-
-
 
     }
 
+
+
     PubSub.publish('update:legend');
-    // console.log("dataBaseMapDetailed", dataBaseMapDetailed);
 }
 
 
@@ -923,7 +905,6 @@ var updateMap = function() {
 
 
     PubSub.publish('update:legend');
-    // d3.select("#txtDir4").text(probArray[probIndex]);
 }
 
 
@@ -932,12 +913,9 @@ var updateMap = function() {
 
 var updateLegend = function() {
     console.log("updateLegend");
-    console.log("dataScaleArray[scaleIndex]", dataScaleArray[scaleIndex]);
 
 
     /* detect Width */
-    // var _columnWidth = d3.select("#legendCon").node().getBBox()["width"];
-    // console.log("_columnWidth", _columnWidth);
     columnWidth = document.getElementById("legendCon").offsetWidth -20;
 
 
@@ -946,10 +924,10 @@ var updateLegend = function() {
     var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
     d3.select("#heightLegend").text("Tsukuba City: " + _p);
 
-}
 
 
     PubSub.publish('draw:legendbar');
+}
 
 
 
