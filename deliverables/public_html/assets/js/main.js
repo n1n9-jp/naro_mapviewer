@@ -825,20 +825,24 @@ var drawMap = function() {
 
 
 
-        /* Print Button */
-        document.querySelector('#printBtn').addEventListener('click', () => {
-            mapObject.setStyle(maptileURL[1]);
+        /* プリント・ダイアログ閉じたあとの挙動 */
+        window.addEventListener('afterprint', (event) => {
+            console.log('After print');
+            d3.selectAll(".sidebar").style("display", "block");
+            d3.selectAll("#info4print").style("display", "none");
+        });
 
-            mapObject.on('data', (e) => {
-                // console.log("print?");
-                // console.log("dataType?", e.dataType);
-                if (e.isSourceLoaded == true) {
-                    // console.log("print!");
-                    window.print();
-                } else {
-                    // console.log("no print...");
-                }
-            });
+        /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
+        document.querySelector('#printBtn').addEventListener('click', () => {
+            console.log('print');
+            d3.selectAll(".sidebar").style("display", "none");
+            d3.selectAll("#info4print").style("display", "block");
+
+            d3.selectAll("#dirprint").text(dir1[dir1Index] + " / " + dir2[dir2Index] + " / " + dir3[dir3Index]);
+            d3.selectAll("#probprint").text("Probability: " + probLabelArray[probIndex]);
+            d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
+
+            window.print();
         });
 
 

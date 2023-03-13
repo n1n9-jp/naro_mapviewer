@@ -4,6 +4,10 @@
     width: 100%;
 }
 
+#info4print {
+    display: none;
+}
+
 @media print {
     body {
         background-color: #FFF;

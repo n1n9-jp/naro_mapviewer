@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div class="container-fluid mb-4">
+    <div class="container-fluid mb-4 sidebar">
       <div class="row header">
         <div class="col-12">
           <div class="text-center">Dir1</div>
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <div class="container-fluid mb-4">
+    <div class="container-fluid mb-4 sidebar">
         <div class="row header">
           <div class="col-12">
             <div class="text-center">Dir2</div>
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <div class="container-fluid mb-4">
+    <div class="container-fluid mb-4 sidebar">
         <div class="row header">
           <div class="col-12">
             <div class="text-center">Dir3</div>
@@ -118,7 +118,7 @@
         </div>
     </div>
 
-    <div class="container-fluid mb-4">
+    <div class="container-fluid mb-4 sidebar">
         <div class="row header">
           <div class="col-12">
             <div class="text-center">Probability</div>
@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <div class="container-fluid mb-4">
+    <div class="container-fluid mb-4 sidebar">
       <div class="row header">
         <div class="col-12">
           <div class="text-center">Visualization Scale</div>
@@ -160,9 +160,9 @@
             <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-scale"></div>
           </div>
       </div>
-  </div>
+    </div>
 
-    <div class="container-fluid mb-4">
+    <div class="container-fluid mb-4 sidebar">
       <div class="row button">
         <div class="col-12">
           <button type="button" id="printBtn" class="btn btn-secondary">Print this map</button>
@@ -170,7 +170,7 @@
       </div>
     </div>
 
-    <div id="legendCon" class="container-fluid mb-4 ">
+    <div class="container-fluid mb-4 sidebar" id="legendCon">
       <div class="row header">
         <div class="col-12">
           <div class="text-center">Legend</div>
@@ -188,9 +188,21 @@
       </div>
     </div>
 
-    <div class="container-fluid mb-4 ">
+    <div class="container-fluid mb-4" id="info4print">
       <div class="row button">
         <div class="col-12"><small>
+          <ul>
+            <li id="dirprint"></li>
+            <li id="probprint"></li>
+            <li id="vizscaleprint"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mb-4">
+      <div class="row button">
+        <div class="col-12"><small class="caption">
           <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>
         </small></div>
       </div>
