@@ -60,9 +60,6 @@ var POI = [
 
 
 
-
-
-
 /* --------------------
  スケール
 -------------------- */
@@ -79,19 +76,11 @@ var scaleIndex = 0;
 
 
 
-
-
-
 /* Color Scale */
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
 // var minColor = "rgba(120, 120, 120, 0.2)";
 // var maxColor = "rgba(255, 255, 255, 1.0)";
-
-
-// var colorScale = d3.scaleLinear()
-//     .domain([minData, maxData])
-//     .range([minColor, maxColor]);
 
 var colorScale = d3.scaleLinear()
     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
@@ -366,6 +355,7 @@ var initNav = function() {
         // PubSub.publish('update:map');
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
+
     });
 
 
@@ -403,8 +393,6 @@ var initNav = function() {
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
     });
-
-
 }
 
 
@@ -446,8 +434,6 @@ var initLegend = function() {
         .attr("offset", (d, i) => `${
           i * 100 / 2 //2 is one less than our array's length
         }%`)
-
-
 
 
 
@@ -543,37 +529,22 @@ var joinData = function() {
 
     tsukubaGeoJson = [];
     for (i=0; i<dataBaseMapDetailed.features.length; i++) {
-        // console.log(dataBaseMapDetailed.features[i].properties.N03_004);
-
         if (dataBaseMapDetailed.features[i].properties.N03_004 == 'つくば市') {
             tsukubaGeoJson.push(dataBaseMapDetailed.features[i]);
         }
     }
-    console.log("_tempGeoJson", _tempGeoJson);
+
+
 
     fl_map = "drawMap";
     PubSub.publish('change:colorscale');
 }
 
 
+
+
 var drawMap = function() {
     console.log("drawMap");
-
-    /* update: scale */
-
-    // d3.select("#txtDir1").text(dir1[dir1Index]);
-    // d3.select("#txtDir2").text(dir2[dir2Index]);
-    // d3.select("#txtDir3").text(dir3[dir3Index]);
-    // d3.select("#txtDir4").text(probArray[probIndex]);
-
-
-    // colorScale
-    //     .domain([minData, maxData])
-    //     .range([minColor, maxColor]);
-
-    // colorScale = d3.scaleLinear()
-    //     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-    //     .range([minColor, maxColor]);
 
 
 
@@ -687,7 +658,6 @@ var drawMap = function() {
 
 
 
-
         /* --------------------
             凡例用
         -------------------- */
@@ -706,7 +676,6 @@ var drawMap = function() {
                 'fill-extrusion-color': [
                     'interpolate', ['linear'],
                     ['get', probArray[probIndex]],
-                    // minData, minColor,
                     dataScaleArray[scaleIndex].minData, minColor,
                     dataScaleArray[scaleIndex].maxData, maxColor
                 ],
@@ -715,11 +684,10 @@ var drawMap = function() {
                     ['get', probArray[probIndex]],
                     dataScaleArray[scaleIndex].minData, 0,
                     dataScaleArray[scaleIndex].maxData, 50000
-                    // minData, 0,
-                    // maxData, 50000
                 ],
                 'fill-extrusion-vertical-gradient': true
             },'filter': ['==', 'N03_004', 'つくば市']
+            // },'filter': ['==', 'N03_001', '東京都']
         });
 
 
@@ -743,7 +711,7 @@ var drawMap = function() {
 
 
 
-        // ポップアップ
+        /* Mapbox ポップアップ */
         const popup = new mapboxgl.Popup({
             closeButton: false,
             closeOnClick: false
@@ -776,9 +744,9 @@ var drawMap = function() {
 
         });
 
-        mapObject.on('mousemove', 'naro_prob', (e) => {
 
-                // console.log("e", e.features[0].properties);
+
+        mapObject.on('mousemove', 'naro_prob', (e) => {
 
                 mapObject.getCanvas().style.cursor = 'pointer';
 
@@ -816,6 +784,8 @@ var drawMap = function() {
                 }
 
                 var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
+
+
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
                 // var _addressB = e.features[0].properties["N03_007"];
 
@@ -842,30 +812,10 @@ var drawMap = function() {
                 // ポップアップを表示
                 popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + "value: " + _addressB).addTo(mapObject);
 
-
-
-                // if (e.features.length > 0) {
-                //     if (hoveredStateId !== null) {
-                //         mapObject.setFeatureState(
-                //         { source: 'naro', id: hoveredStateId },
-                //         { hover: false }
-                //         );
-                //     }
-                //     console.log("e.features[0]", e.features[0]);
-
-                //     hoveredStateId = e.features[0].properties.N03_007;
-                    
-                //     mapObject.setFeatureState(
-                //         { source: 'naro', id: hoveredStateId },
-                //         { hover: true }
-                //     );
-                // }
         });
 
-        // mapObject.on('mouseenter', 'naro_prob', function () {
-        //     mapObject.getCanvas().style.cursor = 'pointer';
-        // });
-             
+
+
         mapObject.on('mouseout', 'naro_prob', function () {
 
             mapObject.getCanvas().style.cursor = 'auto';
@@ -873,13 +823,10 @@ var drawMap = function() {
 
         });
 
+
+
         fl_firsttime = false;
-
-
-
         PubSub.publish('init:print');
-
-
 
     } else {
         console.log("false");
@@ -907,8 +854,6 @@ var updateMap = function() {
             ['get', probArray[probIndex]],
             dataScaleArray[scaleIndex].minData, minHeight,
             dataScaleArray[scaleIndex].maxData, maxHeight]
-            // minData, minHeight,
-            // maxData, maxHeight]
     );
 
     smallMapObject.setPaintProperty(
@@ -919,6 +864,7 @@ var updateMap = function() {
             dataScaleArray[scaleIndex].minData, minHeight,
             dataScaleArray[scaleIndex].maxData, maxHeight]
     );
+
 
 
     PubSub.publish('update:legend');
@@ -1053,6 +999,7 @@ PubSub.subscribe('draw:map', drawMap); /* データの読み込みが発生す�
 PubSub.subscribe('update:map', updateMap); /* Probability, Visualization Scaleの変更時 */
 PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('draw:legendbar', drawLegendBar);
+
 PubSub.subscribe('show:detail', showDetail);
 PubSub.subscribe('hide:detail', hideDetail);
 
