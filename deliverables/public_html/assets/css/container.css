@@ -4,14 +4,17 @@ body {
     /* font-family: 'Noto Serif JP', serif; */
     font-family: 'Noto Sans JP', sans;
     font-feature-settings: "palt";
+    /* height: 100% !important; */
 }
 
 #sidebarContainer {
     z-index: 500;
     width: 300px !important;
+    /* height: 100vh !important; */
+    /* height: 1300px !important; */
     color: #ffffff;
-    /* background-color: #797979 !important; */
-    background-color: rgba(0,0,0,0.8) !important;
+    background-color: #000000 !important;
+    /* background-color: rgba(0,0,0,0.8) !important; */
 }
 
 #mapContainer {
@@ -35,24 +38,16 @@ body {
     position: absolute;
 }
 
-#smallMapLegend {
-    width: 276px;
-    height: 50px;
-    float: left;
-    margin-right: 0 !important;
-    background-color: #CCCCCC;
+#legendContainer rect {
+    stroke-width: 0.4px;
+    stroke: #000;
 }
 
-#txtDir1, #txtDir2, #txtDir3, #txtDir14 {
-    float: left;
-    margin-right: 1em;
-}
+@media print {
 
-#heightLegend {
-    width: 276px;
-    height: 20px;
-    margin-top: 50px;
-    text-align: center;
-    font-size: 0.8em;
-    font-weight: bold;
+    #sidebarContainer {
+        color: #000 !important;
+        background-color: #FFF !important;
+    }
+
 }
