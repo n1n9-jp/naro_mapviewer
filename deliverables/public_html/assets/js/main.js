@@ -32,9 +32,10 @@
 var mapObject, smallMapObject;
 
 /* Map Tile */
-maptileURL = [];
-maptileURL[0] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
-maptileURL[1] = "https://api.maptiler.com/maps/positron/style.json?key=p3yGzZkqo3eCxtEynu6W";
+var maptileURL = [];
+maptileURL[0] = "https://api.maptiler.com/maps/positron/style.json?key=p3yGzZkqo3eCxtEynu6W";
+maptileURL[1] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
+var maptileIndex = 0;
 
 /* API token */
 mapboxgl.accessToken = 'pk.eyJ1IjoieXVpY2h5IiwiYSI6ImNrcW43dXA0YTA4eTEyb28yN25jeTN0ZHMifQ.7v7OJoeJXp2fqX5vloX-PQ';
@@ -46,16 +47,24 @@ var POI = [
     latitude: 35.681236,
     zoom: 6,
     pitch: 45,
-    bearing: 70,
+    bearing: 0,
   },
   {
     city: "NARO",
     longitude: 140.110249,
     latitude: 36.027363,
-    zoom: 8,
-    pitch: 85,
-    bearing: 70,
+    zoom: 7,
+    pitch: 75,
+    bearing: 0,
   }
+// {
+//     city: "つくばエキスポセンター",
+//     longitude: 140.110603,
+//     latitude: 36.086693,
+//     zoom: 7,
+//     pitch: 75,
+//     bearing: 70,
+//   }
 ];
 
 
@@ -68,8 +77,8 @@ var POI = [
 var minDataOrigin = 0.0;
 var maxDataOrigin = 100.0;
 var dataScaleArray = [];
-var _obj1 = {minData: minDataOrigin, maxData: maxDataOrigin};
-var _obj2 = {minData: 0.0, maxData: 100.0};
+var _obj1 = {minData: 0.0, maxData: 100.0};
+var _obj2 = {minData: minDataOrigin, maxData: maxDataOrigin};
 dataScaleArray.push(_obj1);
 dataScaleArray.push(_obj2);
 var scaleIndex = 0;
@@ -156,7 +165,7 @@ var initBaseMap = function() {
         "bearing": POI[0]["bearing"], 
         "hash": true,
         "interactive": true,
-        "style": maptileURL[1]
+        "style": maptileURL[maptileIndex]
     });
 
 
@@ -173,7 +182,7 @@ var initBaseMap = function() {
         "bearing": POI[1]["bearing"], 
         "hash": true,
         "interactive": true,
-        "style": maptileURL[1]
+        "style": maptileURL[maptileIndex]
     });
 
 
@@ -213,11 +222,6 @@ var initNav = function() {
             dir3[0] = dir3[0].replace(".csv", "");
         }
 
-        console.log( dir1 );
-        console.log( dir2 );
-        console.log( dir3 );
-        console.log( fullpath );
-        
 
 
         /* Dir1 Var Slider */
@@ -245,7 +249,6 @@ var initNav = function() {
         });
 
         swiperDir1.on('slideChange', function (e) {
-            console.log("", e.activeIndex);
             dir1Index = e.activeIndex;
             PubSub.publish('load:themedata');
         });
@@ -277,7 +280,6 @@ var initNav = function() {
         });
 
         swiperDir2.on('slideChange', function (e) {
-            console.log("", e.activeIndex);
             dir2Index = e.activeIndex;
             PubSub.publish('load:themedata');
         });
@@ -309,7 +311,6 @@ var initNav = function() {
         });
 
         swiperDir3.on('slideChange', function (e) {
-            console.log("", e.activeIndex);
             dir3Index = e.activeIndex;
             PubSub.publish('load:themedata');
         });
@@ -348,11 +349,8 @@ var initNav = function() {
     });
 
     swiperProbability.on('slideChange', function (e) {
-        // console.log("", e.activeIndex);
         probIndex = e.activeIndex;
-        // console.log("probIndex", probIndex);
 
-        // PubSub.publish('update:map');
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
 
@@ -385,11 +383,8 @@ var initNav = function() {
     });
 
     swiperVisualization.on('slideChange', function (e) {
-        // console.log("", e.activeIndex);
         scaleIndex = e.activeIndex;
-        console.log("scaleIndex", scaleIndex);
 
-        // PubSub.publish('update:map');
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
     });
@@ -485,7 +480,7 @@ var loadThemeData = function() {
             dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
         }
 
-        console.log("probArray[probIndex]", probArray[probIndex]);
+        // console.log("probArray[probIndex]", probArray[probIndex]);
         _data = null;
 
 
@@ -523,7 +518,7 @@ var joinData = function() {
             dataBaseMapDetailed.features[i]["properties"]["H0"] = 0;
         }
     }
-    console.log("dataBaseMapDetailed", dataBaseMapDetailed);
+    // console.log("dataBaseMapDetailed", dataBaseMapDetailed);
 
 
 
@@ -573,6 +568,20 @@ var drawMap = function() {
         /* --------------------
             メイン用
         -------------------- */
+
+        // 空
+        mapObject.addLayer({
+            'id': 'sky-day',
+            'type': 'sky',
+            'paint': {
+              'sky-type': 'gradient',
+              'sky-gradient': ["interpolate",["linear"],["sky-radial-progress"],0.8,"#9999FF",1,"white"],
+              'sky-opacity': 1,
+              'sky-opacity-transition': { 'duration': 500 }
+            }
+        });
+
+
 
         // 3D押出しレイヤー
         mapObject.addLayer({
@@ -634,6 +643,7 @@ var drawMap = function() {
                 'line-opacity': 0.2
             }
         });
+
 
 
 
@@ -720,19 +730,15 @@ var drawMap = function() {
 
         /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
-            //console.log("local ID: ", e.features[0].properties.N03_007);
+
             var _selected = e.features[0].properties.N03_007;
 
-            //console.log( "image name: ",dir1[dir1Index] + "_" + dir2[dir2Index] + "_" + dir3[dir3Index] + "_" + _selected + ".png");
-
-            console.log( "assets/data_detail/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
-
+            // console.log( "assets/data_detail/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
 
             var lightbox = lity('popup.html');
 
             window.setTimeout(function(){
-
-                console.log("_selected", _selected);
+                // console.log("_selected", _selected);
                 
                 var iframeElem = document.getElementsByTagName('iframe');
                 var iframeDocument = iframeElem[1].contentDocument || iframeElem[1].contentWindow.document;
@@ -793,7 +799,6 @@ var drawMap = function() {
 
                 // 対象自治体の中心点を取得
                 const coordinates = e.features[0].geometry.coordinates.slice();
-                // console.log("coordinates[0]", coordinates[0]);
 
                 if (coordinates[0].length == 1) {
                     var _line = turf.lineString(coordinates[0][0]);
@@ -829,9 +834,10 @@ var drawMap = function() {
         PubSub.publish('init:print');
 
     } else {
-        console.log("false");
+        // console.log("false");
 
         mapObject.getSource('naro').setData(dataBaseMapDetailed);
+        smallMapObject.getSource('naro_legend').setData(dataBaseMapDetailed);
 
     }
 
@@ -894,20 +900,6 @@ var updateLegend = function() {
 
 
 
-var showDetail = function() {
-    console.log("showDetail");
-
-}
-
-
-
-var hideDetail = function() {
-    console.log("hideDetail");
-
-}
-
-
-
 var initPrint = function() {
     console.log("initPrint");
 
@@ -952,7 +944,7 @@ var changeColorScale = function() {
 
             if (probArray[probIndex] == "L0") {
 
-                console.log("L0 -----");
+                // console.log("L0 -----");
                 dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
                     return d["L0"];
                 });
@@ -962,7 +954,7 @@ var changeColorScale = function() {
         
             } else if (probArray[probIndex] == "H0") {
         
-                console.log("H0 -----");
+                // console.log("H0 -----");
                 dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
                     return d["H0"];
                 });
@@ -976,7 +968,7 @@ var changeColorScale = function() {
         .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
         .range([minColor, maxColor]);
 
-    console.log("changeColorScale fl_map", fl_map)
+    // console.log("changeColorScale fl_map", fl_map)
     if (fl_map == "drawMap") {
         PubSub.publish('draw:map');
     } else if (fl_map == "updateMap") {
@@ -995,13 +987,10 @@ PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
 
 PubSub.subscribe('join:data', joinData);
-PubSub.subscribe('draw:map', drawMap); /* データの読み込みが発生するDir1-3の変更時 */
-PubSub.subscribe('update:map', updateMap); /* Probability, Visualization Scaleの変更時 */
+PubSub.subscribe('draw:map', drawMap);
+PubSub.subscribe('update:map', updateMap);
 PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('draw:legendbar', drawLegendBar);
-
-PubSub.subscribe('show:detail', showDetail);
-PubSub.subscribe('hide:detail', hideDetail);
 
 PubSub.subscribe('init:print', initPrint);
 PubSub.subscribe('change:colorscale', changeColorScale);
