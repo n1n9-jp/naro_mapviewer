@@ -18,14 +18,14 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
 
 <link href="assets/css/container.css" rel="stylesheet" />
+<link href="assets/css/sidebar.css" rel="stylesheet" />
 <link href="assets/css/thememap.css" rel="stylesheet" />
 <link href="assets/css/misc.css" rel="stylesheet" />
-<link href="assets/css/print.css" rel="stylesheet" />
 </head>
 <body class="bg-dark">
 
 <!-- <div class="position-relative"> -->
-  <div id="sidebarContainer" class="position-absolute right-0 end-0 vh-100">
+  <div id="sidebarContainer" class="position-absolute right-0 end-0">
 
     <div class="container-fluid mb-4">
       <div class="row">
@@ -38,10 +38,6 @@
           <div id="siteTitle">
             <h1>Impacts of <span class="bold">Climate Change</span> Projections</h1>
           </div>
-          <!-- <div id="txtDir1"></div>
-          <div id="txtDir2"></div>
-          <div id="txtDir3"></div>
-          <div id="txtDir4"></div> -->
         </div>
       </div>
     </div>
@@ -188,13 +184,13 @@
     <div class="container-fluid mb-4" id="legendCon">
       <div class="row header">
         <div class="col-12">
-          <div class="text-center">Legend</div>
+          <div id="legendLabel"><h3>Legend</h3></div>
         </div>
       </div>
       <div class="row body">
         <div id="legendBar"></div>
       </div>
-      <div class="row body">
+      <div class="row doublebody">
         <div id="smallMapContainer">
           <div id="smallMapLegend"></div>
           <div id="heightLegend"></div>
@@ -203,7 +199,6 @@
       </div>
     </div>
 
-
     <div class="container-fluid mb-4">
       <div class="row button">
         <div class="col-12"><small class="caption">
@@ -211,13 +206,6 @@
         </small></div>
       </div>
     </div>
-
-
-
-
-
-
-
 
   </div>
 <!-- </div> -->
