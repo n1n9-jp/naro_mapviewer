@@ -8,9 +8,15 @@ body {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   color: #FFF;
   font-weight: 300;
+}
+
+h3 {
+  font-size: 0.5rem;
+  color: #FFF;
+  font-weight: 600;
 }
 
 .btn-secondary {
