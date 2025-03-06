@@ -1,0 +1,456 @@
+{
+  "version": 8,
+  "center": [
+    139.76442,
+    35.6875
+  ],
+  "zoom": 13.955760822635057,
+  "bearing": 60,
+  "pitch": 60,
+  "sources": {
+    "satellite": {
+      "type": "raster",
+      "tiles": [
+        "https://maps.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg"
+      ],
+      "tileSize": 256,
+      "maxzoom": 18,
+      "minzoom": 2,
+      "attribution": "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+    },
+    "openmaptiles": {
+      "url": "https://tile.openstreetmap.jp/data/japan.json",
+      "type": "vector"
+    },
+    "gsibv-vectortile-source-1-4-16": {
+      "type": "vector",
+      "tiles": [
+        "https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/{z}/{x}/{y}.pbf"
+      ],
+      "maxzoom": 16,
+      "minzoom": 4,
+      "attribution": "<a href='https://maps.gsi.go.jp/vector/' target='_blank'>地理院地図Vector（仮称）</a>"
+    },
+    "10b512-7-113-50": {
+      "type": "raster-dem",
+      "tiles": [
+        "https://optgeo.github.io/10b512-7-113-50/zxy/{z}/{x}/{y}.webp"
+      ],
+      "tileSize": 512,
+      "maxzoom": 13,
+      "minzoom": 3,
+      "attribution": "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+    },
+    "et10b": {
+      "type": "raster-dem",
+      "tiles": [
+        "https://x.optgeo.org/et10b/et512/{z}/{x}/{y}.webp"
+      ],
+      "tileSize": 512,
+      "maxzoom": 13,
+      "attribution": "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+    }
+  },
+  "sprite": "https://sprites.geolonia.com/basic",
+  "glyphs": "https://maps.gsi.go.jp/xyz/noto-jp/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {},
+      "paint": {
+        "background-color": "hsl(222, 56%, 4%)"
+      }
+    },
+    {
+      "id": "satellite",
+      "type": "raster",
+      "source": "satellite",
+      "paint": {
+        "raster-contrast": 0.5,
+        "raster-brightness-max": 0.89,
+        "raster-fade-duration": 500
+      }
+    },
+    {
+      "minzoom": 15,
+      "layout": {
+        "text-field": [
+          "coalesce",
+          [
+            "get",
+            [
+              "match",
+              [
+                "get",
+                "name_script"
+              ],
+              [
+                "Myanmar",
+                "Khmer",
+                "Tibetan",
+                "Lao",
+                "Bengali",
+                "Thai",
+                "Ethiopic",
+                "Devanagari",
+                "Gujarati",
+                "Gurmukhi",
+                "Kannada",
+                "Malayalam",
+                "Oriya",
+                "Sinhala",
+                "Tamil",
+                "Telugu"
+              ],
+              "name_en",
+              "name"
+            ]
+          ],
+          [
+            "get",
+            "name"
+          ]
+        ],
+        "icon-image": "intersection",
+        "icon-text-fit": "both",
+        "icon-text-fit-padding": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "text-size": [
+          "interpolate",
+          [
+            "exponential",
+            1.2
+          ],
+          [
+            "zoom"
+          ],
+          15,
+          9,
+          18,
+          12
+        ],
+        "text-font": [
+          "NotoSansCJKjp-Regular"
+        ]
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "intersection"
+        ],
+        [
+          "has",
+          "name"
+        ]
+      ],
+      "type": "symbol",
+      "source": "openmaptiles",
+      "id": "road-intersection",
+      "paint": {
+        "text-color": "rgb(67, 67, 67)"
+      },
+      "source-layer": "transportation_name"
+    },
+    {
+      "minzoom": 6,
+      "layout": {
+        "text-size": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            18,
+            5,
+            12
+          ],
+          17,
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            18,
+            13,
+            12
+          ]
+        ],
+        "icon-image": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              "has",
+              "maki_beta"
+            ],
+            [
+              "image",
+              [
+                "concat",
+                [
+                  "get",
+                  "maki_beta"
+                ],
+                "-11"
+              ]
+            ],
+            [
+              "image",
+              [
+                "concat",
+                [
+                  "get",
+                  "maki"
+                ],
+                "-11"
+              ]
+            ]
+          ],
+          15,
+          [
+            "case",
+            [
+              "has",
+              "maki_beta"
+            ],
+            [
+              "image",
+              [
+                "concat",
+                [
+                  "get",
+                  "maki_beta"
+                ],
+                "-15"
+              ]
+            ],
+            [
+              "image",
+              [
+                "concat",
+                [
+                  "get",
+                  "maki"
+                ],
+                "-15"
+              ]
+            ]
+          ]
+        ],
+        "text-font": [
+          "NotoSansCJKjp-Regular"
+        ],
+        "text-offset": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            [
+              "literal",
+              [
+                0,
+                0
+              ]
+            ],
+            5,
+            [
+              "literal",
+              [
+                0,
+                0.75
+              ]
+            ]
+          ],
+          17,
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            [
+              "literal",
+              [
+                0,
+                0
+              ]
+            ],
+            13,
+            [
+              "literal",
+              [
+                0,
+                0.75
+              ]
+            ]
+          ]
+        ],
+        "text-anchor": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            "center",
+            5,
+            "top"
+          ],
+          17,
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            "center",
+            13,
+            "top"
+          ]
+        ],
+        "text-field": [
+          "coalesce",
+          [
+            "get",
+            [
+              "match",
+              [
+                "get",
+                "name_script"
+              ],
+              [
+                "Myanmar",
+                "Khmer",
+                "Tibetan",
+                "Lao",
+                "Bengali",
+                "Thai",
+                "Ethiopic",
+                "Devanagari",
+                "Gujarati",
+                "Gurmukhi",
+                "Kannada",
+                "Malayalam",
+                "Oriya",
+                "Sinhala",
+                "Tamil",
+                "Telugu"
+              ],
+              "name_en",
+              "name"
+            ]
+          ],
+          [
+            "get",
+            "name"
+          ]
+        ]
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "class"
+        ],
+        [
+          "town_hall",
+          "golf",
+          "park",
+          "railway",
+          "aerialway",
+          "college",
+          "lodging",
+          "school",
+          "harbor",
+          "hospital",
+          "stadium",
+          "castle"
+        ],
+        true,
+        false
+      ],
+      "type": "symbol",
+      "source": "openmaptiles",
+      "id": "poi-label",
+      "paint": {
+        "icon-opacity": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            0,
+            5,
+            1
+          ],
+          17,
+          [
+            "step",
+            [
+              "get",
+              "sizerank"
+            ],
+            0,
+            13,
+            1
+          ]
+        ],
+        "text-halo-color": [
+          "match",
+          [
+            "get",
+            "class"
+          ],
+          "park",
+          "hsl(94, 100%, 0%)",
+          "education",
+          "hsl(0, 5%, 0%)",
+          "medical",
+          "hsl(0, 5%, 0%)",
+          "rgb(0, 0, 0)"
+        ],
+        "text-halo-width": 1,
+        "text-halo-blur": 0.5,
+        "text-color": "hsl(0, 0%, 100%)"
+      },
+      "source-layer": "poi"
+    }
+  ],
+  "terrain": {
+    "source": "et10b"
+  }
+}

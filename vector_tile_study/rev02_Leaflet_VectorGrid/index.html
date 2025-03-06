@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Leaflet + VectorGrid.Protobuf Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { width: 100%; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <!-- VectorGrid プラグイン -->
+  <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+  <script>
+    // Leafletマップの初期設定
+    var map = L.map('map').setView([35.6895, 139.6917], 10); // 東京付近
+
+    // ベクトルタイルの表示設定
+    var vectorTileOptions = {
+      rendererFactory: L.canvas.tile, // または L.svg.tile
+      vectorTileLayerStyles: {
+        // レイヤー名とスタイル設定（例）
+        layername: {
+          fill: true,
+          fillColor: "#0080ff",
+          fillOpacity: 0.5,
+          stroke: true,
+          color: "#0000ff",
+          weight: 1
+        }
+      },
+      interactive: true
+    };
+
+    // XYZ形式のpbfタイルURLを指定
+    var vectorTileLayer = L.vectorGrid.protobuf(
+      "http://127.0.0.1:5500/asb/{z}/{x}/{y}.pbf",
+      vectorTileOptions
+    );
+    vectorTileLayer.addTo(map);
+  </script>
+</body>
+</html>
