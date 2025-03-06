@@ -1028,17 +1028,13 @@ var changeColorScale = function() {
 var changeDimension = function() {
     console.log("changeDimension");
 
-    if (d23ArrayIndex === 0) { //3D
-
-        // 3D モードに切り替え：任意の pitch（例: 60°）にし、回転操作を有効化
-        mapObject.setPitch(60);
+    if (d23ArrayIndex === 0) { // 3D モードに切り替え
+        mapObject.easeTo({ pitch: 60, duration: 1000 });
         mapObject.dragRotate.enable();
         mapObject.touchZoomRotate.enable();
 
-      } else if (d23ArrayIndex === 1) { //2D
-
-        // 2D モードに切り替え：pitch を 0 に固定し、回転操作を無効化
-        mapObject.setPitch(0);
+      } else if (d23ArrayIndex === 1) { // 2D モードに切り替え
+        mapObject.easeTo({ pitch: 0, duration: 1000 });
         mapObject.dragRotate.disable();
         mapObject.touchZoomRotate.disable();
       }
