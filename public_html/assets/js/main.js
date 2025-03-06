@@ -90,6 +90,7 @@ var minColor = "#333333";
 var maxColor = "#FFFFFF";
 // var minColor = "rgba(120, 120, 120, 0.2)";
 // var maxColor = "rgba(255, 255, 255, 1.0)";
+var nullColor = "#c3c7c9";
 
 var colorScale = d3.scaleLinear()
     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
@@ -559,10 +560,10 @@ var joinData = function() {
         }
 
         if (!_fl){
-            dataBaseMapDetailed.features[i]["properties"]["mean"] = 0;
-            dataBaseMapDetailed.features[i]["properties"]["sd"] = 0;
-            dataBaseMapDetailed.features[i]["properties"]["L0"] = 0;
-            dataBaseMapDetailed.features[i]["properties"]["H0"] = 0;
+            dataBaseMapDetailed.features[i]["properties"]["mean"] = null;
+            dataBaseMapDetailed.features[i]["properties"]["sd"] = null;
+            dataBaseMapDetailed.features[i]["properties"]["L0"] = null;
+            dataBaseMapDetailed.features[i]["properties"]["H0"] = null;
         }
     }
     // console.log("dataBaseMapDetailed", dataBaseMapDetailed);
@@ -638,12 +639,20 @@ var drawMap = function() {
             'layout': {},
             'paint': {
                 'fill-extrusion-color': [
-                    'interpolate', ['linear'],
-                    ['get', probArray[probIndex]],
-                    // minData, minColor,
-                    dataScaleArray[scaleIndex].minData, minColor,
-                    dataScaleArray[scaleIndex].maxData, maxColor
+                    'case',
+
+                    // データが null だった場合
+                    ['==', ['get', probArray[probIndex]], null], nullColor,
+
+                    // データが存在する場合
+                    [
+                        'interpolate', ['linear'],
+                        ['get', probArray[probIndex]],
+                        dataScaleArray[scaleIndex].minData, minColor,
+                        dataScaleArray[scaleIndex].maxData, maxColor
+                    ]
                 ],
+
                 'fill-extrusion-height': [
                     'interpolate', ['linear'],
                     ['get', probArray[probIndex]],
