@@ -81,7 +81,11 @@ var _obj1 = {minData: 0.0, maxData: 100.0};
 var _obj2 = {minData: minDataOrigin, maxData: maxDataOrigin};
 dataScaleArray.push(_obj1);
 dataScaleArray.push(_obj2);
+
+/* Flag for Scale */
 var scaleIndex = 0;
+// 0 の場合は、固定値の最小値と最大値
+// 1 の場合は、テーマデータ内の実際の最小値と最大値
 
 
 
@@ -117,9 +121,9 @@ var tsukubaGeoJson = [];
 
 
 
-/* --------------------
- Initialize: Variables
--------------------- */
+/* ------------------------------
+ Initialize: for Data
+------------------------------ */
 
 /* FilePath */
 var dir1=[], dir2=[], dir3=[];
@@ -138,6 +142,12 @@ var probArray = ["L0","H0"]
 var probLabelArray = ["Low 0","High 0"]
 var probIndex = 0;
 
+
+
+/* ------------------------------
+ Initialize: for Visualization
+------------------------------ */
+
 /* Swiper UI Visualization Scale */
 var scaleArray = ["Relative","Absolute"]
 var scaleIndex = 0;
@@ -148,7 +158,10 @@ var d23ArrayIndex = 0;
 
 /* Flag */
 var fl_firsttime = true;
+
 var fl_map = "";
+// 新規にマップを描画する必要がある場合は "drawMap"
+// 既存のマップを更新する場合は "updateMap"
 
 /* misc */
 var hoveredStateId = null;
@@ -988,15 +1001,16 @@ var initPrint = function() {
 
 
 
+
 var changeColorScale = function() {
     console.log("changeColorScale");
     
-    if (scaleIndex == 0) {
+    if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
         dataScaleArray[scaleIndex].minData = minDataOrigin;
         dataScaleArray[scaleIndex].maxData = maxDataOrigin;
 
-    } else if (scaleIndex == 1) {
+    } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
             if (probArray[probIndex] == "L0") {
 
