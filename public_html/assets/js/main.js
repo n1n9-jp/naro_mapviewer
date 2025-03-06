@@ -141,6 +141,10 @@ var probIndex = 0;
 var scaleArray = ["Relative","Absolute"]
 var scaleIndex = 0;
 
+/* Swiper UI 2d3d Change */
+var d23Array = ["3D","2D"]
+var d23ArrayIndex = 0;
+
 /* Flag */
 var fl_firsttime = true;
 var fl_map = "";
@@ -195,6 +199,13 @@ var initBaseMap = function() {
         }
     });
 
+
+
+    mapObject.on('pitchend', () => {
+        if (d23ArrayIndex === 1 && mapObject.getPitch() !== 0) {
+            mapObject.setPitch(0);
+        }
+    });
 }
 
 
@@ -388,6 +399,42 @@ var initNav = function() {
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
     });
+
+
+
+    /* 2d3d Change Slider */
+    var _2d3dItems = d3.select("#swiper2d3dChange")
+        .selectAll("div")
+        .data(d23Array)
+        .enter();
+
+    _2d3dItems.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return d23Array[i];
+        });
+
+    swiper2d3dChange = new Swiper('#swiper-container-2d3d', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-2d3d',
+            prevEl: '#swiper-button-prev-2d3d',
+        },
+    });
+
+    swiper2d3dChange.on('slideChange', function (e) {
+        d23ArrayIndex = e.activeIndex;
+        console.log("d23ArrayIndex", d23ArrayIndex);
+        console.log("d23Array", d23Array[d23ArrayIndex]);
+
+        PubSub.publish('change:dimension');
+    });
+
+
 }
 
 
@@ -978,6 +1025,26 @@ var changeColorScale = function() {
 
 
 
+var changeDimension = function() {
+    console.log("changeDimension");
+
+    if (d23ArrayIndex === 0) { //3D
+
+        // 3D モードに切り替え：任意の pitch（例: 60°）にし、回転操作を有効化
+        mapObject.setPitch(60);
+        mapObject.dragRotate.enable();
+        mapObject.touchZoomRotate.enable();
+
+      } else if (d23ArrayIndex === 1) { //2D
+
+        // 2D モードに切り替え：pitch を 0 に固定し、回転操作を無効化
+        mapObject.setPitch(0);
+        mapObject.dragRotate.disable();
+        mapObject.touchZoomRotate.disable();
+      }
+}
+
+
 PubSub.subscribe('init:basemap', initBaseMap);
 PubSub.subscribe('init:nav', initNav);
 PubSub.subscribe('init:mapui', initMapUI);
@@ -994,5 +1061,6 @@ PubSub.subscribe('draw:legendbar', drawLegendBar);
 
 PubSub.subscribe('init:print', initPrint);
 PubSub.subscribe('change:colorscale', changeColorScale);
+PubSub.subscribe('change:dimension', changeDimension);
 
 PubSub.publish('init:basemap');
