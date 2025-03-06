@@ -1052,14 +1052,24 @@ var changeDimension = function() {
     console.log("changeDimension");
 
     if (d23ArrayIndex === 0) { // 3D モードに切り替え
+
         mapObject.easeTo({ pitch: 60, duration: 1000 });
         mapObject.dragRotate.enable();
         mapObject.touchZoomRotate.enable();
 
+        smallMapObject.easeTo({ pitch: 60, duration: 1000 });
+        smallMapObject.dragRotate.enable();
+        smallMapObject.touchZoomRotate.enable();
+
       } else if (d23ArrayIndex === 1) { // 2D モードに切り替え
+
         mapObject.easeTo({ pitch: 0, duration: 1000 });
         mapObject.dragRotate.disable();
         mapObject.touchZoomRotate.disable();
+
+        smallMapObject.easeTo({ pitch: 0, duration: 1000 });
+        smallMapObject.dragRotate.disable();
+        smallMapObject.touchZoomRotate.disable();
       }
 }
 
