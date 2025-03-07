@@ -576,16 +576,24 @@ var loadThemeData = function() {
 
         /* 自治体コードが4桁の場合、右端に0を付与 */
         for (var i=0; i<dataObjTheme.length; i++){
-            if (dataObjTheme[i]["MuniCode"].length == 4){
-                dataObjTheme[i]["MuniCode"] = "0" + dataObjTheme[i]["MuniCode"];
-            }
-            dataObjTheme[i]["Year"] = parseInt(dataObjTheme[i]["Year"]);
-            dataObjTheme[i]["MuniCode"] = parseInt(dataObjTheme[i]["MuniCode"]);
-            dataObjTheme[i]["mean"] = parseFloat(dataObjTheme[i]["mean"]);
-            dataObjTheme[i]["sd"] = parseFloat(dataObjTheme[i]["sd"]);
 
-            dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
-            dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
+            var _row = dataObjTheme[i];
+
+            if (_row["MuniCode"].length == 4){
+                _row["MuniCode"] = "0" + _row["MuniCode"];
+            }
+            _row["Year"] =      parseInt(_row["Year"]);
+            _row["MuniCode"] =  parseInt(_row["MuniCode"]);
+            _row["mean"] =      parseFloat(_row["mean"]);
+            _row["sd"] =        parseFloat(_row["sd"]);
+
+            for (var j = 0; j <= 50; j++) {
+                _row["H" + j] = parseFloat(_row["H" + j]);
+                _row["L" + j] = parseFloat(_row["L" + j]);
+            }
+
+            // dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
+            // dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
         }
 
         // console.log("probArray[probIndex]", probArray[probIndex]);
@@ -629,11 +637,30 @@ var joinData = function() {
             }
         }
 
+        var _props = dataBaseMapDetailed.features[i]["properties"];
+        for (var j = 0; j < dataObjThemeFiltered.length; j++) {
+            if (dataObjThemeFiltered[j]["MuniCode"] == _muniid) {
+              var _row = dataObjThemeFiltered[j];
+              
+              _props.mean = parseFloat(_row.mean);
+              _props.sd = parseFloat(_row.sd);
+          
+              for (var k = 0; k <= 50; k++) {
+                _props["L" + k] = parseFloat(_row["L" + k]);
+                _props["H" + k] = parseFloat(_row["H" + k]);
+              }
+              _fl = true;
+            }
+        }
+
         if (!_fl){
-            dataBaseMapDetailed.features[i]["properties"]["mean"] = null;
-            dataBaseMapDetailed.features[i]["properties"]["sd"] = null;
-            dataBaseMapDetailed.features[i]["properties"]["L0"] = null;
-            dataBaseMapDetailed.features[i]["properties"]["H0"] = null;
+            _props["mean"] = null;
+            _props["sd"] = null;
+
+            for (var k = 0; k <= 50; k++) {
+                _props["L" + k] = null;
+                _props["H" + k] = null;
+            }
         }
     }
     // console.log("dataBaseMapDetailed", dataBaseMapDetailed);
