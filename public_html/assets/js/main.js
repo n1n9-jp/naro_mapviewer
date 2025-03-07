@@ -156,6 +156,7 @@ var valueNameArray = [
     "H50"
   ]
 var colorIndex = 0;
+var depthIndex = 0;
 
 /* Swiper UI Year */
 var yearArray = new Array();
@@ -392,6 +393,40 @@ var initSlider = function() {
 
     swiperColorScale.on('slideChange', function (e) {
         colorIndex = e.activeIndex;
+
+        fl_map = "updateMap";
+        PubSub.publish('change:colorscale');
+
+    });
+
+
+
+    /* Depth Scale Slider */
+    var _depthItems = d3.select("#swiperDepthScale")
+        .selectAll("div")
+        .data(valueNameArray)
+        .enter();
+
+    _depthItems.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return valueNameArray[i]
+        });
+
+    swiperDepthScale = new Swiper('#swiper-container-depth', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-depth',
+            prevEl: '#swiper-button-prev-depth',
+        },
+    });
+
+    swiperDepthScale.on('slideChange', function (e) {
+        depthIndex = e.activeIndex;
 
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
@@ -1009,7 +1044,7 @@ var updateMap = function() {
     console.log("updateMap");
 
 
-
+    /* 大地図 */
     mapObject.setPaintProperty(
         "naro_prob",
         'fill-extrusion-height',
@@ -1019,6 +1054,25 @@ var updateMap = function() {
             dataScaleArray[scaleIndex].maxData, maxHeight]
     );
 
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-color',
+        ['case',
+          // データが null の場合は nullColor を設定
+          ['==', ['get', valueNameArray[colorIndex]], null],
+          nullColor,
+          // それ以外は interpolate で色を計算
+          ['interpolate', ['linear'],
+            ['get', valueNameArray[colorIndex]],
+            dataScaleArray[scaleIndex].minData, minColor,
+            dataScaleArray[scaleIndex].maxData, maxColor
+          ]
+        ]
+    );
+    
+    
+
+    /* 小地図 */
     smallMapObject.setPaintProperty(
         "naro_prob_legend",
         'fill-extrusion-height',
@@ -1028,6 +1082,16 @@ var updateMap = function() {
             dataScaleArray[scaleIndex].maxData, maxHeight]
     );
 
+    smallMapObject.setPaintProperty(
+        "naro_prob_legend",
+        'fill-extrusion-color',
+        ['interpolate', ['linear'],
+          ['get', valueNameArray[colorIndex]],
+          dataScaleArray[scaleIndex].minData, minColor,
+          dataScaleArray[scaleIndex].maxData, maxColor
+        ]
+    );
+      
 
 
     PubSub.publish('update:legend');
