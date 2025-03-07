@@ -3,7 +3,7 @@
 -------------------- */
 // 一回のみ実行
 // initBaseMap() ... MapBox Object 初期化
-// initNav() ... ファイルリスト読み込み & ナビ初期化
+// initSlider() ... ファイルリスト読み込み & ナビ初期化
 // initMapUI() ... MapBox UI 初期化
 // loadBasemap() ... ベースマップ地図データの読み込み
 
@@ -213,7 +213,7 @@ var initBaseMap = function() {
     mapObject.on('styledata', () => {
         _stylecount++;
         if (_stylecount == 2) {
-            PubSub.publish('init:nav');
+            PubSub.publish('init:yearslider');
         }
     });
 
@@ -227,8 +227,8 @@ var initBaseMap = function() {
 }
 
 
-var initNav = function() {
-    console.log("initNav");
+var initSlider = function() {
+    console.log("initSlider");
 
     Promise.all([
         d3.csv("assets/data_lib/filelist.csv")
@@ -457,7 +457,7 @@ var initNav = function() {
 
 
 
-var updateYearSlider = function() {
+var initYearSlider = function() {
     // 既存のスライダー要素をクリア
     d3.select("#swiperYear").selectAll("div").remove();
   
@@ -1132,8 +1132,8 @@ var changeDimension = function() {
 
 
 PubSub.subscribe('init:basemap', initBaseMap);
-PubSub.subscribe('init:nav', initNav);
-PubSub.subscribe('update:slider', updateYearSlider);
+PubSub.subscribe('init:yearslider', initSlider);
+PubSub.subscribe('update:slider', initYearSlider);
 PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
 
