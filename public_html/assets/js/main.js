@@ -136,12 +136,16 @@ var fullpath=[];
 var dataBaseMapSimple;     // Base Map Simple
 var dataBaseMapDetailed;     // Base Map Detail
 var dataObjTheme;   // Theme Data
+var dataObjThemeFiltered;   // Theme Data Filtered
 
 /* Swiper UI Probability */
 var probArray = ["L0","H0"]
 var probLabelArray = ["Low 0","High 0"]
 var probIndex = 0;
 
+/* Swiper UI Year */
+var yearArray = [2020,2021,2022,2023,2024]
+var yearIndex = 0;
 
 
 /* ------------------------------
@@ -383,6 +387,41 @@ var initNav = function() {
 
 
 
+    /* Year Slider */
+    var _yearItems = d3.select("#swiperYear")
+        .selectAll("div")
+        .data(yearArray)
+        .enter();
+
+    _yearItems.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return yearArray[i];
+        });
+
+    swiperYear = new Swiper('#swiper-container-year', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-year',
+            prevEl: '#swiper-button-prev-year',
+        },
+    });
+
+    swiperYear.on('slideChange', function (e) {
+
+        yearIndex = e.activeIndex;
+        console.log("swiperYear", yearArray[yearIndex]);
+        fl_map = "updateMap";
+        PubSub.publish('filter:bydata');
+
+    });
+
+
+
     /* Visualization Scale Var Slider */
     var _scaleItems = d3.select("#swiperVisualizationScale")
         .selectAll("div")
@@ -533,6 +572,7 @@ var loadThemeData = function() {
             if (dataObjTheme[i]["MuniCode"].length == 4){
                 dataObjTheme[i]["MuniCode"] = "0" + dataObjTheme[i]["MuniCode"];
             }
+            dataObjTheme[i]["Year"] = parseInt(dataObjTheme[i]["Year"]);
             dataObjTheme[i]["MuniCode"] = parseInt(dataObjTheme[i]["MuniCode"]);
             dataObjTheme[i]["mean"] = parseFloat(dataObjTheme[i]["mean"]);
             dataObjTheme[i]["sd"] = parseFloat(dataObjTheme[i]["sd"]);
@@ -546,8 +586,18 @@ var loadThemeData = function() {
 
 
 
-        PubSub.publish('join:data');
+        PubSub.publish('filter:bydata');
     });
+}
+
+
+
+var filterByYear = function() {
+    console.log("filterByYear");
+    
+    dataObjThemeFiltered = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
+    
+    PubSub.publish('join:data');
 }
 
 
@@ -562,12 +612,12 @@ var joinData = function() {
         var _muniid = dataBaseMapDetailed.features[i]["properties"]["N03_007"];
 
         var _fl = false;
-        for(var j=0; j<dataObjTheme.length; j++) {
-            if (dataObjTheme[j]["MuniCode"] == _muniid){
-                dataBaseMapDetailed.features[i]["properties"]["mean"] = parseFloat(dataObjTheme[j]["mean"]);
-                dataBaseMapDetailed.features[i]["properties"]["sd"] = parseFloat(dataObjTheme[j]["sd"]);
-                dataBaseMapDetailed.features[i]["properties"]["L0"] = parseFloat(dataObjTheme[j]["L0"]);
-                dataBaseMapDetailed.features[i]["properties"]["H0"] = parseFloat(dataObjTheme[j]["H0"]);
+        for(var j=0; j<dataObjThemeFiltered.length; j++) {
+            if (dataObjThemeFiltered[j]["MuniCode"] == _muniid){
+                dataBaseMapDetailed.features[i]["properties"]["mean"] = parseFloat(dataObjThemeFiltered[j]["mean"]);
+                dataBaseMapDetailed.features[i]["properties"]["sd"] = parseFloat(dataObjThemeFiltered[j]["sd"]);
+                dataBaseMapDetailed.features[i]["properties"]["L0"] = parseFloat(dataObjThemeFiltered[j]["L0"]);
+                dataBaseMapDetailed.features[i]["properties"]["H0"] = parseFloat(dataObjThemeFiltered[j]["H0"]);
                 _fl = true;
             }
         }
@@ -1015,20 +1065,20 @@ var changeColorScale = function() {
             if (probArray[probIndex] == "L0") {
 
                 // console.log("L0 -----");
-                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                dataScaleArray[scaleIndex].minData = d3.min(dataObjThemeFiltered, function(d){
                     return d["L0"];
                 });
-                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                dataScaleArray[scaleIndex].maxData = d3.max(dataObjThemeFiltered, function(d){
                     return d["L0"];
                 });
         
             } else if (probArray[probIndex] == "H0") {
         
                 // console.log("H0 -----");
-                dataScaleArray[scaleIndex].minData = d3.min(dataObjTheme, function(d){
+                dataScaleArray[scaleIndex].minData = d3.min(dataObjThemeFiltered, function(d){
                     return d["H0"];
                 });
-                dataScaleArray[scaleIndex].maxData = d3.max(dataObjTheme, function(d){
+                dataScaleArray[scaleIndex].maxData = d3.max(dataObjThemeFiltered, function(d){
                     return d["H0"];
                 });
             }
@@ -1081,6 +1131,7 @@ PubSub.subscribe('init:legend', initLegend);
 
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
+PubSub.subscribe('filter:bydata', filterByYear);
 
 PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap);
