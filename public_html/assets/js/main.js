@@ -144,7 +144,7 @@ var probLabelArray = ["Low 0","High 0"]
 var probIndex = 0;
 
 /* Swiper UI Year */
-var yearArray = [2020,2021,2022,2023,2024]
+var yearArray = new Array();
 var yearIndex = 0;
 
 
@@ -584,7 +584,7 @@ var loadThemeData = function() {
         // console.log("probArray[probIndex]", probArray[probIndex]);
         _data = null;
 
-
+        yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
 
         PubSub.publish('filter:bydata');
     });
