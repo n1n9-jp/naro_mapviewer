@@ -75,9 +75,9 @@ var POI = [
 
 /* Data Scale */
 var minDataOrigin = 0.0;
-var maxDataOrigin = 100.0;
+var maxDataOrigin = 300.0;
 var dataScaleArray = [];
-var _obj1 = {minData: 0.0, maxData: 100.0};
+var _obj1 = {minData: 0.0, maxData: 300.0};
 var _obj2 = {minData: minDataOrigin, maxData: maxDataOrigin};
 dataScaleArray.push(_obj1);
 dataScaleArray.push(_obj2);
