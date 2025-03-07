@@ -1087,26 +1087,15 @@ var changeColorScale = function() {
 
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
-            if (probArray[probIndex] == "L0") {
+            var _ddd = probArray[probIndex];
+            // console.log("_ddd", _ddd);
 
-                // console.log("L0 -----");
-                dataScaleArray[scaleIndex].minData = d3.min(dataObjThemeFiltered, function(d){
-                    return d["L0"];
-                });
-                dataScaleArray[scaleIndex].maxData = d3.max(dataObjThemeFiltered, function(d){
-                    return d["L0"];
-                });
-        
-            } else if (probArray[probIndex] == "H0") {
-        
-                // console.log("H0 -----");
-                dataScaleArray[scaleIndex].minData = d3.min(dataObjThemeFiltered, function(d){
-                    return d["H0"];
-                });
-                dataScaleArray[scaleIndex].maxData = d3.max(dataObjThemeFiltered, function(d){
-                    return d["H0"];
-                });
-            }
+            var _columnValues = dataObjThemeFiltered.map(function(d) {
+                return +d[_ddd];
+            });
+
+            dataScaleArray[scaleIndex].minData = d3.min(_columnValues);
+            dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
     }
 
     colorScale
