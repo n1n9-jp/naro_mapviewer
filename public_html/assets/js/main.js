@@ -625,19 +625,10 @@ var joinData = function() {
     for(var i=0; i<dataBaseMapDetailed.features.length; i++) {
 
         var _muniid = dataBaseMapDetailed.features[i]["properties"]["N03_007"];
+        var _props = dataBaseMapDetailed.features[i]["properties"];
 
         var _fl = false;
-        for(var j=0; j<dataObjThemeFiltered.length; j++) {
-            if (dataObjThemeFiltered[j]["MuniCode"] == _muniid){
-                dataBaseMapDetailed.features[i]["properties"]["mean"] = parseFloat(dataObjThemeFiltered[j]["mean"]);
-                dataBaseMapDetailed.features[i]["properties"]["sd"] = parseFloat(dataObjThemeFiltered[j]["sd"]);
-                dataBaseMapDetailed.features[i]["properties"]["L0"] = parseFloat(dataObjThemeFiltered[j]["L0"]);
-                dataBaseMapDetailed.features[i]["properties"]["H0"] = parseFloat(dataObjThemeFiltered[j]["H0"]);
-                _fl = true;
-            }
-        }
 
-        var _props = dataBaseMapDetailed.features[i]["properties"];
         for (var j = 0; j < dataObjThemeFiltered.length; j++) {
             if (dataObjThemeFiltered[j]["MuniCode"] == _muniid) {
               var _row = dataObjThemeFiltered[j];
