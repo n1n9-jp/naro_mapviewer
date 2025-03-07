@@ -139,12 +139,15 @@ var dataObjTheme;   // Theme Data
 var dataObjThemeFiltered;   // Theme Data Filtered
 
 /* Swiper UI Probability */
-var probArray = ["L0","H0"]
-var probIndex = 0;
+
+var colorArray = ["L0","H0"]
+// var colorArray = ["L0","H0","L1","H1","L2","H2","L3","H3","L4","H4","L5","H5","L6","H6","L7","H7","L8","H8","L9","H9","L10","H10","L11","H11","L12","H12","L13","H13","L14","H14","L15","H15","L16","H16","L17","H17","L18","H18","L19","H19","L20","H20","L21","H21","L22","H22","L23","H23","L24","H24","L25","H25","L26","H26","L27","H27","L28","H28","L29","H29","L30","H30","L31","H31","L32","H32","L33","H33","L34","H34","L35","H35","L36","H36","L37","H37","L38","H38","L39","H39","L40","H40","L41","H41","L42","H42","L43","H43","L44","H44","L45","H45","L46","H46","L47","H47","L48","H48","L49","H49","L50","H50"]
+var colorIndex = 0;
 
 /* Swiper UI Year */
 var yearArray = new Array();
 var yearIndex = 0;
+
 
 
 /* ------------------------------
@@ -345,39 +348,37 @@ var initSlider = function() {
 
         _data = null;
 
-
-
         PubSub.publish('init:mapui');
     });
 
 
 
-    /* Probability Var Slider */
-    var _probItems = d3.select("#swiperProbability")
+    /* Color Scale Slider */
+    var _colorItems = d3.select("#swiperColorScale")
         .selectAll("div")
-        .data(probArray)
+        .data(colorArray)
         .enter();
 
-    _probItems.append("div")
+    _colorItems.append("div")
         .attr('class', function () {
             return "swiper-slide";
         })
         .text(function (d, i) {
-            return probArray[i]
+            return colorArray[i]
         });
 
-    swiperProbability = new Swiper('#swiper-container-prob', {
+    swiperColorScale = new Swiper('#swiper-container-color', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
         navigation: {
-            nextEl: '#swiper-button-next-prob',
-            prevEl: '#swiper-button-prev-prob',
+            nextEl: '#swiper-button-next-color',
+            prevEl: '#swiper-button-prev-color',
         },
     });
 
-    swiperProbability.on('slideChange', function (e) {
-        probIndex = e.activeIndex;
+    swiperColorScale.on('slideChange', function (e) {
+        colorIndex = e.activeIndex;
 
         fl_map = "updateMap";
         PubSub.publish('change:colorscale');
@@ -729,12 +730,12 @@ var drawMap = function() {
                     'case',
 
                     // データが null だった場合
-                    ['==', ['get', probArray[probIndex]], null], nullColor,
+                    ['==', ['get', colorArray[colorIndex]], null], nullColor,
 
                     // データが存在する場合
                     [
                         'interpolate', ['linear'],
-                        ['get', probArray[probIndex]],
+                        ['get', colorArray[colorIndex]],
                         dataScaleArray[scaleIndex].minData, minColor,
                         dataScaleArray[scaleIndex].maxData, maxColor
                     ]
@@ -742,7 +743,7 @@ var drawMap = function() {
 
                 'fill-extrusion-height': [
                     'interpolate', ['linear'],
-                    ['get', probArray[probIndex]],
+                    ['get', colorArray[colorIndex]],
                     dataScaleArray[scaleIndex].minData, 0,
                     dataScaleArray[scaleIndex].maxData, 50000
                     // minData, 0,
@@ -798,7 +799,7 @@ var drawMap = function() {
         //     'paint': {
         //         // 'fill-extrusion-height': [
         //         //     'interpolate', ['linear'],
-        //         //     ['get', probArray[probIndex]],
+        //         //     ['get', colorArray[colorIndex]],
         //         //     dataScaleArray[scaleIndex].minData, 0,
         //         //     dataScaleArray[scaleIndex].maxData, 50000
         //         //     // minData, 0,
@@ -828,13 +829,13 @@ var drawMap = function() {
             'paint': {
                 'fill-extrusion-color': [
                     'interpolate', ['linear'],
-                    ['get', probArray[probIndex]],
+                    ['get', colorArray[colorIndex]],
                     dataScaleArray[scaleIndex].minData, minColor,
                     dataScaleArray[scaleIndex].maxData, maxColor
                 ],
                 'fill-extrusion-height': [
                     'interpolate', ['linear'],
-                    ['get', probArray[probIndex]],
+                    ['get', colorArray[colorIndex]],
                     dataScaleArray[scaleIndex].minData, 0,
                     dataScaleArray[scaleIndex].maxData, 50000
                 ],
@@ -926,13 +927,13 @@ var drawMap = function() {
                     var _address_4 = "";
                 }
 
-                if (e.features[0].properties[probArray[probIndex]]) {
-                    var _addressB = e.features[0].properties[probArray[probIndex]];
+                if (e.features[0].properties[colorArray[colorIndex]]) {
+                    var _addressB = e.features[0].properties[colorArray[colorIndex]];
                 } else {
                     var _addressB = "undefined";
                 }
 
-                var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
+                var _p = tsukubaGeoJson[0].properties[colorArray[colorIndex]];
 
 
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
@@ -1000,7 +1001,7 @@ var updateMap = function() {
         "naro_prob",
         'fill-extrusion-height',
             ['interpolate', ['linear'],
-            ['get', probArray[probIndex]],
+            ['get', colorArray[colorIndex]],
             dataScaleArray[scaleIndex].minData, minHeight,
             dataScaleArray[scaleIndex].maxData, maxHeight]
     );
@@ -1009,7 +1010,7 @@ var updateMap = function() {
         "naro_prob_legend",
         'fill-extrusion-height',
             ['interpolate', ['linear'],
-            ['get', probArray[probIndex]],
+            ['get', colorArray[colorIndex]],
             dataScaleArray[scaleIndex].minData, minHeight,
             dataScaleArray[scaleIndex].maxData, maxHeight]
     );
@@ -1033,7 +1034,7 @@ var updateLegend = function() {
 
 
     /* つくば市のデータ値 */
-    var _p = tsukubaGeoJson[0].properties[probArray[probIndex]];
+    var _p = tsukubaGeoJson[0].properties[colorArray[colorIndex]];
     d3.select("#heightLegend").text("Tsukuba City: " + _p);
 
 
@@ -1066,7 +1067,7 @@ var initPrint = function() {
             d3.selectAll("#dir1print").text(dir1[dir1Index]);
             d3.selectAll("#dir2print").text(dir2[dir2Index]);
             d3.selectAll("#dir3print").text(dir3[dir3Index]);
-            d3.selectAll("#probprint").text("Probability: " + probArray[probIndex]);
+            d3.selectAll("#probprint").text("Probability: " + colorArray[colorIndex]);
             d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
 
             window.print();
@@ -1086,7 +1087,7 @@ var changeColorScale = function() {
 
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
-            var _ddd = probArray[probIndex];
+            var _ddd = colorArray[colorIndex];
             // console.log("_ddd", _ddd);
 
             var _columnValues = dataObjThemeFiltered.map(function(d) {
