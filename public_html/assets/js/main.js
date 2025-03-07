@@ -140,7 +140,6 @@ var dataObjThemeFiltered;   // Theme Data Filtered
 
 /* Swiper UI Probability */
 var probArray = ["L0","H0"]
-var probLabelArray = ["Low 0","High 0"]
 var probIndex = 0;
 
 /* Swiper UI Year */
@@ -364,7 +363,7 @@ var initSlider = function() {
             return "swiper-slide";
         })
         .text(function (d, i) {
-            return probLabelArray[i];
+            return probArray[i]
         });
 
     swiperProbability = new Swiper('#swiper-container-prob', {
@@ -1067,7 +1066,7 @@ var initPrint = function() {
             d3.selectAll("#dir1print").text(dir1[dir1Index]);
             d3.selectAll("#dir2print").text(dir2[dir2Index]);
             d3.selectAll("#dir3print").text(dir3[dir3Index]);
-            d3.selectAll("#probprint").text("Probability: " + probLabelArray[probIndex]);
+            d3.selectAll("#probprint").text("Probability: " + probArray[probIndex]);
             d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
 
             window.print();
