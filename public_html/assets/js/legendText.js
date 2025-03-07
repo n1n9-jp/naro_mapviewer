@@ -42,7 +42,7 @@ var drawLegendBar = function() {
         })
         .attr("y", legendYPos[0])
         .text(function(d) {
-            return legendTitlePre + colorArray[colorIndex];
+            return legendTitlePre + valueNameArray[colorIndex];
         });
 
 
