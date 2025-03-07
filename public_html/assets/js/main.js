@@ -387,41 +387,6 @@ var initNav = function() {
 
 
 
-    /* Year Slider */
-    var _yearItems = d3.select("#swiperYear")
-        .selectAll("div")
-        .data(yearArray)
-        .enter();
-
-    _yearItems.append("div")
-        .attr('class', function () {
-            return "swiper-slide";
-        })
-        .text(function (d, i) {
-            return yearArray[i];
-        });
-
-    swiperYear = new Swiper('#swiper-container-year', {
-        slidesPerView: 2,
-        spaceBetween: 1,
-        centeredSlides: true,
-        navigation: {
-            nextEl: '#swiper-button-next-year',
-            prevEl: '#swiper-button-prev-year',
-        },
-    });
-
-    swiperYear.on('slideChange', function (e) {
-
-        yearIndex = e.activeIndex;
-        console.log("swiperYear", yearArray[yearIndex]);
-        fl_map = "updateMap";
-        PubSub.publish('filter:bydata');
-
-    });
-
-
-
     /* Visualization Scale Var Slider */
     var _scaleItems = d3.select("#swiperVisualizationScale")
         .selectAll("div")
@@ -491,6 +456,48 @@ var initNav = function() {
 }
 
 
+
+var updateYearSlider = function() {
+    // 既存のスライダー要素をクリア
+    d3.select("#swiperYear").selectAll("div").remove();
+  
+    // 新しい年度データをバインドしてスライド要素を生成
+    d3.select("#swiperYear")
+      .selectAll("div")
+      .data(yearArray)
+      .enter()
+      .append("div")
+      .attr("class", "swiper-slide")
+      .text(function(d) { return d; });
+  
+    // 既存のインスタンスがあれば破棄する
+    if (swiperYear && typeof swiperYear.destroy === "function") {
+        swiperYear.destroy(true, true);
+    }
+      
+    // 新しい Swiper インスタンスを生成
+    swiperYear = new Swiper('#swiper-container-year', {
+      slidesPerView: 2,
+      spaceBetween: 1,
+      centeredSlides: true,
+      navigation: {
+        nextEl: '#swiper-button-next-year',
+        prevEl: '#swiper-button-prev-year',
+      },
+      on: {
+        slideChange: function(e) {
+          yearIndex = e.activeIndex;
+          console.log("swiperYear", yearArray[yearIndex]);
+          fl_map = "updateMap";
+          PubSub.publish('filter:bydata');
+        }
+      }
+    });
+
+    PubSub.publish('filter:bydata');
+};
+
+  
 
 var initMapUI = function() {
     console.log("initMapUI");
@@ -586,7 +593,7 @@ var loadThemeData = function() {
 
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
 
-        PubSub.publish('filter:bydata');
+        PubSub.publish('update:slider');
     });
 }
 
@@ -1126,6 +1133,7 @@ var changeDimension = function() {
 
 PubSub.subscribe('init:basemap', initBaseMap);
 PubSub.subscribe('init:nav', initNav);
+PubSub.subscribe('update:slider', updateYearSlider);
 PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
 
