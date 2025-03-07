@@ -38,7 +38,7 @@ maptileURL[1] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZk
 var maptileIndex = 0;
 
 /* API token */
-mapboxgl.accessToken = 'pk.eyJ1IjoieXVpY2h5IiwiYSI6ImNrcW43dXA0YTA4eTEyb28yN25jeTN0ZHMifQ.7v7OJoeJXp2fqX5vloX-PQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoieXlhemFraSIsImEiOiJjbTVxZzhrdmMwYmplMnFvazc2bHhnYnJzIn0.3_IEtaI7ZSFcRiaQfZaL_Q';
 
 var POI = [
   {
@@ -643,8 +643,8 @@ var loadThemeData = function() {
             // dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
             // dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
         }
-
-        // console.log("probArray[probIndex]", probArray[probIndex]);
+        
+        console.log("dataObjTheme", dataObjTheme);
         _data = null;
 
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
@@ -847,7 +847,7 @@ var drawMap = function() {
         //     'paint': {
         //         // 'fill-extrusion-height': [
         //         //     'interpolate', ['linear'],
-        //         //     ['get', colorArray[colorIndex]],
+        //         //     ['get', valueNameArray[colorIndex]],
         //         //     dataScaleArray[scaleIndex].minData, 0,
         //         //     dataScaleArray[scaleIndex].maxData, 50000
         //         //     // minData, 0,
@@ -1156,7 +1156,7 @@ var initPrint = function() {
 
 var changeColorScale = function() {
     console.log("changeColorScale");
-    
+
     if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
         dataScaleArray[scaleIndex].minData = minDataOrigin;
@@ -1170,9 +1170,14 @@ var changeColorScale = function() {
             var _columnValues = dataObjThemeFiltered.map(function(d) {
                 return +d[_ddd];
             });
+            // latterObj = _.orderBy(_columnValues, [], ['desc']);
+            // console.log("_columnValues", latterObj);
 
             dataScaleArray[scaleIndex].minData = d3.min(_columnValues);
             dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
+
+            // console.log("minData",dataScaleArray[scaleIndex].minData);
+            // console.log("maxData",dataScaleArray[scaleIndex].maxData);
     }
 
     colorScale
@@ -1229,7 +1234,7 @@ PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap);
 PubSub.subscribe('update:map', updateMap);
 PubSub.subscribe('update:legend', updateLegend);
-PubSub.subscribe('draw:legendbar', drawLegendBar);
+PubSub.subscribe('draw:legendbar', drawLegendBar); //???
 
 PubSub.subscribe('init:print', initPrint);
 PubSub.subscribe('change:colorscale', changeColorScale);
