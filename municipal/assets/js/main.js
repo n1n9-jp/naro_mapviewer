@@ -140,21 +140,10 @@ var dataObjThemeFiltered;   // Theme Data Filtered
 
 /* Swiper UI Probability */
 
-// var valueNameArray = ["L0","H0"]
-var valueNameArray = [
-    "L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9",
-    "L10", "L11", "L12", "L13", "L14", "L15", "L16", "L17", "L18", "L19",
-    "L20", "L21", "L22", "L23", "L24", "L25", "L26", "L27", "L28", "L29",
-    "L30", "L31", "L32", "L33", "L34", "L35", "L36", "L37", "L38", "L39",
-    "L40", "L41", "L42", "L43", "L44", "L45", "L46", "L47", "L48", "L49",
-    "L50",
-    "H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9",
-    "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19",
-    "H20", "H21", "H22", "H23", "H24", "H25", "H26", "H27", "H28", "H29",
-    "H30", "H31", "H32", "H33", "H34", "H35", "H36", "H37", "H38", "H39",
-    "H40", "H41", "H42", "H43", "H44", "H45", "H46", "H47", "H48", "H49",
-    "H50"
-  ]
+var varList = [];
+var varListRemove = ['Year', 'MuniCode'];
+var valueNameArray = []
+
 var colorIndex = 0;
 var depthIndex = 0;
 
@@ -621,6 +610,10 @@ var loadThemeData = function() {
     ]).then(function (_data) {
   
         dataObjTheme = _.cloneDeep(_data[0]);
+
+        varList = _data[0].columns;
+        valueNameArray = _.difference(varList, varListRemove);
+        console.log(valueNameArray);
 
         /* 自治体コードが4桁の場合、右端に0を付与 */
         for (var i=0; i<dataObjTheme.length; i++){
