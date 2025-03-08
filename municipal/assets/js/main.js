@@ -138,8 +138,6 @@ var dataBaseMapDetailed;     // Base Map Detail
 var dataObjTheme;   // Theme Data
 var dataObjThemeFiltered;   // Theme Data Filtered
 
-/* Swiper UI Probability */
-
 var varList = [];
 var varListRemove = ['Year', 'MuniCode'];
 var valueNameArray = []
@@ -218,7 +216,7 @@ var initBaseMap = function() {
     mapObject.on('styledata', () => {
         _stylecount++;
         if (_stylecount == 2) {
-            PubSub.publish('init:yearslider');
+            PubSub.publish('init:slider_directory');
         }
     });
 
@@ -232,8 +230,8 @@ var initBaseMap = function() {
 }
 
 
-var initSlider = function() {
-    console.log("initSlider");
+var initSliderDirectory = function() {
+    console.log("initSliderDirectory");
 
     Promise.all([
         d3.csv("assets/data_lib/filelist.csv")
@@ -353,22 +351,27 @@ var initSlider = function() {
 
         PubSub.publish('init:mapui');
     });
+}
 
 
+
+var initVisualizationSlider = function() {
+    console.log("initVisualizationSlider");
 
     /* Color Scale Slider */
-    var _colorItems = d3.select("#swiperColorScale")
-        .selectAll("div")
-        .data(valueNameArray)
-        .enter();
+    d3.select("#swiperColorScale").selectAll("div").remove();
 
-    _colorItems.append("div")
-        .attr('class', function () {
-            return "swiper-slide";
-        })
-        .text(function (d, i) {
-            return valueNameArray[i]
-        });
+    d3.select("#swiperColorScale")
+    .selectAll("div")
+    .data(valueNameArray)
+    .enter()
+    .append("div")
+    .attr("class", "swiper-slide")
+    .text(function(d) { return d; });
+
+    if (swiperColorScale && typeof swiperColorScale.destroy === "function") {
+        swiperColorScale.destroy(true, true);
+    }
 
     swiperColorScale = new Swiper('#swiper-container-color', {
         slidesPerView: 2,
@@ -378,31 +381,31 @@ var initSlider = function() {
             nextEl: '#swiper-button-next-color',
             prevEl: '#swiper-button-prev-color',
         },
-    });
-
-    swiperColorScale.on('slideChange', function (e) {
-        colorIndex = e.activeIndex;
-
-        fl_map = "updateMap";
-        PubSub.publish('change:colorscale');
-
+        on: {
+            slideChange: function(e) {
+            colorIndex = e.activeIndex;
+            fl_map = "updateMap";
+            PubSub.publish('change:colorscale');
+            }
+        }
     });
 
 
 
     /* Depth Scale Slider */
-    var _depthItems = d3.select("#swiperDepthScale")
-        .selectAll("div")
-        .data(valueNameArray)
-        .enter();
+    d3.select("#swiperDepthScale").selectAll("div").remove();
 
-    _depthItems.append("div")
-        .attr('class', function () {
-            return "swiper-slide";
-        })
-        .text(function (d, i) {
-            return valueNameArray[i]
-        });
+    d3.select("#swiperDepthScale")
+    .selectAll("div")
+    .data(valueNameArray)
+    .enter()
+    .append("div")
+    .attr("class", "swiper-slide")
+    .text(function(d) { return d; });
+
+    if (swiperDepthScale && typeof swiperDepthScale.destroy === "function") {
+        swiperDepthScale.destroy(true, true);
+    }
 
     swiperDepthScale = new Swiper('#swiper-container-depth', {
         slidesPerView: 2,
@@ -412,31 +415,31 @@ var initSlider = function() {
             nextEl: '#swiper-button-next-depth',
             prevEl: '#swiper-button-prev-depth',
         },
-    });
-
-    swiperDepthScale.on('slideChange', function (e) {
-        depthIndex = e.activeIndex;
-
-        fl_map = "updateMap";
-        PubSub.publish('change:colorscale');
-
+        on: {
+            slideChange: function(e) {
+            depthIndex = e.activeIndex;
+            fl_map = "updateMap";
+            PubSub.publish('change:colorscale');
+            }
+        }
     });
 
 
 
     /* Visualization Scale Var Slider */
-    var _scaleItems = d3.select("#swiperVisualizationScale")
-        .selectAll("div")
-        .data(scaleArray)
-        .enter();
+    d3.select("#swiperVisualizationScale").selectAll("div").remove();
 
-    _scaleItems.append("div")
-        .attr('class', function () {
-            return "swiper-slide";
-        })
-        .text(function (d, i) {
-            return scaleArray[i];
-        });
+    d3.select("#swiperVisualizationScale")
+    .selectAll("div")
+    .data(scaleArray)
+    .enter()
+    .append("div")
+    .attr("class", "swiper-slide")
+    .text(function(d) { return d; });
+
+    if (swiperVisualization && typeof swiperVisualization.destroy === "function") {
+        swiperVisualization.destroy(true, true);
+    }
 
     swiperVisualization = new Swiper('#swiper-container-scale', {
         slidesPerView: 2,
@@ -446,30 +449,31 @@ var initSlider = function() {
             nextEl: '#swiper-button-next-scale',
             prevEl: '#swiper-button-prev-scale',
         },
-    });
-
-    swiperVisualization.on('slideChange', function (e) {
-        scaleIndex = e.activeIndex;
-
-        fl_map = "updateMap";
-        PubSub.publish('change:colorscale');
+        on: {
+            slideChange: function(e) {
+            scaleIndex = e.activeIndex;
+            fl_map = "updateMap";
+            PubSub.publish('change:colorscale');
+            }
+        }
     });
 
 
 
     /* 2d3d Change Slider */
-    var _2d3dItems = d3.select("#swiper2d3dChange")
-        .selectAll("div")
-        .data(d23Array)
-        .enter();
+    d3.select("#swiper2d3dChange").selectAll("div").remove();
 
-    _2d3dItems.append("div")
-        .attr('class', function () {
-            return "swiper-slide";
-        })
-        .text(function (d, i) {
-            return d23Array[i];
-        });
+    d3.select("#swiper2d3dChange")
+    .selectAll("div")
+    .data(d23Array)
+    .enter()
+    .append("div")
+    .attr("class", "swiper-slide")
+    .text(function(d) { return d; });
+
+    if (swiper2d3dChange && typeof swiper2d3dChange.destroy === "function") {
+        swiper2d3dChange.destroy(true, true);
+    }
 
     swiper2d3dChange = new Swiper('#swiper-container-2d3d', {
         slidesPerView: 2,
@@ -479,26 +483,21 @@ var initSlider = function() {
             nextEl: '#swiper-button-next-2d3d',
             prevEl: '#swiper-button-prev-2d3d',
         },
+        on: {
+            slideChange: function(e) {
+            d23ArrayIndex = e.activeIndex;
+            console.log("d23ArrayIndex", d23ArrayIndex);
+            console.log("d23Array", d23Array[d23ArrayIndex]);
+            PubSub.publish('change:dimension');
+            }
+        }
     });
 
-    swiper2d3dChange.on('slideChange', function (e) {
-        d23ArrayIndex = e.activeIndex;
-        console.log("d23ArrayIndex", d23ArrayIndex);
-        console.log("d23Array", d23Array[d23ArrayIndex]);
-
-        PubSub.publish('change:dimension');
-    });
 
 
-}
-
-
-
-var initYearSlider = function() {
-    // 既存のスライダー要素をクリア
+    /* Year Slider */
     d3.select("#swiperYear").selectAll("div").remove();
   
-    // 新しい年度データをバインドしてスライド要素を生成
     d3.select("#swiperYear")
       .selectAll("div")
       .data(yearArray)
@@ -507,12 +506,10 @@ var initYearSlider = function() {
       .attr("class", "swiper-slide")
       .text(function(d) { return d; });
   
-    // 既存のインスタンスがあれば破棄する
     if (swiperYear && typeof swiperYear.destroy === "function") {
         swiperYear.destroy(true, true);
     }
-      
-    // 新しい Swiper インスタンスを生成
+
     swiperYear = new Swiper('#swiper-container-year', {
       slidesPerView: 2,
       spaceBetween: 1,
@@ -530,6 +527,8 @@ var initYearSlider = function() {
         }
       }
     });
+
+
 
     PubSub.publish('filter:bydata');
 };
@@ -642,7 +641,7 @@ var loadThemeData = function() {
 
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
 
-        PubSub.publish('update:slider');
+        PubSub.publish('init:slider_visualization');
     });
 }
 
@@ -1214,15 +1213,14 @@ var changeDimension = function() {
 
 
 PubSub.subscribe('init:basemap', initBaseMap);
-PubSub.subscribe('init:yearslider', initSlider);
-PubSub.subscribe('update:slider', initYearSlider);
+PubSub.subscribe('init:slider_directory', initSliderDirectory);
 PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
-
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
-PubSub.subscribe('filter:bydata', filterByYear);
+PubSub.subscribe('init:slider_visualization', initVisualizationSlider);
 
+PubSub.subscribe('filter:bydata', filterByYear);
 PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap);
 PubSub.subscribe('update:map', updateMap);
