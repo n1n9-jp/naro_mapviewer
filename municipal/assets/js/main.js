@@ -437,11 +437,11 @@ var initVisualizationSlider = function() {
     .attr("class", "swiper-slide")
     .text(function(d) { return d; });
 
-    if (swiperVisualization && typeof swiperVisualization.destroy === "function") {
+    if (swiperVisualizationScale && typeof swiperVisualizationScale.destroy === "function") {
         swiperVisualization.destroy(true, true);
     }
 
-    swiperVisualization = new Swiper('#swiper-container-scale', {
+    swiperVisualizationScale = new Swiper('#swiper-container-scale', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
