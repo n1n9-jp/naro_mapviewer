@@ -438,7 +438,7 @@ var initVisualizationSlider = function() {
     .text(function(d) { return d; });
 
     if (swiperVisualizationScale && typeof swiperVisualizationScale.destroy === "function") {
-        swiperVisualization.destroy(true, true);
+        swiperVisualizationScale.destroy(true, true);
     }
 
     swiperVisualizationScale = new Swiper('#swiper-container-scale', {
