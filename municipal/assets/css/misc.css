@@ -3,3 +3,18 @@
 .bold {
     font-weight: 900;
 }
+
+@font-face {
+    font-family: 'Noto Serif JP';
+    src: url('assets/fonts/NotoSansJP-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Noto Serif JP';
+    src: url('assets/fonts/NotoSansJP-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+  
