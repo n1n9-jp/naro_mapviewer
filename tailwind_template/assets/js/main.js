@@ -2,12 +2,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // 各navボタンの取得（ID指定）
-  const dashboardLink = document.getElementById("dashboard");
   const dataLink = document.getElementById("datachange");
   const vizLink = document.getElementById("vizchange");
   
   // nav全体のリンクを配列にまとめる
-  const navLinks = [dashboardLink, dataLink, vizLink];
+  const navLinks = [dataLink, vizLink];
 
   // 外側コンテナとパネルの取得
   const slideOverContainer = document.getElementById("slideOverContainer");
@@ -50,14 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateActive(link) {
     navLinks.forEach(item => {
       if (item) {
-        item.classList.remove("bg-gray-900", "text-white");
-        item.classList.add("text-gray-300", "hover:bg-gray-700", "hover:text-white");
+        item.classList.remove("text-white", "bg-gray-900", "text-white", "hover:bg-gray-700", "hover:text-white");
+        item.classList.add("text-gray-300");
       }
     });
-    if (link) {
-      link.classList.remove("text-gray-300", "hover:bg-gray-700", "hover:text-white");
-      link.classList.add("bg-gray-900", "text-white");
-    }
   }
   
 
@@ -66,14 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetActiveMenuToDashboard() {
     navLinks.forEach(item => {
       if (item) {
-        item.classList.remove("bg-gray-900", "text-white");
-        item.classList.add("text-gray-300", "hover:bg-gray-700", "hover:text-white");
+        item.classList.remove("text-gray-300");
+        item.classList.add("text-white", "bg-gray-900", "hover:bg-gray-700", "hover:text-white");
       }
     });
-    if (dashboardLink) {
-      dashboardLink.classList.remove("text-gray-300", "hover:bg-gray-700", "hover:text-white");
-      dashboardLink.classList.add("bg-gray-900", "text-white");
-    }
   }
   
 
@@ -97,7 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // slider内のタイトル、説明文、4コラムコンテンツの差し替え
             if (contentTitle && contentDescription && contentContainer) {
               if (this.id === "datachange") {
-                contentTitle.textContent = "Data Modification";
+
+                contentTitle.textContent = "データの変更";
                 contentDescription.textContent = "Update your data using the options below.";
                 contentContainer.innerHTML = `
                   <div class="grid grid-cols-4 gap-4">
@@ -116,7 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                 `;
               } else if (this.id === "vizchange") {
-                contentTitle.textContent = "Visualization Style Change";
+
+                contentTitle.textContent = "可視化の変更";
                 contentDescription.textContent = "Customize the visualization style using the options below.";
                 contentContainer.innerHTML = `
                   <div class="grid grid-cols-3 gap-4">
@@ -135,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
         }
-        // 2D／3D切り替えや印刷はスライダーは開閉しないので、そのまま通常動作
       });
     }
   });
@@ -152,10 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
         slideOverContainer.classList.add("hidden");
         resetActiveMenuToDashboard();
         enableNavLinks();
-        if (dashboardLink) {
-          dashboardLink.focus();
-          console.log("Focus moved to Dashboard");
-        }
       }, 500);
     });
   }
