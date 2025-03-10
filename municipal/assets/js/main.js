@@ -174,6 +174,31 @@ var fl_map = "";
 var hoveredStateId = null;
 
 
+/* ------------------------------
+ Tailwind template
+------------------------------ */
+
+// 各navボタンの取得（ID指定）
+const dataLink = document.getElementById("datachange");
+const vizLink = document.getElementById("vizchange");
+var selectedNav = "";
+
+// nav全体のリンクを配列にまとめる
+const navLinks = [dataLink, vizLink];
+
+// 外側コンテナとパネルの取得
+const slideOverContainer = document.getElementById("slideOverContainer");
+const sidepanel = document.getElementById("sidepanel");
+
+// パネル内の閉じるボタンの取得
+const closeButton = sidepanel ? sidepanel.querySelector('button[type="button"]') : null;
+
+// slider内のコンテンツの取得
+const contentTitle = sidepanel ? sidepanel.querySelector("#slide-over-title") : null;
+const contentDescription = sidepanel ? sidepanel.querySelector(".slider-description") : null;
+const contentContainer = sidepanel ? sidepanel.querySelector(".slider-content") : null;
+
+
 
 var initBaseMap = function() {
     console.log("initBaseMap");
@@ -478,9 +503,9 @@ var initVizSlider = function() {
     console.log("initVizSlider");
 
     /* Color Scale Slider */
-    d3.select("#swiperColorScale").selectAll("div").remove();
+    d3.select("#swiperColor").selectAll("div").remove();
 
-    d3.select("#swiperColorScale")
+    d3.select("#swiperColor")
     .selectAll("div")
     .data(valueNameArray)
     .enter()
@@ -488,11 +513,11 @@ var initVizSlider = function() {
     .attr("class", "swiper-slide")
     .text(function(d) { return d; });
 
-    if (swiperColorScale && typeof swiperColorScale.destroy === "function") {
-        swiperColorScale.destroy(true, true);
+    if (swiperColor && typeof swiperColor.destroy === "function") {
+        swiperColor.destroy(true, true);
     }
 
-    swiperColorScale = new Swiper('#swiper-container-color', {
+    swiperColor = new Swiper('#swiper-container-color', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -512,9 +537,9 @@ var initVizSlider = function() {
 
 
     /* Depth Scale Slider */
-    d3.select("#swiperDepthScale").selectAll("div").remove();
+    d3.select("#swiperDepth").selectAll("div").remove();
 
-    d3.select("#swiperDepthScale")
+    d3.select("#swiperDepth")
     .selectAll("div")
     .data(valueNameArray)
     .enter()
@@ -522,11 +547,11 @@ var initVizSlider = function() {
     .attr("class", "swiper-slide")
     .text(function(d) { return d; });
 
-    if (swiperDepthScale && typeof swiperDepthScale.destroy === "function") {
-        swiperDepthScale.destroy(true, true);
+    if (swiperDepth && typeof swiperDepth.destroy === "function") {
+        swiperDepth.destroy(true, true);
     }
 
-    swiperDepthScale = new Swiper('#swiper-container-depth', {
+    swiperDepth = new Swiper('#swiper-container-depth', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -546,9 +571,9 @@ var initVizSlider = function() {
 
 
     /* Visualization Scale Var Slider */
-    d3.select("#swiperVisualizationScale").selectAll("div").remove();
+    d3.select("#swiperScale").selectAll("div").remove();
 
-    d3.select("#swiperVisualizationScale")
+    d3.select("#swiperScale")
     .selectAll("div")
     .data(scaleArray)
     .enter()
@@ -556,11 +581,11 @@ var initVizSlider = function() {
     .attr("class", "swiper-slide")
     .text(function(d) { return d; });
 
-    if (swiperVisualizationScale && typeof swiperVisualizationScale.destroy === "function") {
-        swiperVisualizationScale.destroy(true, true);
+    if (swiperScale && typeof swiperScale.destroy === "function") {
+        swiperScale.destroy(true, true);
     }
 
-    swiperVisualizationScale = new Swiper('#swiper-container-scale', {
+    swiperScale = new Swiper('#swiper-container-scale', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -655,6 +680,29 @@ var initVizSlider = function() {
 
 var setupNav = function() {
     console.log("setupNav");
+
+    // 各navリンクのクリックイベント設定
+    navLinks.forEach(link => {
+        if (link) {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+            // updateActive();
+
+            // 「データの変更」または「可視化スタイルの変更」ならパネルを開く
+            if (this.id === "datachange" || this.id === "vizchange") {
+            if (slideOverContainer && sidepanel) {
+
+                selectedNav = this.id;
+                console.log("selectedNav", selectedNav);
+
+                PubSub.publish('navlink:disabled');
+                PubSub.publish('panel:open');
+            }
+            }
+        });
+        }
+    });
+
     PubSub.publish('panel:setup');
 }
 
@@ -662,28 +710,78 @@ var setupNav = function() {
 
 var setupPanel = function() {
     console.log("setupPanel");
+
+    if (closeButton && slideOverContainer && sidepanel) {
+        closeButton.addEventListener("click", () => {
+          PubSub.publish('panel:close');
+        });
+    }
+
     PubSub.publish('filter:bydata');
 }
 
 
+
 var disableNavLinks = function() {
     console.log("disableNavLinks");
+    navLinks.forEach(link => {
+        if (link) {
+          link.classList.add('pointer-events-none');
+          link.classList.remove("text-white", "bg-gray-900", "text-white", "hover:bg-gray-700", "hover:text-white");
+          link.classList.add("text-gray-300");
+        }
+    });
 
 }
 
 var enableNavLinks = function() {
     console.log("enableNavLinks");
-
+    navLinks.forEach(link => {
+        if (link) {
+          link.classList.remove('pointer-events-none');
+          link.classList.remove("text-gray-300");
+          link.classList.add("text-white", "bg-gray-900", "hover:bg-gray-700", "hover:text-white");
+        }
+    });
 }
 
 var openPanel = function() {
     console.log("openPanel");
 
+    slideOverContainer.classList.remove("hidden");
+    void sidepanel.offsetWidth; // 強制再描画
+    sidepanel.classList.remove("-translate-y-full");
+    sidepanel.classList.add("translate-y-0");
+    console.log("Slide-over panel opened");
+    // disableNavLinks();
+  
+    // タイトル、説明文の更新と該当パネルの表示切替
+    if (contentTitle && contentDescription) {
+      if (selectedNav === "datachange") {
+        contentTitle.textContent = "データの変更";
+        contentDescription.textContent = "Update your data using the options below.";
+        document.getElementById("datachange-panel").classList.remove("hidden");
+        document.getElementById("vizchange-panel").classList.add("hidden");
+      } else if (selectedNav === "vizchange") {
+        contentTitle.textContent = "可視化の変更";
+        contentDescription.textContent = "Customize the visualization style using the options below.";
+        document.getElementById("vizchange-panel").classList.remove("hidden");
+        document.getElementById("datachange-panel").classList.add("hidden");
+      }
+    }
 }
 
 var closePanel = function() {
     console.log("closePanel");
 
+    sidepanel.classList.remove("translate-y-0");
+    sidepanel.classList.add("-translate-y-full");
+    console.log("Slide-over panel closing");
+    setTimeout(() => {
+      slideOverContainer.classList.add("hidden");
+      PubSub.publish('navlink:abled');
+      // enableNavLinks();
+    }, 500);
 }
 
 
@@ -1139,7 +1237,7 @@ var updateLegend = function() {
 
 
     /* detect Width */
-    columnWidth = document.getElementById("legendCon").offsetWidth -20;
+    // columnWidth = document.getElementById("legendCon").offsetWidth -20;
 
 
 

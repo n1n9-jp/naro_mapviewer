@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="h-full bg-gray-100">
 <head>
 <title>気候変動予測の影響の可視化</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
-<link href="assets/css/lib/bootstrap_overwrite.css" rel="stylesheet"/>
 <link href="assets/css/lib/swiper-bundle.css" rel="stylesheet" />
 <link href="assets/css/lib/swiper_overwrite.css" rel="stylesheet" />
 <link href="assets/css/lib/lity.min.css" rel="stylesheet" />
@@ -16,306 +14,345 @@
 <link href="assets/css/sidebar.css" rel="stylesheet" />
 <link href="assets/css/thememap.css" rel="stylesheet" />
 <link href="assets/css/misc.css" rel="stylesheet" />
+
 </head>
-<body class="bg-dark">
+  <body class="h-full">
+    <div class="min-h-full">
 
-<!-- <div class="position-relative"> -->
-  <div id="sidebarContainer" class="position-absolute right-0 end-0">
 
-    <div class="container-fluid mb-4">
-      <div class="row">
-      </div>
-    </div>
 
-    <div class="container-fluid mb-4" id="siteTitle">
-      <div class="row">
-        <div class="col-12">
-          <div id="siteTitle">
-            <h1>Impacts of <span class="bold">Climate Change</span> Projections</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <h3>データ選択</h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <div class="text-center">Dir1</div>
-        </div>
-      </div>
-      <div class="row body">
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir1"></div>
+    <div class="relative z-50">
+      <div class="bg-gray-800 pointer-events-none w-full h-16"></div>
+      
+      <div class="absolute inset-0 pointer-events-auto">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          
+          <div class="flex items-center">
+            <h1 class="shrink-0 text-white font-bold">
+              Impacts of Climate Change Projections
+            </h1>
+            <div class="md:block" id="global-nav">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <span 
+                  id="dashboard"
+                  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300" 
+                  aria-current="page"
+                  >ホーム</span
+                >
+                <a 
+                  href="#"
+                  id="datachange"
+                  class="rounded-md px-3 py-2 text-sm font-medium bg-gray-900 text-white hover:bg-gray-700 hover:text-white"
+                  >データの変更</a
+                >
+                <a 
+                  href="#"
+                  id="vizchange"
+                  class="rounded-md px-3 py-2 text-sm font-medium bg-gray-900 text-white hover:bg-gray-700 hover:text-white"
+                  >可視化の変更</a
+                >
+              </div>
             </div>
-            <div class="col-10">
-                  <!-- Slider -->
-                  <div class="swiper-container swipers" id="swiper-container-dir1">
-                    <div class="swiper-wrapper" id="swiperDir1">
+          </div>
+
+          <div class="md:block">
+            <div class="ml-4 flex items-center md:ml-6">
+              <div class="px-3 py-2">
+                <a
+                  href="#"
+                  id="printBtn"
+                  class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white"
+                  >印刷</a
+                >
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
+
+      <header class="bg-white shadow-sm relative z-10 h-10">
+        <div class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
+          <span id="selectedDir1">Apple</span> - <span id="selectedDir2">ssp126</span> - <span id="selectedDir3">pred_probability</span> - <span id="selectedVar">L0</span> - <span id="selectedYear">Year</span>
+        </div>
+      </header>
+
+      <main class="pb-16 z-0">
+        <div class="mx-auto">
+          <div id="mapboxContainer"></div>
+        </div>
+      </main>
+
+
+
+
+      <div id="slideOverContainer" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 hidden z-1" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+
+        <div class="fixed inset-0"></div>
+        <div class="fixed inset-0 overflow-hidden">
+          <div class="absolute inset-0 overflow-hidden">
+
+            <div class="pointer-events-none fixed inset-x-0 top-24 flex justify-center z-1">
+
+              <div id="sidepanel" class="pointer-events-auto w-full transform transition ease-in-out duration-500 sm:duration-700 -translate-y-full">
+
+                <!-- sidepanel の内容はそのまま -->
+                <form class="flex h-full flex-col divide-gray-200 bg-white shadow-xl">
+                  <div class="h-0 flex-1 overflow-y-auto bg-gray-600">
+                    <div class=" mx-auto max-w-7xl px-4 py-6 sm:px-6">
+
+                      <div class="flex items-center justify-between">
+                        <h2 class="text-base font-semibold text-white" id="slide-over-title">New Project</h2>
+                      </div>
+                      <div class="mt-1">
+                        <p class="slider-description text-sm text-indigo-300">Get started by filling in the information below to create your new project.</p>
+                      </div>
+                    
+                      <!-- slider-content内に2つのコンテンツをあらかじめ用意（初期状態は両方hidden） -->
+                      <div class="slider-content mt-4">
+                        <div id="datachange-panel" class="hidden">
+                          <!-- 「データの変更」用のコンテンツ -->
+                          <div class="grid grid-cols-4 gap-4">
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Dir1</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir1">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-dir1">
+                                    <div class="swiper-wrapper h-full" id="swiperDir1">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir1">▶</div>
+                                </div>
+                              </div>                              
+                              
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Dir2</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir2">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-dir2">
+                                    <div class="swiper-wrapper h-full" id="swiperDir2">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir2">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Dir3</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir3">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-dir3">
+                                    <div class="swiper-wrapper h-full" id="swiperDir3">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir3">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Year</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-year">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-year">
+                                    <div class="swiper-wrapper h-full" id="swiperYear">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-year">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div id="vizchange-panel" class="hidden">
+                          <!-- 「可視化の変更」用のコンテンツ -->
+                          <div class="grid grid-cols-4 gap-4">
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Value for Color</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-color">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-color">
+                                    <div class="swiper-wrapper h-full" id="swiperColor">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-color">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Value for Depth</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-depth">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-depth">
+                                    <div class="swiper-wrapper h-full" id="swiperDepth">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-depth">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Visualization Scale</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-scale">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-scale">
+                                    <div class="swiper-wrapper h-full" id="swiperScale">
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-scale">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                                  <div>2D/3D Change</div>
+                                  <div class="grid grid-cols-12 items-center h-20">
+                                    <div class="">
+                                      <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-2d3d">◀</div>
+                                    </div>
+                                    <div class="col-span-10 h-full">
+                                      <!-- Slider -->
+                                      <div class="swiper-container swipers h-full" id="swiper-container-2d3d">
+                                        <div class="swiper-wrapper h-full" id="swiper2d3dChange">
+                                        </div>
+                                      </div>
+                                      <!-- Slider -->
+                                    </div>
+                                    <div class="">
+                                      <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-2d3d">▶</div>
+                                    </div>
+                                  </div>
+                                  
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <!-- <div class="flex flex-1 flex-col justify-between">
+                      <div class="divide-y divide-gray-200 px-4 sm:px-6">
+                        <div class="space-y-6 pt-6 pb-5">
+                        </div>
+                      </div>
+                    </div> -->
+
+                  </div>
+
+                  <div class="flex-shrink-0 px-4 py-4 bg-gray-600">
+                    <div class="flex justify-center">
+                      <button id="closeSliderButton" type="button" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white">
+                        閉じる
+                      </button>
                     </div>
                   </div>
-                  <!-- Slider -->
+
+                </form>
+              </div>
             </div>
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir1"></div>
-            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <div class="container-fluid mb-4 sidebar">
-        <div class="row header">
-          <div class="col-12">
-            <div class="text-center">Dir2</div>
-          </div>
-        </div>
-        <div class="row body">
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir2"></div>
-            </div>
-            <div class="col-10">
-                  <!-- Slider -->
-                  <div class="swiper-container swipers" id="swiper-container-dir2">
-                    <div class="swiper-wrapper" id="swiperDir2">
-                    </div>
-                  </div>
-                  <!-- Slider -->
-            </div>
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir2"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-        <div class="row header">
-          <div class="col-12">
-            <div class="text-center">Dir3</div>
-          </div>
-        </div>
-        <div class="row body">
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir3"></div>
-            </div>
-            <div class="col-10">
-                  <!-- Slider -->
-                  <div class="swiper-container swipers" id="swiper-container-dir3">
-                    <div class="swiper-wrapper" id="swiperDir3">
-                    </div>
-                  </div>
-                  <!-- Slider -->
-            </div>
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir3"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-        <div class="row header">
-          <div class="col-12">
-            <div class="text-center">Value for Color</div>
-          </div>
-        </div>
-        <div class="row body">
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-color"></div>
-            </div>
-            <div class="col-10">
-                  <div class="swiper-container swipers" id="swiper-container-color">
-                    <div class="swiper-wrapper" id="swiperColorScale">
-                    </div>
-                  </div>
-            </div>
-            <div class="col-1">
-              <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-color"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <div class="text-center">Value for Depth</div>
-        </div>
-      </div>
-      <div class="row body">
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-depth"></div>
-          </div>
-          <div class="col-10">
-                <div class="swiper-container swipers" id="swiper-container-depth">
-                  <div class="swiper-wrapper" id="swiperDepthScale">
-                  </div>
-                </div>
-          </div>
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-depth"></div>
-          </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <div class="text-center">Year</div>
-        </div>
-      </div>
-      <div class="row body">
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-year"></div>
-          </div>
-          <div class="col-10">
-                <div class="swiper-container swipers" id="swiper-container-year">
-                  <div class="swiper-wrapper" id="swiperYear">
-                  </div>
-                </div>
-          </div>
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-year"></div>
-          </div>
-      </div>
-  </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <h3>可視化モード選択</h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <div class="text-center">Visualization Scale</div>
-        </div>
-      </div>
-      <div class="row body">
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-scale"></div>
-          </div>
-          <div class="col-10">
-                <div class="swiper-container swipers" id="swiper-container-scale">
-                  <div class="swiper-wrapper" id="swiperVisualizationScale">
-                  </div>
-                </div>
-          </div>
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-scale"></div>
-          </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <div class="text-center">2D3D Change</div>
-        </div>
-      </div>
-      <div class="row body">
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-2d3d"></div>
-          </div>
-          <div class="col-10">
-                <div class="swiper-container swipers" id="swiper-container-2d3d">
-                  <div class="swiper-wrapper" id="swiper2d3dChange">
-                  </div>
-                </div>
-          </div>
-          <div class="col-1">
-            <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-2d3d"></div>
-          </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <h3>出力</h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row button">
-        <div class="col-12">
-          <button type="button" id="printBtn" class="btn btn-secondary">Print this map</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4" id="info4print">
-      <div class="row button">
-        <div class="col-12">
-          <h3>Theme data for this map:</h3>
-          <ul>
-            <li id="dir1print"></li>
-            <li id="dir2print"></li>
-            <li id="dir3print"></li>
-            <li id="probprint"></li>
-            <li id="vizscaleprint"></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4 sidebar">
-      <div class="row header">
-        <div class="col-12">
-          <h3>凡例</h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid mb-4" id="legendCon">
-      <div class="row header">
-        <div class="col-12">
-          <div id="legendLabel"><h3>Legend</h3></div>
-        </div>
-      </div>
-      <div class="row body">
-        <div id="legendBar"></div>
-      </div>
-      <div class="row doublebody">
-        <div id="smallMapContainer">
+      <div class="">
+        <div id="smallMapContainer" class="z-0">
           <div id="smallMapLegend"></div>
           <div id="heightLegend"></div>
         </div>
-        
       </div>
+
+      <footer class="bg-gray-800 text-white py-4 fixed bottom-0 w-full z-5">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p class="text-left text-sm">©NARO. All rights reserved.</p>
+        </div>
+      </footer>
+
     </div>
-
-    <div class="container-fluid mb-4">
-      <div class="row button">
-        <div class="col-12"><small class="caption">
-          <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>
-        </small></div>
-      </div>
-    </div>
-
-  </div>
-<!-- </div> -->
-
-<div id="mapContainer">
-  <div id="mapboxContainer"></div>
-</div>
-
-
 
 <!-- common -->
-<script src="assets/js/lib/bootstrap.min.js" crossorigin="anonymous"></script>
 <script src="assets/js/lib/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
 <script src="assets/js/lib/lodash.js"></script>
 <script src="assets/js/lib/swiper-bundle.min.js"></script>
 <script src="assets/js/lib/lity.min.js"></script>
 <script src="assets/js/lib/pubsub.js"></script>
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 <!-- /common -->
 
 <!-- dataviz -->
