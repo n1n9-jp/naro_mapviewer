@@ -11,9 +11,6 @@ maptileURL[0] = "https://api.maptiler.com/maps/positron/style.json?key=p3yGzZkqo
 maptileURL[1] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
 var maptileIndex = 0;
 
-/* API token */
-mapboxgl.accessToken = 'pk.eyJ1IjoieXlhemFraSIsImEiOiJjbTVxZzhrdmMwYmplMnFvazc2bHhnYnJzIn0.3_IEtaI7ZSFcRiaQfZaL_Q';
-
 var POI = [
   {
     city: "Tokyo Station",
@@ -168,7 +165,7 @@ var tsukubaGeoJson = [];
 var initBaseMap = function() {
     console.log("initBaseMap");
 
-    mapObject = new mapboxgl.Map({
+    mapObject = new maplibregl.Map({
         "container": "mapboxContainer",
         "center": [POI[0]["longitude"], POI[0]["latitude"]],
         "zoom": POI[0]["zoom"],
@@ -336,7 +333,7 @@ var initDataSlider = function() {
 var initMapUI = function() {
     console.log("initMapUI");
 
-    var _nav = new mapboxgl.NavigationControl();
+    var _nav = new maplibregl.NavigationControl();
     mapObject.addControl(_nav, 'top-right');
 
 
@@ -835,20 +832,6 @@ var drawMap = function() {
             メイン用
         -------------------- */
 
-        // 空
-        mapObject.addLayer({
-            'id': 'sky-day',
-            'type': 'sky',
-            'paint': {
-              'sky-type': 'gradient',
-              'sky-gradient': ["interpolate",["linear"],["sky-radial-progress"],0.8,"#9999FF",1,"white"],
-              'sky-opacity': 1,
-              'sky-opacity-transition': { 'duration': 500 }
-            }
-        });
-
-
-
         // 3D押出しレイヤー
         mapObject.addLayer({
             'id': 'naro_prob',
@@ -925,7 +908,7 @@ var drawMap = function() {
         -------------------- */
 
         /* Mapbox ポップアップ */
-        const popup = new mapboxgl.Popup({
+        const popup = new maplibregl.Popup({
             closeButton: false,
             closeOnClick: false
         });
@@ -1111,7 +1094,7 @@ var initPrint = function() {
 
             d3.selectAll(".sidebar").style("display", "block");
             d3.selectAll("#info4print").style("display", "none");
-            d3.select("#mapboxContainer .mapboxgl-control-container").style("display", "block");
+            d3.select("#mapboxContainer .maplibregl-control-container").style("display", "block");
         });
 
         /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
@@ -1120,7 +1103,7 @@ var initPrint = function() {
 
             d3.selectAll(".sidebar").style("display", "none");
             d3.selectAll("#info4print").style("display", "block");
-            d3.select("#mapboxContainer .mapboxgl-control-container").style("display", "none");
+            d3.select("#mapboxContainer .maplibregl-control-container").style("display", "none");
 
             d3.selectAll("#dir1print").text(dir1[dir1Index]);
             d3.selectAll("#dir2print").text(dir2[dir2Index]);
