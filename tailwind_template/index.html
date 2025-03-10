@@ -100,9 +100,207 @@
                         <p class="slider-description text-sm text-indigo-300">Get started by filling in the information below to create your new project.</p>
                       </div>
                     
-                      <!-- ここに差し替え用のコンテンツ領域を追加 -->
+                      <!-- slider-content内に2つのコンテンツをあらかじめ用意（初期状態は両方hidden） -->
                       <div class="slider-content mt-4">
+                        <div id="datachange-panel" class="hidden">
+                          <!-- 「データの変更」用のコンテンツ -->
+                          <div class="grid grid-cols-4 gap-4">
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Dir1</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir1">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-dir1">
+                                    <div class="swiper-wrapper h-full" id="swiperDir1">
+                                      スライダー1
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir1">▶</div>
+                                </div>
+                              </div>                              
+                              
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Dir2</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir2">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-dir2">
+                                    <div class="swiper-wrapper h-full" id="swiperDir2">
+                                      スライダー2
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir2">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Dir3</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir3">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-dir3">
+                                    <div class="swiper-wrapper h-full" id="swiperDir3">
+                                      スライダー3
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir3">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Year</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-year">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-year">
+                                    <div class="swiper-wrapper h-full" id="swiperYear">
+                                      year
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-year">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div id="vizchange-panel" class="hidden">
+                          <!-- 「可視化の変更」用のコンテンツ -->
+                          <div class="grid grid-cols-4 gap-4">
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Value for Color</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-color">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-color">
+                                    <div class="swiper-wrapper h-full" id="swiperColor">
+                                      Value for Color
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-color">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Value for Depth</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-depth">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-depth">
+                                    <div class="swiper-wrapper h-full" id="swiperDepth">
+                                      Value for Depth
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-depth">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                              <div>Visualization Scale</div>
+                              <div class="grid grid-cols-12 items-center h-20">
+                                <div class="col-span-1 flex items-center justify-start h-full">
+                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-scale">◀</div>
+                                </div>
+                                <div class="col-span-10 h-full">
+                                  <!-- Slider -->
+                                  <div class="swiper-container swipers h-full" id="swiper-container-scale">
+                                    <div class="swiper-wrapper h-full" id="swiperScale">
+                                      Visualization Scale
+                                    </div>
+                                  </div>
+                                  <!-- Slider -->
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end h-full">
+                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-scale">▶</div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="bg-gray-200 p-4">
+
+                                  <div>2D/3D Change</div>
+                                  <div class="grid grid-cols-12 items-center h-20">
+                                    <div class="col-span-1 flex items-center justify-start h-full">
+                                      <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-2d3d">◀</div>
+                                    </div>
+                                    <div class="col-span-10 h-full">
+                                      <!-- Slider -->
+                                      <div class="swiper-container swipers h-full" id="swiper-container-2d3d">
+                                        <div class="swiper-wrapper h-full" id="swiper2d3dChange">
+                                          swiper2d3dChange
+                                        </div>
+                                      </div>
+                                      <!-- Slider -->
+                                    </div>
+                                    <div class="col-span-1 flex items-center justify-end h-full">
+                                      <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-2d3d">▶</div>
+                                    </div>
+                                  </div>
+                                  
+                            </div>
+
+                          </div>
+                        </div>
                       </div>
+
 
                     </div>
 

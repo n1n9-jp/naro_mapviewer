@@ -93,160 +93,21 @@ var openPanel = function() {
   console.log("Slide-over panel opened");
   // disableNavLinks();
 
-  // slider内のタイトル、説明文、4コラムコンテンツの差し替え
-  if (contentTitle && contentDescription && contentContainer) {
+  // タイトル、説明文の更新と該当パネルの表示切替
+  if (contentTitle && contentDescription) {
     if (selectedNav === "datachange") {
-
       contentTitle.textContent = "データの変更";
       contentDescription.textContent = "Update your data using the options below.";
-      contentContainer.innerHTML = `
-        <div class="grid grid-cols-4 gap-4">
-          <div class="bg-gray-200 p-4">
-              <div>Dir1</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir1"></div>
-              </div>
-              <div class="col-10">
-                    <!-- Slider -->
-                    <div class="swiper-container swipers" id="swiper-container-dir1">
-                      <div class="swiper-wrapper" id="swiperDir1">
-                      </div>
-                    </div>
-                    <!-- Slider -->
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir1"></div>
-              </div>
-          </div>
-
-          <div class="bg-gray-200 p-4">
-              <div>Dir2</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir2"></div>
-              </div>
-              <div class="col-10">
-                    <!-- Slider -->
-                    <div class="swiper-container swipers" id="swiper-container-dir2">
-                      <div class="swiper-wrapper" id="swiperDir2">
-                      </div>
-                    </div>
-                    <!-- Slider -->
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir2"></div>
-              </div>
-          </div>
-
-          <div class="bg-gray-200 p-4">
-              <div>Dir3</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-dir3"></div>
-              </div>
-              <div class="col-10">
-                    <!-- Slider -->
-                    <div class="swiper-container swipers" id="swiper-container-dir3">
-                      <div class="swiper-wrapper" id="swiperDir3">
-                      </div>
-                    </div>
-                    <!-- Slider -->
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-dir3"></div>
-              </div>
-          </div>
-
-          <div class="bg-gray-200 p-4">
-              <div>Year</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-year"></div>
-              </div>
-              <div class="col-10">
-                    <div class="swiper-container swipers" id="swiper-container-year">
-                      <div class="swiper-wrapper" id="swiperYear">
-                      </div>
-                    </div>
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-year"></div>
-              </div>
-          </div>
-        </div>
-      `;
+      document.getElementById("datachange-panel").classList.remove("hidden");
+      document.getElementById("vizchange-panel").classList.add("hidden");
     } else if (selectedNav === "vizchange") {
-
       contentTitle.textContent = "可視化の変更";
       contentDescription.textContent = "Customize the visualization style using the options below.";
-      contentContainer.innerHTML = `
-        <div class="grid grid-cols-4 gap-4">
-
-          <div class="bg-gray-200 p-4">
-              <div>Visualization Color</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-color"></div>
-              </div>
-              <div class="col-10">
-                    <div class="swiper-container swipers" id="swiper-container-color">
-                      <div class="swiper-wrapper" id="swiperColorScale">
-                      </div>
-                    </div>
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-color"></div>
-              </div>
-          </div>
-
-          <div class="bg-gray-200 p-4">
-              <div>Value for Depth</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-depth"></div>
-              </div>
-              <div class="col-10">
-                    <div class="swiper-container swipers" id="swiper-container-depth">
-                      <div class="swiper-wrapper" id="swiperDepthScale">
-                      </div>
-                    </div>
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-depth"></div>
-              </div>
-          </div>
-
-          <div class="bg-gray-200 p-4">
-              <div>Value for Scale</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-scale"></div>
-              </div>
-              <div class="col-10">
-                    <div class="swiper-container swipers" id="swiper-container-scale">
-                      <div class="swiper-wrapper" id="swiperVisualizationScale">
-                      </div>
-                    </div>
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-scale"></div>
-              </div>
-          </div>
-
-          <div class="bg-gray-200 p-4">
-              <div>2D/3D Change</div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-prev float-left swipers" id="swiper-button-prev-2d3d"></div>
-              </div>
-              <div class="col-10">
-                    <div class="swiper-container swipers" id="swiper-container-2d3d">
-                      <div class="swiper-wrapper" id="swiper2d3dChange">
-                      </div>
-                    </div>
-              </div>
-              <div class="col-1">
-                <div class="btn btn-secondary swiper-button-next d-flex justify-content-end swipers" id="swiper-button-next-2d3d"></div>
-              </div>
-          </div>
-
-        </div>
-      `;
+      document.getElementById("vizchange-panel").classList.remove("hidden");
+      document.getElementById("datachange-panel").classList.add("hidden");
     }
   }
+
 }
 
 
