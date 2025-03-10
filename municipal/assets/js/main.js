@@ -360,14 +360,122 @@ var initDataSlider = function() {
     PubSub.publish('init:mapui');
 }
 
+  
+
+var initMapUI = function() {
+    console.log("initMapUI");
+
+    var _nav = new mapboxgl.NavigationControl();
+    mapObject.addControl(_nav, 'top-right');
 
 
 
+    PubSub.publish('init:legend');
+}
 
 
 
-var initVisualizationSlider = function() {
-    console.log("initVisualizationSlider");
+var initLegend = function() {
+    console.log("initLegend");
+
+    /* Legend Container */
+    legendGroup = d3.select("#legendBar")
+        .append("div").attr("id", "legendContainer")
+        .append("svg").style("fill", "#FFFFFF")
+        .attr("transform", "translate("
+        + 0 + ","
+        + 0
+        + ")")
+        .append("g");
+
+    /* Gradiation Init */
+    defsLegend = legendGroup.append("defs")
+
+    defsLegend.append("linearGradient") .attr("id", legendGradientId)
+        .selectAll("stop")
+        .data(colorScale.range())
+        .enter().append("stop")
+        .attr("stop-color", d => d) 
+        .attr("offset", (d, i) => `${
+          i * 100 / 2 //2 is one less than our array's length
+        }%`)
+
+
+
+    PubSub.publish('load:basemap');
+}
+
+
+
+var loadBasemap = function() {
+    console.log("loadBasemap");
+
+    Promise.all([
+        // d3.json("assets/data_lib/" + "japanmap.json")
+        d3.json("assets/data_lib/" + "JapanMapDetail_light.json"),
+        d3.json("assets/data_lib/" + "JapanMapSimple.json")
+    ]).then(function (_data) {
+        dataBaseMapDetailed = _.cloneDeep(_data[0]);
+        dataBaseMapSimple = _.cloneDeep(_data[1]);
+
+        PubSub.publish('load:themedata');
+    });
+}
+
+
+
+var loadThemeData = function() {
+    console.log("loadThemeData");
+
+    // detect swiper
+    var _filepath = "assets/data_index/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
+
+    // load: theme data
+    Promise.all([
+        d3.csv(_filepath)
+    ]).then(function (_data) {
+  
+        dataObjTheme = _.cloneDeep(_data[0]);
+
+        varList = _data[0].columns;
+        valueNameArray = _.difference(varList, varListRemove);
+        console.log(valueNameArray);
+
+        /* 自治体コードが4桁の場合、右端に0を付与 */
+        for (var i=0; i<dataObjTheme.length; i++){
+
+            var _row = dataObjTheme[i];
+
+            if (_row["MuniCode"].length == 4){
+                _row["MuniCode"] = "0" + _row["MuniCode"];
+            }
+            _row["Year"] =      parseInt(_row["Year"]);
+            _row["MuniCode"] =  parseInt(_row["MuniCode"]);
+            _row["mean"] =      parseFloat(_row["mean"]);
+            _row["sd"] =        parseFloat(_row["sd"]);
+
+            for (var j = 0; j <= 50; j++) {
+                _row["H" + j] = parseFloat(_row["H" + j]);
+                _row["L" + j] = parseFloat(_row["L" + j]);
+            }
+
+            // dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
+            // dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
+        }
+        
+        console.log("dataObjTheme", dataObjTheme);
+        _data = null;
+
+        yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
+
+        PubSub.publish('init:vizslider');
+    });
+}
+
+
+
+var initVizSlider = function() {
+    console.log("initVizSlider");
 
     /* Color Scale Slider */
     d3.select("#swiperColorScale").selectAll("div").remove();
@@ -544,115 +652,24 @@ var initVisualizationSlider = function() {
     PubSub.publish('filter:bydata');
 };
 
-  
-
-var initMapUI = function() {
-    console.log("initMapUI");
-
-    var _nav = new mapboxgl.NavigationControl();
-    mapObject.addControl(_nav, 'top-right');
 
 
-
-    PubSub.publish('init:legend');
 }
 
 
 
-var initLegend = function() {
-    console.log("initLegend");
-
-    /* Legend Container */
-    legendGroup = d3.select("#legendBar")
-        .append("div").attr("id", "legendContainer")
-        .append("svg").style("fill", "#FFFFFF")
-        .attr("transform", "translate("
-        + 0 + ","
-        + 0
-        + ")")
-        .append("g");
-
-    /* Gradiation Init */
-    defsLegend = legendGroup.append("defs")
-
-    defsLegend.append("linearGradient") .attr("id", legendGradientId)
-        .selectAll("stop")
-        .data(colorScale.range())
-        .enter().append("stop")
-        .attr("stop-color", d => d) 
-        .attr("offset", (d, i) => `${
-          i * 100 / 2 //2 is one less than our array's length
-        }%`)
-
-
-
-    PubSub.publish('load:basemap');
 }
 
 
 
-var loadBasemap = function() {
-    console.log("loadBasemap");
-
-    Promise.all([
-        // d3.json("assets/data_lib/" + "japanmap.json")
-        d3.json("assets/data_lib/" + "JapanMapDetail_light.json"),
-        d3.json("assets/data_lib/" + "JapanMapSimple.json")
-    ]).then(function (_data) {
-        dataBaseMapDetailed = _.cloneDeep(_data[0]);
-        dataBaseMapSimple = _.cloneDeep(_data[1]);
-
-        PubSub.publish('load:themedata');
-    });
 }
 
 
 
-var loadThemeData = function() {
-    console.log("loadThemeData");
 
-    // detect swiper
-    var _filepath = "assets/data_index/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
+}
 
-    // load: theme data
-    Promise.all([
-        d3.csv(_filepath)
-    ]).then(function (_data) {
-  
-        dataObjTheme = _.cloneDeep(_data[0]);
 
-        varList = _data[0].columns;
-        valueNameArray = _.difference(varList, varListRemove);
-        console.log(valueNameArray);
-
-        /* 自治体コードが4桁の場合、右端に0を付与 */
-        for (var i=0; i<dataObjTheme.length; i++){
-
-            var _row = dataObjTheme[i];
-
-            if (_row["MuniCode"].length == 4){
-                _row["MuniCode"] = "0" + _row["MuniCode"];
-            }
-            _row["Year"] =      parseInt(_row["Year"]);
-            _row["MuniCode"] =  parseInt(_row["MuniCode"]);
-            _row["mean"] =      parseFloat(_row["mean"]);
-            _row["sd"] =        parseFloat(_row["sd"]);
-
-            for (var j = 0; j <= 50; j++) {
-                _row["H" + j] = parseFloat(_row["H" + j]);
-                _row["L" + j] = parseFloat(_row["L" + j]);
-            }
-
-            // dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
-            // dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
-        }
-        
-        console.log("dataObjTheme", dataObjTheme);
-        _data = null;
-
-        yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
-
-        PubSub.publish('init:slider_visualization');
     });
 }
 
@@ -1230,7 +1247,8 @@ PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
-PubSub.subscribe('init:slider_visualization', initVisualizationSlider);
+PubSub.subscribe('init:vizslider', initVizSlider);
+
 
 PubSub.subscribe('filter:bydata', filterByYear);
 PubSub.subscribe('join:data', joinData);
