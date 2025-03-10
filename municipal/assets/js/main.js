@@ -29,7 +29,7 @@
 -------------------- */
 
 /* MapObject */
-var mapObject, smallMapObject;
+var mapObject;
 
 /* Map Tile */
 var maptileURL = [];
@@ -213,23 +213,6 @@ var initBaseMap = function() {
         "minPitch": 0,
         "maxPitch": 85,
         "bearing": POI[0]["bearing"], 
-        "hash": true,
-        "interactive": true,
-        "style": maptileURL[maptileIndex]
-    });
-
-
-
-    smallMapObject = new mapboxgl.Map({
-        "container": "smallMapLegend",
-        "center": [POI[1]["longitude"], POI[1]["latitude"]],
-        "zoom": POI[1]["zoom"],
-        "minZoom": POI[1]["zoom"],
-        "maxZoom": POI[1]["zoom"],
-        "pitch": POI[1]["pitch"], 
-        "minPitch": 0,
-        "maxPitch": 85,
-        "bearing": POI[1]["bearing"], 
         "hash": true,
         "interactive": true,
         "style": maptileURL[maptileIndex]
@@ -883,11 +866,6 @@ var drawMap = function() {
             'data': dataBaseMapSimple
         });
 
-        smallMapObject.addSource('naro_legend', {
-            'type': 'geojson',
-            'data': dataBaseMapDetailed
-        });
-
 
 
         /* --------------------
@@ -979,80 +957,9 @@ var drawMap = function() {
 
 
 
-
-        // mapObject.addLayer({
-        //     'id': 'naro_prob_line_simple',
-        //     'type': 'fill-extrusion',
-        //     'source': 'naro_simple',
-        //     'layout': {},
-        //     'paint': {
-        //         // 'fill-extrusion-height': [
-        //         //     'interpolate', ['linear'],
-        //         //     ['get', valueNameArray[colorIndex]],
-        //         //     dataScaleArray[scaleIndex].minData, 0,
-        //         //     dataScaleArray[scaleIndex].maxData, 50000
-        //         //     // minData, 0,
-        //         //     // maxData, 50000
-        //         // ],
-        //         'fill-extrusion-height': 500,        
-        //         'fill-extrusion-vertical-gradient': true
-        //     }
-        // });
-
-
-
         /* --------------------
-            凡例用
+            ポップアップ
         -------------------- */
-
-        smallMapObject.setCenter([POI[1]["longitude"], POI[1]["latitude"]]);
-        smallMapObject.setPitch(POI[1]["pitch"]);
-        smallMapObject.setZoom(POI[1]["zoom"]);
-
-        // 凡例用3D押出しレイヤー
-        smallMapObject.addLayer({
-            'id': 'naro_prob_legend',
-            'type': 'fill-extrusion',
-            'source': 'naro_legend',
-            'layout': {},
-            'paint': {
-                'fill-extrusion-color': [
-                    'interpolate', ['linear'],
-                    ['get', valueNameArray[colorIndex]],
-                    dataScaleArray[scaleIndex].minData, minColor,
-                    dataScaleArray[scaleIndex].maxData, maxColor
-                ],
-                'fill-extrusion-height': [
-                    'interpolate', ['linear'],
-                    ['get', valueNameArray[colorIndex]],
-                    dataScaleArray[scaleIndex].minData, 0,
-                    dataScaleArray[scaleIndex].maxData, 50000
-                ],
-                'fill-extrusion-vertical-gradient': true
-            },'filter': ['==', 'N03_004', 'つくば市']
-            // },'filter': ['==', 'N03_001', '東京都']
-        });
-
-
-        // 地名テキストレイヤー
-        // mapObject.addLayer({
-        //     'id': 'naro_prob_text',
-        //     'type': 'symbol',
-        //     'source': 'naro',
-        //     'layout': {
-        //         'text-field': ['get', 'N03_004'],
-        //         'text-size': 12,
-        //         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-        //         'text-radial-offset': 0.5,
-        //         'text-justify': 'auto',
-        //         'icon-image': ['get', 'icon']
-        //     },
-        //     'paint': {
-        //         'text-color': "#FFF"
-        //     }
-        // });
-
-
 
         /* Mapbox ポップアップ */
         const popup = new mapboxgl.Popup({
@@ -1167,14 +1074,8 @@ var drawMap = function() {
         PubSub.publish('init:print');
 
     } else {
-        // console.log("false");
-
         mapObject.getSource('naro').setData(dataBaseMapDetailed);
-        smallMapObject.getSource('naro_legend').setData(dataBaseMapDetailed);
-
     }
-
-
 
     PubSub.publish('update:legend');
 }
@@ -1210,31 +1111,7 @@ var updateMap = function() {
           ]
         ]
     );
-    
-    
-
-    /* 小地図 */
-    smallMapObject.setPaintProperty(
-        "naro_prob_legend",
-        'fill-extrusion-height',
-            ['interpolate', ['linear'],
-            ['get', valueNameArray[depthIndex]],
-            dataScaleArray[scaleIndex].minData, minHeight,
-            dataScaleArray[scaleIndex].maxData, maxHeight]
-    );
-
-    smallMapObject.setPaintProperty(
-        "naro_prob_legend",
-        'fill-extrusion-color',
-        ['interpolate', ['linear'],
-          ['get', valueNameArray[colorIndex]],
-          dataScaleArray[scaleIndex].minData, minColor,
-          dataScaleArray[scaleIndex].maxData, maxColor
-        ]
-    );
-      
-
-
+  
     PubSub.publish('update:legend');
 }
 
@@ -1344,19 +1221,11 @@ var changeDimension = function() {
         mapObject.dragRotate.enable();
         mapObject.touchZoomRotate.enable();
 
-        smallMapObject.easeTo({ pitch: 60, duration: 1000 });
-        smallMapObject.dragRotate.enable();
-        smallMapObject.touchZoomRotate.enable();
-
       } else if (d23ArrayIndex === 1) { // 2D モードに切り替え
 
         mapObject.easeTo({ pitch: 0, duration: 1000 });
         mapObject.dragRotate.disable();
         mapObject.touchZoomRotate.disable();
-
-        smallMapObject.easeTo({ pitch: 0, duration: 1000 });
-        smallMapObject.dragRotate.disable();
-        smallMapObject.touchZoomRotate.disable();
       }
 }
 
