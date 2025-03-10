@@ -3,7 +3,7 @@
 -------------------- */
 // 一回のみ実行
 // initBaseMap() ... MapBox Object 初期化
-// initSlider() ... ファイルリスト読み込み & ナビ初期化
+// loadFileList() ... ファイルリスト読み込み & ナビ初期化
 // initMapUI() ... MapBox UI 初期化
 // loadBasemap() ... ベースマップ地図データの読み込み
 
@@ -216,7 +216,7 @@ var initBaseMap = function() {
     mapObject.on('styledata', () => {
         _stylecount++;
         if (_stylecount == 2) {
-            PubSub.publish('init:slider_directory');
+            PubSub.publish('load:filelist');
         }
     });
 
@@ -230,8 +230,8 @@ var initBaseMap = function() {
 }
 
 
-var initSliderDirectory = function() {
-    console.log("initSliderDirectory");
+var loadFileList = function() {
+    console.log("loadFileList");
 
     Promise.all([
         d3.csv("assets/data_lib/filelist.csv")
@@ -254,104 +254,115 @@ var initSliderDirectory = function() {
             dir3[0] = dir3[0].replace(".csv", "");
         }
 
-
-
-        /* Dir1 Var Slider */
-        var _dir1Items = d3.select("#swiperDir1")
-            .selectAll("div")
-            .data(dir1)
-            .enter();
-
-        _dir1Items.append("div")
-            .attr('class', function () {
-                return "swiper-slide";
-            })
-            .text(function (d, i) {
-                return d;
-            });
-
-        swiperDir1 = new Swiper('#swiper-container-dir1', {
-            slidesPerView: 2,
-            spaceBetween: 1,
-            centeredSlides: true,
-            navigation: {
-                nextEl: '#swiper-button-next-dir1',
-                prevEl: '#swiper-button-prev-dir1',
-            },
-        });
-
-        swiperDir1.on('slideChange', function (e) {
-            dir1Index = e.activeIndex;
-            PubSub.publish('load:themedata');
-        });
-
-
-
-        /* Dir2 Var Slider */
-        var _dir2Items = d3.select("#swiperDir2")
-            .selectAll("div")
-            .data(dir2)
-            .enter();
-
-        _dir2Items.append("div")
-            .attr('class', function () {
-                return "swiper-slide";
-            })
-            .text(function (d, i) {
-                return d;
-            });
-
-        swiperDir2 = new Swiper('#swiper-container-dir2', {
-            slidesPerView: 2,
-            spaceBetween: 1,
-            centeredSlides: true,
-            navigation: {
-                nextEl: '#swiper-button-next-dir2',
-                prevEl: '#swiper-button-prev-dir2',
-            },
-        });
-
-        swiperDir2.on('slideChange', function (e) {
-            dir2Index = e.activeIndex;
-            PubSub.publish('load:themedata');
-        });
-
-
-
-        /* Dir3 Var Slider */
-        var _dir3Items = d3.select("#swiperDir3")
-            .selectAll("div")
-            .data(dir3)
-            .enter();
-
-        _dir3Items.append("div")
-            .attr('class', function () {
-                return "swiper-slide";
-            })
-            .text(function (d, i) {
-                return d;
-            });
-
-        swiperDir3 = new Swiper('#swiper-container-dir3', {
-            slidesPerView: 2,
-            spaceBetween: 1,
-            centeredSlides: true,
-            navigation: {
-                nextEl: '#swiper-button-next-dir3',
-                prevEl: '#swiper-button-prev-dir3',
-            },
-        });
-
-        swiperDir3.on('slideChange', function (e) {
-            dir3Index = e.activeIndex;
-            PubSub.publish('load:themedata');
-        });
-
-        _data = null;
-
-        PubSub.publish('init:mapui');
+        PubSub.publish('init:dataslider');
     });
 }
+
+
+var initDataSlider = function() {
+    console.log("initDataSlider");
+
+
+
+    /* Dir1 Var Slider */
+    var _dir1Items = d3.select("#swiperDir1")
+        .selectAll("div")
+        .data(dir1)
+        .enter();
+
+    _dir1Items.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return d;
+        });
+
+    swiperDir1 = new Swiper('#swiper-container-dir1', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-dir1',
+            prevEl: '#swiper-button-prev-dir1',
+        },
+    });
+
+    swiperDir1.on('slideChange', function (e) {
+        dir1Index = e.activeIndex;
+        PubSub.publish('load:themedata');
+    });
+
+
+
+    /* Dir2 Var Slider */
+    var _dir2Items = d3.select("#swiperDir2")
+        .selectAll("div")
+        .data(dir2)
+        .enter();
+
+    _dir2Items.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return d;
+        });
+
+    swiperDir2 = new Swiper('#swiper-container-dir2', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-dir2',
+            prevEl: '#swiper-button-prev-dir2',
+        },
+    });
+
+    swiperDir2.on('slideChange', function (e) {
+        dir2Index = e.activeIndex;
+        PubSub.publish('load:themedata');
+    });
+
+
+
+    /* Dir3 Var Slider */
+    var _dir3Items = d3.select("#swiperDir3")
+        .selectAll("div")
+        .data(dir3)
+        .enter();
+
+    _dir3Items.append("div")
+        .attr('class', function () {
+            return "swiper-slide";
+        })
+        .text(function (d, i) {
+            return d;
+        });
+
+    swiperDir3 = new Swiper('#swiper-container-dir3', {
+        slidesPerView: 2,
+        spaceBetween: 1,
+        centeredSlides: true,
+        navigation: {
+            nextEl: '#swiper-button-next-dir3',
+            prevEl: '#swiper-button-prev-dir3',
+        },
+    });
+
+    swiperDir3.on('slideChange', function (e) {
+        dir3Index = e.activeIndex;
+        PubSub.publish('load:themedata');
+    });
+
+    _data = null;
+
+    PubSub.publish('init:mapui');
+}
+
+
+
+
 
 
 
@@ -1213,7 +1224,8 @@ var changeDimension = function() {
 
 
 PubSub.subscribe('init:basemap', initBaseMap);
-PubSub.subscribe('init:slider_directory', initSliderDirectory);
+PubSub.subscribe('load:filelist', loadFileList);
+PubSub.subscribe('init:dataslider', initDataSlider);
 PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
 PubSub.subscribe('load:basemap', loadBasemap);
