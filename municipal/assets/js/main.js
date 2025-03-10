@@ -837,6 +837,16 @@ var joinData = function() {
 
 
 
+    d3.select("#selectedDir1").text(dir1[dir1Index]);
+    d3.select("#selectedDir2").text(dir2[dir2Index]);
+    d3.select("#selectedDir3").text(dir3[dir3Index]);
+    d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
+    d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
+    d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
+    d3.select("#selectedYear").text(yearArray[yearIndex]);
+
+
+
     tsukubaGeoJson = [];
     for (i=0; i<dataBaseMapDetailed.features.length; i++) {
         if (dataBaseMapDetailed.features[i].properties.N03_004 == 'つくば市') {
