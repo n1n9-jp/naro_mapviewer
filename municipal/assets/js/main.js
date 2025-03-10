@@ -1,31 +1,5 @@
 /* --------------------
- 関数リスト
--------------------- */
-// 一回のみ実行
-// initBaseMap() ... MapBox Object 初期化
-// loadFileList() ... ファイルリスト読み込み & ナビ初期化
-// initMapUI() ... MapBox UI 初期化
-// loadBasemap() ... ベースマップ地図データの読み込み
-
-// ナビ操作のたびに実行
-// loadThemeData() ... テーマデータの読み込み
-// joinData() ... ベースマップとテーマデータの結合
-// changeColorScale() ... カラースケールの更新
-// drawMap() ... テーマデータの描画（データの読み込みが発生するDir1-3の変更時）
-// updateMap() ... テーマデータの描画（Probability, Visualization Scaleの変更時）
-
-// 凡例
-// initLegend() ... 凡例の初期化
-// updateLegend() ... 凡例の更新
-// drawLegendBar() ... 凡例の更新（バー部分）
-
-// 印刷
-// initPrint() ... 印刷関係
-
-
-
-/* --------------------
- 地図設定パラメータ
+　地図設定パラメータ
 -------------------- */
 
 /* MapObject */
@@ -57,43 +31,47 @@ var POI = [
     pitch: 75,
     bearing: 0,
   }
-// {
-//     city: "つくばエキスポセンター",
-//     longitude: 140.110603,
-//     latitude: 36.086693,
-//     zoom: 7,
-//     pitch: 75,
-//     bearing: 70,
-//   }
 ];
 
 
 
+/* ------------------------------
+　データ保存
+------------------------------ */
+
+/* FilePath */
+var dir1=[], dir2=[], dir3=[];
+var dir1Index = 0;
+var dir2Index = 0;
+var dir3Index = 0;
+
+/* Data Object */
+var dataBaseMapSimple;     // Base Map Simple
+var dataBaseMapDetailed;     // Base Map Detail
+var dataObjTheme;   // Theme Data
+var dataObjThemeFiltered;   // Theme Data Filtered
+
+
+
 /* --------------------
- スケール
+　スケール
 -------------------- */
 
 /* Data Scale */
-var minDataOrigin = 0.0;
-var maxDataOrigin = 300.0;
-var dataScaleArray = [];
 var _obj1 = {minData: 0.0, maxData: 300.0};
-var _obj2 = {minData: minDataOrigin, maxData: maxDataOrigin};
+var minDataFixed = 0.0;
+var maxDataFixed = 300.0;
+var _obj2 = {minData: minDataFixed, maxData: maxDataFixed};
+var dataScaleArray = [];
 dataScaleArray.push(_obj1);
 dataScaleArray.push(_obj2);
-
-/* Flag for Scale */
 var scaleIndex = 0;
 // 0 の場合は、固定値の最小値と最大値
 // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
-
-
 /* Color Scale */
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
-// var minColor = "rgba(120, 120, 120, 0.2)";
-// var maxColor = "rgba(255, 255, 255, 1.0)";
 var nullColor = "#c3c7c9";
 
 var colorScale = d3.scaleLinear()
@@ -106,8 +84,70 @@ var maxHeight = 50000;
 
 
 
+/* ------------------------------
+　データの変更
+------------------------------ */
+
+var varList = [];
+var varListRemove = ['Year', 'MuniCode'];
+var valueNameArray = []
+var colorIndex = 0;
+var depthIndex = 0;
+
+var yearArray = new Array();
+var yearIndex = 0;
+
+
+
+/* ------------------------------
+　ナビゲーション
+------------------------------ */
+
+// 各navボタンの取得（ID指定）
+const dataLink = document.getElementById("datachange");
+const vizLink = document.getElementById("vizchange");
+const navLinks = [dataLink, vizLink];
+var selectedNav = "";
+
+
+
+/* ------------------------------
+　可視化の変更
+------------------------------ */
+
+/* Swiper UI Visualization Scale */
+var scaleArray = ["Relative","Absolute"]
+var scaleIndex = 0;
+
+/* Swiper UI 2d3d Change */
+var d23Array = ["3D","2D"]
+var d23ArrayIndex = 0;
+
+/* Flag */
+var fl_firsttime = true;
+var fl_map = "";
+// 新規にマップを描画する必要がある場合は "drawMap"
+// 既存のマップを更新する場合は "updateMap"
+
+
+
+/* ------------------------------
+　スライダー
+------------------------------ */
+
+// 外側コンテナとパネルの取得
+const slideOverContainer = document.getElementById("slideOverContainer");
+const sidepanel = document.getElementById("sidepanel");
+const closeButton = sidepanel ? sidepanel.querySelector('button[type="button"]') : null;
+
+// slider内のコンテンツの取得
+const contentTitle = sidepanel ? sidepanel.querySelector("#slide-over-title") : null;
+const contentContainer = sidepanel ? sidepanel.querySelector(".slider-content") : null;
+
+
+
 /* --------------------
- 凡例
+　凡例
 -------------------- */
 var legendGroup;
 var defsLegend;
@@ -122,83 +162,8 @@ var tsukubaGeoJson = [];
 
 
 /* ------------------------------
- Initialize: for Data
+　関数
 ------------------------------ */
-
-/* FilePath */
-var dir1=[], dir2=[], dir3=[];
-var dir1Index = 0;
-var dir2Index = 0;
-var dir3Index = 0;
-var fullpath=[];
-
-/* Data Object */
-var dataBaseMapSimple;     // Base Map Simple
-var dataBaseMapDetailed;     // Base Map Detail
-var dataObjTheme;   // Theme Data
-var dataObjThemeFiltered;   // Theme Data Filtered
-
-var varList = [];
-var varListRemove = ['Year', 'MuniCode'];
-var valueNameArray = []
-
-var colorIndex = 0;
-var depthIndex = 0;
-
-/* Swiper UI Year */
-var yearArray = new Array();
-var yearIndex = 0;
-
-
-
-/* ------------------------------
- Initialize: for Visualization
------------------------------- */
-
-/* Swiper UI Visualization Scale */
-var scaleArray = ["Relative","Absolute"]
-var scaleIndex = 0;
-
-/* Swiper UI 2d3d Change */
-var d23Array = ["3D","2D"]
-var d23ArrayIndex = 0;
-
-/* Flag */
-var fl_firsttime = true;
-
-var fl_map = "";
-// 新規にマップを描画する必要がある場合は "drawMap"
-// 既存のマップを更新する場合は "updateMap"
-
-/* misc */
-var hoveredStateId = null;
-
-
-/* ------------------------------
- Tailwind template
------------------------------- */
-
-// 各navボタンの取得（ID指定）
-const dataLink = document.getElementById("datachange");
-const vizLink = document.getElementById("vizchange");
-var selectedNav = "";
-
-// nav全体のリンクを配列にまとめる
-const navLinks = [dataLink, vizLink];
-
-// 外側コンテナとパネルの取得
-const slideOverContainer = document.getElementById("slideOverContainer");
-const sidepanel = document.getElementById("sidepanel");
-
-// パネル内の閉じるボタンの取得
-const closeButton = sidepanel ? sidepanel.querySelector('button[type="button"]') : null;
-
-// slider内のコンテンツの取得
-const contentTitle = sidepanel ? sidepanel.querySelector("#slide-over-title") : null;
-// const contentDescription = sidepanel ? sidepanel.querySelector(".slider-description") : null;
-const contentContainer = sidepanel ? sidepanel.querySelector(".slider-content") : null;
-
-
 
 var initBaseMap = function() {
     console.log("initBaseMap");
@@ -244,8 +209,6 @@ var loadFileList = function() {
     Promise.all([
         d3.csv("assets/data_lib/filelist.csv")
     ]).then(function (_data) {
-    
-        fullpath = _.cloneDeep(_data[0]);
 
         for(var i=0; i<_data[0].length; i++) {
             var _t = _data[0][i].filepath.split('/');
@@ -1177,8 +1140,8 @@ var changeColorScale = function() {
 
     if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
-        dataScaleArray[scaleIndex].minData = minDataOrigin;
-        dataScaleArray[scaleIndex].maxData = maxDataOrigin;
+        dataScaleArray[scaleIndex].minData = minDataFixed;
+        dataScaleArray[scaleIndex].maxData = maxDataFixed;
 
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
