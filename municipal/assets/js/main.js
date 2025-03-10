@@ -647,30 +647,43 @@ var initVizSlider = function() {
       }
     });
 
-
-
-    PubSub.publish('filter:bydata');
+    PubSub.publish('navlink:setup');
+    // PubSub.publish('filter:bydata');
 };
 
 
 
+var setupNav = function() {
+    console.log("setupNav");
+    PubSub.publish('panel:setup');
 }
 
 
 
+var setupPanel = function() {
+    console.log("setupPanel");
+    PubSub.publish('filter:bydata');
 }
 
 
+var disableNavLinks = function() {
+    console.log("disableNavLinks");
 
 }
 
-
-
+var enableNavLinks = function() {
+    console.log("enableNavLinks");
 
 }
 
+var openPanel = function() {
+    console.log("openPanel");
 
-    });
+}
+
+var closePanel = function() {
+    console.log("closePanel");
+
 }
 
 
@@ -1249,6 +1262,12 @@ PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
 PubSub.subscribe('init:vizslider', initVizSlider);
 
+PubSub.subscribe('navlink:setup', setupNav);
+PubSub.subscribe('navlink:disabled', disableNavLinks);
+PubSub.subscribe('navlink:abled', enableNavLinks);
+PubSub.subscribe('panel:setup', setupPanel);
+PubSub.subscribe('panel:open', openPanel);
+PubSub.subscribe('panel:close', closePanel);
 
 PubSub.subscribe('filter:bydata', filterByYear);
 PubSub.subscribe('join:data', joinData);
