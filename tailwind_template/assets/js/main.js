@@ -22,6 +22,32 @@ const contentDescription = sidepanel ? sidepanel.querySelector(".slider-descript
 const contentContainer = sidepanel ? sidepanel.querySelector(".slider-content") : null;
 
 
+
+var setupNav = function() {
+  // 各navリンクのクリックイベント設定
+  navLinks.forEach(link => {
+    if (link) {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+        // updateActive();
+
+        // 「データの変更」または「可視化スタイルの変更」ならパネルを開く
+        if (this.id === "datachange" || this.id === "vizchange") {
+          if (slideOverContainer && sidepanel) {
+
+            selectedNav = this.id;
+            console.log("selectedNav", selectedNav);
+
+            PubSub.publish('navlink:disabled');
+            PubSub.publish('panel:open');
+          }
+        }
+      });
+    }
+  });
+}
+
+
   
 var disableNavLinks = function() {
   navLinks.forEach(link => {
@@ -47,28 +73,12 @@ var enableNavLinks = function() {
   
 
 
-var setupNav = function() {
-    // 各navリンクのクリックイベント設定
-    navLinks.forEach(link => {
-      if (link) {
-        link.addEventListener("click", function(e) {
-          e.preventDefault();
-          // updateActive();
-
-          // 「データの変更」または「可視化スタイルの変更」ならパネルを開く
-          if (this.id === "datachange" || this.id === "vizchange") {
-            if (slideOverContainer && sidepanel) {
-
-              selectedNav = this.id;
-              console.log("selectedNav", selectedNav);
-
-              PubSub.publish('navlink:disabled');
-              PubSub.publish('panel:open');
-            }
-          }
-        });
-      }
+var setupPanel = function() {
+  if (closeButton && slideOverContainer && sidepanel) {
+    closeButton.addEventListener("click", () => {
+      PubSub.publish('panel:close');
     });
+  }
 }
 
 
@@ -128,16 +138,6 @@ var openPanel = function() {
 
 
 
-var setupPanel = function() {
-    if (closeButton && slideOverContainer && sidepanel) {
-      closeButton.addEventListener("click", () => {
-        PubSub.publish('panel:close');
-      });
-    }
-}
-
-
-
 var closePanel = function() {
     console.log("closePanel");
 
@@ -153,13 +153,15 @@ var closePanel = function() {
 
 
 
-PubSub.subscribe('panel:setup', setupPanel);
-PubSub.subscribe('panel:close', closePanel);
-PubSub.subscribe('panel:open', openPanel);
-
 PubSub.subscribe('navlink:setup', setupNav);
 PubSub.subscribe('navlink:disabled', disableNavLinks);
 PubSub.subscribe('navlink:abled', enableNavLinks);
+
+PubSub.subscribe('panel:setup', setupPanel);
+PubSub.subscribe('panel:open', openPanel);
+PubSub.subscribe('panel:close', closePanel);
+
+
 
 PubSub.publish('navlink:setup');
 PubSub.publish('panel:setup');
