@@ -74,15 +74,15 @@
 
 
 
-      <header class="bg-white shadow-sm relative z-10 h-10">
+      <header class="bg-white shadow-sm relative z-40 h-10">
         <div class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
           <span id="selectedDir1">Apple</span> - <span id="selectedDir2">ssp126</span> - <span id="selectedDir3">pred_probability</span> - <span id="selectedVar">L0</span> - <span id="selectedYear">Year</span>
         </div>
       </header>
 
-      <main class="pb-16 z-0">
+      <main class="pb-16">
         <div class="mx-auto">
-          <div id="mapboxContainer"></div>
+          <div id="mapboxContainer" class="z-0"></div>
         </div>
       </main>
 
@@ -114,12 +114,12 @@
                           <!-- 「データの変更」用のコンテンツ -->
                           <div class="grid grid-cols-4 gap-4">
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Dir1</div>
+                              <div class="text-white font-bold">Dir1</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir1">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-dir1"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -130,18 +130,18 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir1">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-dir1"></div>
                                 </div>
                               </div>                              
                               
                             </div>
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Dir2</div>
+                              <div class="text-white font-bold">Dir2</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir2">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-dir2"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -152,18 +152,18 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir2">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-dir2"></div>
                                 </div>
                               </div>
 
                             </div>
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Dir3</div>
+                              <div class="text-white font-bold">Dir3</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-dir3">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-dir3"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -174,18 +174,18 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-dir3">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-dir3"></div>
                                 </div>
                               </div>
 
                             </div>
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Year</div>
+                              <div class="text-white font-bold">Year</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-year">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-year"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -196,7 +196,7 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-year">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-year"></div>
                                 </div>
                               </div>
 
@@ -209,12 +209,12 @@
                           <!-- 「可視化の変更」用のコンテンツ -->
                           <div class="grid grid-cols-4 gap-4">
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Value for Color</div>
+                              <div class="text-white font-bold">Value for Color</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-color">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-color"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -225,18 +225,18 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-color">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-color"></div>
                                 </div>
                               </div>
 
                             </div>
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Value for Depth</div>
+                              <div class="text-white font-bold">Value for Depth</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-depth">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-depth"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -247,18 +247,18 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-depth">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-depth"></div>
                                 </div>
                               </div>
 
                             </div>
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                              <div>Visualization Scale</div>
+                              <div class="text-white font-bold">Visualization Scale</div>
                               <div class="grid grid-cols-12 items-center h-20">
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-scale">◀</div>
+                                  <div class="swiper-button-prev swipers" id="swiper-button-prev-scale"></div>
                                 </div>
                                 <div class="col-span-10 h-full">
                                   <!-- Slider -->
@@ -269,18 +269,18 @@
                                   <!-- Slider -->
                                 </div>
                                 <div class="">
-                                  <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-scale">▶</div>
+                                  <div class="swiper-button-next swipers" id="swiper-button-next-scale"></div>
                                 </div>
                               </div>
 
                             </div>
 
-                            <div class="bg-gray-200 p-4">
+                            <div class="bg-gray-500 p-4">
 
-                                  <div>2D/3D Change</div>
+                                  <div class="text-white font-bold">2D/3D Change</div>
                                   <div class="grid grid-cols-12 items-center h-20">
                                     <div class="">
-                                      <div class="btn btn-secondary swiper-button-prev swipers" id="swiper-button-prev-2d3d">◀</div>
+                                      <div class="swiper-button-prev swipers" id="swiper-button-prev-2d3d"></div>
                                     </div>
                                     <div class="col-span-10 h-full">
                                       <!-- Slider -->
@@ -291,7 +291,7 @@
                                       <!-- Slider -->
                                     </div>
                                     <div class="">
-                                      <div class="btn btn-secondary swiper-button-next swipers" id="swiper-button-next-2d3d">▶</div>
+                                      <div class="swiper-button-next swipers" id="swiper-button-next-2d3d"></div>
                                     </div>
                                   </div>
                                   
@@ -313,7 +313,7 @@
 
                   </div>
 
-                  <div class="flex-shrink-0 px-4 py-4 bg-gray-600">
+                  <div class="flex-shrink-0 px-4 pb-6 bg-gray-600">
                     <div class="flex justify-center">
                       <button id="closeSliderButton" type="button" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white">
                         閉じる
@@ -335,7 +335,7 @@
         </div>
       </div>
 
-      <footer class="bg-gray-800 text-white py-4 fixed bottom-0 w-full z-5">
+      <footer class="bg-gray-800 text-white py-4 fixed bottom-0 w-full z-30">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p class="text-left text-sm">©NARO. All rights reserved.</p>
         </div>

@@ -61,6 +61,15 @@
     margin-top: 0 !important;
     border-width: thin;
     border-style: solid;
+    color: #FFF !important;
+    border: 1px solid #101828;
+    background-color: #101828;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    border: 1px solid #374151;
+    background-color: #374151;
 }
 
 .swiper-button-prev {
@@ -80,17 +89,23 @@
     color: #FFF !important;
 }
 
-.swiper-slide {
+.swiper-slide-prev,
+.swiper-slide-next
+ {
     /* background-color: transparent; */
-    background: rgba(0, 0, 0, .2);
-    color: #999;
+    background: #e5e7eb;
+    color: #FF0000;
 }
 
+/* .swiper-slide-prev */
+
+/* 中央の値 */
 .swiper-slide-active {
     /* background-color: transparent; */
     /* background: rgba(0, 0, 0, .8); */
-    background: #222;
-    color: #FFF;
+    background: #FFF;
+    color: #000;
+    font-weight: 700;
 }
 
 /* .swiper-slide-active {
