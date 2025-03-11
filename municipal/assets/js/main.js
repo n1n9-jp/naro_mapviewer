@@ -70,7 +70,6 @@ var scaleIndex = 0;
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
 var nullColor = "#c3c7c9";
-
 var colorScale = d3.scaleLinear()
     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
     .range([minColor, maxColor]);
@@ -472,7 +471,7 @@ var initVizSlider = function() {
             slideChange: function(e) {
             colorIndex = e.activeIndex;
             fl_map = "updateMap";
-            PubSub.publish('change:colorscale');
+            PubSub.publish('change:color');
             }
         }
     });
@@ -506,7 +505,7 @@ var initVizSlider = function() {
             slideChange: function(e) {
             depthIndex = e.activeIndex;
             fl_map = "updateMap";
-            PubSub.publish('change:colorscale');
+            PubSub.publish('change:color');
             }
         }
     });
@@ -540,7 +539,7 @@ var initVizSlider = function() {
             slideChange: function(e) {
             scaleIndex = e.activeIndex;
             fl_map = "updateMap";
-            PubSub.publish('change:colorscale');
+            PubSub.publish('change:color');
             }
         }
     });
@@ -800,7 +799,7 @@ var joinData = function() {
 
 
     fl_map = "drawMap";
-    PubSub.publish('change:colorscale');
+    PubSub.publish('change:color');
 }
 
 
@@ -1118,8 +1117,8 @@ var initPrint = function() {
 
 
 
-var changeColorScale = function() {
-    console.log("changeColorScale");
+var changeColor = function() {
+    console.log("changeColor");
 
     if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
@@ -1148,7 +1147,7 @@ var changeColorScale = function() {
         .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
         .range([minColor, maxColor]);
 
-    // console.log("changeColorScale fl_map", fl_map)
+    // console.log("changeColor fl_map", fl_map)
     if (fl_map == "drawMap") {
         PubSub.publish('draw:map');
     } else if (fl_map == "updateMap") {
@@ -1200,7 +1199,7 @@ PubSub.subscribe('update:legend', updateLegend);
 PubSub.subscribe('draw:legendbar', drawLegendBar); //???
 
 PubSub.subscribe('init:print', initPrint);
-PubSub.subscribe('change:colorscale', changeColorScale);
+PubSub.subscribe('change:color', changeColor);
 PubSub.subscribe('change:dimension', changeDimension);
 
 PubSub.publish('init:basemap');
