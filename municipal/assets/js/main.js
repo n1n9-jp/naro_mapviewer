@@ -105,6 +105,7 @@ var yearIndex = 0;
 const dataLink = document.getElementById("datachange");
 const vizLink = document.getElementById("vizchange");
 const navLinks = [dataLink, vizLink];
+const printLink = document.getElementById("printBtn");
 var selectedNav = "";
 
 
@@ -700,6 +701,9 @@ var disableNavLinks = function() {
           link.classList.add("text-gray-300");
         }
     });
+    printLink.classList.add('pointer-events-none');
+    printLink.classList.remove("text-white", "bg-gray-900", "text-white", "hover:bg-gray-700", "hover:text-white");
+    printLink.classList.add("text-gray-300");
 }
 
 var enableNavLinks = function() {
@@ -711,6 +715,9 @@ var enableNavLinks = function() {
           link.classList.add("text-white", "bg-gray-900", "hover:bg-gray-700", "hover:text-white");
         }
     });
+    printLink.classList.remove('pointer-events-none');
+    printLink.classList.remove("text-gray-300");
+    printLink.classList.add("text-white", "bg-gray-900", "hover:bg-gray-700", "hover:text-white");
 }
 
 var openPanel = function() {
