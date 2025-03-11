@@ -1137,8 +1137,6 @@ var initPrint = function() {
         window.addEventListener('afterprint', (event) => {
             console.log('After print');
 
-            d3.selectAll(".sidebar").style("display", "block");
-            d3.selectAll("#info4print").style("display", "none");
             d3.select("#mapContainer .maplibregl-control-container").style("display", "block");
         });
 
@@ -1146,15 +1144,7 @@ var initPrint = function() {
         document.querySelector('#printBtn').addEventListener('click', () => {
             console.log('print');
 
-            d3.selectAll(".sidebar").style("display", "none");
-            d3.selectAll("#info4print").style("display", "block");
             d3.select("#mapContainer .maplibregl-control-container").style("display", "none");
-
-            d3.selectAll("#dir1print").text(dir1[dir1Index]);
-            d3.selectAll("#dir2print").text(dir2[dir2Index]);
-            d3.selectAll("#dir3print").text(dir3[dir3Index]);
-            d3.selectAll("#probprint").text("Probability: " + valueNameArray[colorIndex]);
-            d3.selectAll("#vizscaleprint").text("Visualization Scale: " + scaleArray[scaleIndex]);
 
             window.print();
         });
