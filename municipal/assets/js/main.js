@@ -145,15 +145,12 @@ const contentContainer = sidepanel ? sidepanel.querySelector(".slider-content") 
 /* --------------------
 　凡例
 -------------------- */
-var legendGroup;
-var defsLegend;
 var legendGradientId = "legend-gradient";
-var legendWidth = 200;
-var legendHeight = 10;
-var legendYPos = [22, 45, 70];
-var columnWidth = 0;
-var tsukubaHeight = 0;
-var tsukubaGeoJson = [];
+var legendOuterWidth = 380;  // 凡例SVG全体の横幅
+var legendOuterHeight = 60;  // 凡例SVG全体の高さ
+var legendBarWidth = 100;    // グラデーションバーの幅
+var legendBarHeight = 10;    // グラデーションバーの高さ
+var legendWidthMargin = (legendOuterWidth - legendBarWidth)/2;
 
 
 
@@ -345,32 +342,75 @@ var initMapUI = function() {
 var initLegend = function() {
     console.log("initLegend");
 
-    /* Legend Container */
-    legendGroup = d3.select("#legendBar")
-        .append("div").attr("id", "legendContainer")
-        .append("svg").style("fill", "#FFFFFF")
-        .attr("transform", "translate("
-        + 0 + ","
-        + 0
-        + ")")
-        .append("g");
+    // すでにある要素をクリア
+    d3.select("#legendBar").selectAll("*").remove();
 
-    /* Gradiation Init */
-    defsLegend = legendGroup.append("defs")
+    // SVG を作成
+    var svg = d3.select("#legendBar")
+        .append("svg")
+        .attr("id", "legendSvg")
+        .attr("width", legendOuterWidth)
+        .attr("height", legendOuterHeight);
 
-    defsLegend.append("linearGradient") .attr("id", legendGradientId)
-        .selectAll("stop")
-        .data(colorScale.range())
-        .enter().append("stop")
-        .attr("stop-color", d => d) 
-        .attr("offset", (d, i) => `${
-          i * 100 / 2 //2 is one less than our array's length
-        }%`)
+    // 「凡例」ラベル配置
+    // svg.append("text")
+    //     .attr("x", 0)
+    //     .attr("y", 14) // 適宜調整
+    //     .text("凡例")
+    //     .style("font-size", "14px");
 
+    // グラデーション定義
+    var defs = svg.append("defs");
+    var gradient = defs.append("linearGradient")
+        .attr("id", legendGradientId)
+        .attr("x1", "0%").attr("y1", "0%")
+        .attr("x2", "100%").attr("y2", "0%");
 
+    gradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", minColor);
+    gradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", maxColor);
+
+    // グラデーションバーの位置（例：少し右へ寄せる）
+    var barX = legendWidthMargin;
+    var barY = 26;
+
+    // グラデーションバー本体
+    svg.append("rect")
+        .attr("x", barX)
+        .attr("y", barY)
+        .attr("width", legendBarWidth)
+        .attr("height", legendBarHeight)
+        .style("fill", "url(#" + legendGradientId + ")");
+
+    // バー左側に最小値(右揃え)
+    var minTextX = barX - 5;
+    var minTextY = barY + legendBarHeight / 2;
+
+    svg.append("text")
+        .attr("id", "legendMinText")
+        .attr("x", minTextX)
+        .attr("y", minTextY)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "end")
+        .text(dataScaleArray[scaleIndex].minData);
+
+    // バー右側に最大値(左揃え)
+    var maxTextX = barX + legendBarWidth + 5;
+    var maxTextY = barY + legendBarHeight / 2;
+
+    svg.append("text")
+        .attr("id", "legendMaxText")
+        .attr("x", maxTextX)
+        .attr("y", maxTextY)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "start")
+        .text(dataScaleArray[scaleIndex].maxData);
 
     PubSub.publish('load:basemap');
-}
+};
 
 
 
@@ -1067,20 +1107,26 @@ var updateMap = function() {
 var updateLegend = function() {
     console.log("updateLegend");
 
+    // グラデーションの色が変わる場合は更新
+    d3.select("#" + legendGradientId)
+        .selectAll("stop")
+        .data([
+            { offset: "0%", color: minColor },
+            { offset: "100%", color: maxColor }
+        ])
+        .attr("offset", function(d) { return d.offset; })
+        .attr("stop-color", function(d) { return d.color; });
 
-    /* detect Width */
-    // columnWidth = document.getElementById("legendCon").offsetWidth -20;
+    // 最小値・最大値テキストを再設定 (小数点以下13桁でもそのまま)
+    var svg = d3.select("#legendSvg");
+    if (!svg.empty()){
+        svg.select("#legendMinText")
+            .text(dataScaleArray[scaleIndex].minData);
 
-
-
-    /* つくば市のデータ値 */
-    // var _p = tsukubaGeoJson[0].properties[valueNameArray[colorIndex]];
-    // d3.select("#heightLegend").text("Tsukuba City: " + _p);
-
-
-
-    PubSub.publish('draw:legendbar');
-}
+        svg.select("#legendMaxText")
+            .text(dataScaleArray[scaleIndex].maxData);
+    }
+};
 
 
 
