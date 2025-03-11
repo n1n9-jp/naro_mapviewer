@@ -4,6 +4,8 @@
 
 /* MapObject */
 var mapObject;
+var minZoomLevel = 4;
+var maxZoomLevel = 16;
 
 /* Map Tile */
 var maptileURL = [];
@@ -16,7 +18,7 @@ var POI = [
     city: "Tokyo Station",
     longitude: 139.767125,
     latitude: 35.681236,
-    zoom: 6,
+    zoom: minZoomLevel,
     pitch: 45,
     bearing: 0,
   },
@@ -24,7 +26,7 @@ var POI = [
     city: "NARO",
     longitude: 140.110249,
     latitude: 36.027363,
-    zoom: 7,
+    zoom: minZoomLevel,
     pitch: 75,
     bearing: 0,
   }
@@ -165,8 +167,8 @@ var initBaseMap = function() {
         "container": "mapContainer",
         "center": [POI[0]["longitude"], POI[0]["latitude"]],
         "zoom": POI[0]["zoom"],
-        "minZoom": 4,
-        "maxZoom": 16,
+        "minZoom": minZoomLevel,
+        "maxZoom": maxZoomLevel,
         "pitch": POI[0]["pitch"], 
         "minPitch": 0,
         "maxPitch": 85,
@@ -175,8 +177,6 @@ var initBaseMap = function() {
         "interactive": true,
         "style": maptileURL[maptileIndex]
     });
-
-
 
     var _stylecount = 0;
     mapObject.on('styledata', () => {
@@ -1242,7 +1242,6 @@ PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap);
 PubSub.subscribe('update:map', updateMap);
 PubSub.subscribe('update:legend', updateLegend);
-PubSub.subscribe('draw:legendbar', drawLegendBar); //???
 
 PubSub.subscribe('init:print', initPrint);
 PubSub.subscribe('change:color', changeColor);
