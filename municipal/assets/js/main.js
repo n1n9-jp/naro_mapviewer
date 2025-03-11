@@ -535,7 +535,7 @@ var initVizSlider = function() {
             slideChange: function(e) {
             depthIndex = e.activeIndex;
             fl_map = "updateMap";
-            PubSub.publish('change:color');
+            PubSub.publish('change:depth');
             }
         }
     });
