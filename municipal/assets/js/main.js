@@ -43,6 +43,7 @@ var dir1=[], dir2=[], dir3=[];
 var dir1Index = 0;
 var dir2Index = 0;
 var dir3Index = 0;
+var filepath;
 
 /* Data Object */
 var dataBaseMapSimple;      // Base Map Simple
@@ -445,11 +446,11 @@ var loadThemeData = function() {
     console.log("loadThemeData");
 
     // detect swiper
-    var _filepath = "assets/data_index/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
+    filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
 
     // load: theme data
     Promise.all([
-        d3.csv(_filepath)
+        d3.csv("assets/data_index/" + filepath)
     ]).then(function (_data) {
   
         dataObjTheme = _.cloneDeep(_data[0]);
