@@ -955,8 +955,27 @@ var drawMap = function() {
         /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
 
-            var _selected = e.features[0].properties.N03_007;
+            var _selectedArea = "";
 
+            var _v1 = e.features[0].properties.N03_001;
+            if (_v1 !== null && _v1 !== undefined) {
+                _selectedArea = _selectedArea + _v1;
+            }
+
+            var _v2 = e.features[0].properties.N03_002;
+            if (_v2 !== null && _v2 !== undefined) {
+                _selectedArea = _selectedArea + _v2;
+            }
+  
+            var _v3 = e.features[0].properties.N03_003;
+            if (_v3 !== null && _v3 !== undefined) {
+                _selectedArea = _selectedArea + _v3;
+            }
+
+            var _v4 = e.features[0].properties.N03_004;
+            if (_v4 !== null && _v4 !== undefined) {
+                _selectedArea = _selectedArea + _v4;
+            }
 
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
