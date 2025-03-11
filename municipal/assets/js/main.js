@@ -352,13 +352,6 @@ var initLegend = function() {
         .attr("width", legendOuterWidth)
         .attr("height", legendOuterHeight);
 
-    // 「凡例」ラベル配置
-    // svg.append("text")
-    //     .attr("x", 0)
-    //     .attr("y", 14) // 適宜調整
-    //     .text("凡例")
-    //     .style("font-size", "14px");
-
     // グラデーション定義
     var defs = svg.append("defs");
     var gradient = defs.append("linearGradient")
@@ -418,7 +411,6 @@ var loadBasemap = function() {
     console.log("loadBasemap");
 
     Promise.all([
-        // d3.json("assets/data_lib/" + "japanmap.json")
         d3.json("assets/data_lib/" + "JapanMapDetail_light.json"),
         d3.json("assets/data_lib/" + "JapanMapSimple.json")
     ]).then(function (_data) {
@@ -466,8 +458,6 @@ var loadThemeData = function() {
                 _row["L" + j] = parseFloat(_row["L" + j]);
             }
 
-            // dataObjTheme[i]["H0"] = parseFloat(dataObjTheme[i]["H0"]);
-            // dataObjTheme[i]["L0"] = parseFloat(dataObjTheme[i]["L0"]);
         }
         
         console.log("dataObjTheme", dataObjTheme);
@@ -655,7 +645,6 @@ var initVizSlider = function() {
     });
 
     PubSub.publish('navlink:setup');
-    // PubSub.publish('filter:bydata');
 };
 
 
@@ -668,9 +657,7 @@ var setupNav = function() {
         if (link) {
         link.addEventListener("click", function(e) {
             e.preventDefault();
-            // updateActive();
 
-            // 「データの変更」または「可視化スタイルの変更」ならパネルを開く
             if (this.id === "datachange" || this.id === "vizchange") {
             if (slideOverContainer && sidepanel) {
 
@@ -713,7 +700,6 @@ var disableNavLinks = function() {
           link.classList.add("text-gray-300");
         }
     });
-
 }
 
 var enableNavLinks = function() {
@@ -762,7 +748,6 @@ var closePanel = function() {
     setTimeout(() => {
       slideOverContainer.classList.add("hidden");
       PubSub.publish('navlink:abled');
-      // enableNavLinks();
     }, 500);
 }
 
@@ -815,7 +800,6 @@ var joinData = function() {
             }
         }
     }
-    // console.log("dataBaseMapDetailed", dataBaseMapDetailed);
 
 
 
@@ -826,15 +810,6 @@ var joinData = function() {
     d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
     d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
     d3.select("#selectedYear").text(yearArray[yearIndex]);
-
-
-
-    tsukubaGeoJson = [];
-    for (i=0; i<dataBaseMapDetailed.features.length; i++) {
-        if (dataBaseMapDetailed.features[i].properties.N03_004 == 'つくば市') {
-            tsukubaGeoJson.push(dataBaseMapDetailed.features[i]);
-        }
-    }
 
 
 
@@ -1013,9 +988,6 @@ var drawMap = function() {
                 } else {
                     var _addressB = "undefined";
                 }
-
-                var _p = tsukubaGeoJson[0].properties[valueNameArray[colorIndex]];
-
 
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
                 // var _addressB = e.features[0].properties["N03_007"];
