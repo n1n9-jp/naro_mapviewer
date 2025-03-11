@@ -980,12 +980,7 @@ var drawMap = function() {
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
 
-
-            // var lightbox = lity('popup.html');
             window.setTimeout(function(){
-                
-                // var iframeElem = document.getElementsByTagName('iframe');
-                // var iframeDocument = iframeElem[1].contentDocument || iframeElem[1].contentWindow.document;
 
                 var _pElem1 = document.getElementById('kirakirakira');
                 _pElem1.textContent = _selected;
