@@ -45,9 +45,9 @@ var dir2Index = 0;
 var dir3Index = 0;
 
 /* Data Object */
-var dataBaseMapSimple;     // Base Map Simple
-var dataBaseMapDetailed;     // Base Map Detail
-var dataObjTheme;   // Theme Data
+var dataBaseMapSimple;      // Base Map Simple
+var dataBaseMapDetailed;    // Base Map Detail
+var dataObjTheme;           // Theme Data
 var dataObjThemeFiltered;   // Theme Data Filtered
 
 
@@ -728,18 +728,16 @@ var openPanel = function() {
     sidepanel.classList.remove("-translate-y-full");
     sidepanel.classList.add("translate-y-0");
     console.log("Slide-over panel opened");
-    // disableNavLinks();
   
-    // タイトル、説明文の更新と該当パネルの表示切替
+
+
     if (contentTitle) {
       if (selectedNav === "datachange") {
         contentTitle.textContent = "データの変更";
-        // contentDescription.textContent = "Update your data using the options below.";
         document.getElementById("datachange-panel").classList.remove("hidden");
         document.getElementById("vizchange-panel").classList.add("hidden");
       } else if (selectedNav === "vizchange") {
         contentTitle.textContent = "可視化の変更";
-        // contentDescription.textContent = "Customize the visualization style using the options below.";
         document.getElementById("vizchange-panel").classList.remove("hidden");
         document.getElementById("datachange-panel").classList.add("hidden");
       }
@@ -752,6 +750,7 @@ var closePanel = function() {
     sidepanel.classList.remove("translate-y-0");
     sidepanel.classList.add("-translate-y-full");
     console.log("Slide-over panel closing");
+
     setTimeout(() => {
       slideOverContainer.classList.add("hidden");
       PubSub.publish('navlink:abled');
