@@ -956,7 +956,6 @@ var drawMap = function() {
 
             var _selected = e.features[0].properties.N03_007;
 
-            // console.log( "assets/data_detail/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
 
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
@@ -979,9 +978,8 @@ var drawMap = function() {
 
         mapObject.on('mousemove', 'naro_prob', (e) => {
 
+                // マウスポインターの形状管理
                 mapObject.getCanvas().style.cursor = 'pointer';
-
-
 
                 // 対象自治体の住所を生成
                 if (e.features[0].properties["N03_001"]) {
@@ -1015,26 +1013,18 @@ var drawMap = function() {
                 }
 
                 var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
-                // var _addressB = e.features[0].properties["N03_007"];
-
-
 
                 // 対象自治体の中心点を取得
                 const coordinates = e.features[0].geometry.coordinates.slice();
-
                 if (coordinates[0].length == 1) {
                     var _line = turf.lineString(coordinates[0][0]);
                 } else {
                     var _line = turf.lineString(coordinates[0]);
                 }
-
                 var _bbox = turf.bbox(_line);
                 var _bboxPolygon = turf.bboxPolygon(_bbox);
-
                 var _lng = (_bboxPolygon.bbox[2] + _bboxPolygon.bbox[0]) /2;
                 var _lat = (_bboxPolygon.bbox[3] + _bboxPolygon.bbox[1]) /2;
-
-
 
                 // ポップアップを表示
                 popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + "value: " + _addressB).addTo(mapObject);
