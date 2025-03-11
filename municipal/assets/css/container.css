@@ -11,38 +11,18 @@ body {
     /* font-family: 'Noto Serif JP', serif; */
     font-family: 'Noto Sans JP', sans;
     font-feature-settings: "palt";
-    /* height: 100% !important; */
-}
-
-#sidebarContainer {
-    z-index: 500;
-    width: 300px !important;
-    /* height: 100vh !important; */
-    /* height: 1300px !important; */
-    color: #ffffff;
-    background-color: #000000 !important;
-    /* background-color: rgba(0,0,0,0.8) !important; */
 }
 
 #mapContainer {
     height: 100vh; 
     width: 100vw; 
-
-#legendContainer {
-    z-index: 30;
-    position: absolute;
 }
 
-#legendContainer rect {
-    stroke-width: 0.4px;
-    stroke: #000;
-}
-
-@media print {
+/* @media print {
 
     #sidebarContainer {
         color: #000 !important;
         background-color: #FFF !important;
     }
 
-}
+} */
