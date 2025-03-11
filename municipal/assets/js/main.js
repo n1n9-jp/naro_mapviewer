@@ -982,10 +982,18 @@ var drawMap = function() {
 
             window.setTimeout(function(){
 
-                var _pElem1 = document.getElementById('kirakirakira');
-                _pElem1.textContent = _selected;
+                    Promise.all([
+                            d3.csv("assets/data_detail/" + filepath)
+                    ]).then(function (_data) {
 
-            }, 10);
+                            var _DetailTitle = _data[0][0]["Title"] + " - " + _selectedArea;
+                            d3.select("#detailTitle").text(_DetailTitle);
+                            d3.select("#detailImageURL").attr("src", _data[0][0]["ImageURL"]);
+                            d3.select("#detailDesc").text(_data[0][0]["Description"]);
+        
+                    });
+
+            }, 50);
 
         });
 
