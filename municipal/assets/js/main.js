@@ -897,12 +897,9 @@ var drawMap = function() {
                     ['get', valueNameArray[depthIndex]],
                     dataScaleArray[scaleIndex].minData, 0,
                     dataScaleArray[scaleIndex].maxData, 50000
-                    // minData, 0,
-                    // maxData, 50000
                 ],
                 'fill-extrusion-vertical-gradient': true
             },
-            // 'filter': ['==', 'N03_001', '東京都']
         });
 
 
@@ -1000,8 +997,6 @@ var drawMap = function() {
 
 
         mapObject.on('mousemove', 'naro_prob', (e) => {
-
-                // console.log("e", e);
 
                 // マウスポインターの形状管理
                 mapObject.getCanvas().style.cursor = 'pointer';
@@ -1191,26 +1186,19 @@ var changeColor = function() {
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
             var _ddd = valueNameArray[colorIndex];
-            // console.log("_ddd", _ddd);
 
             var _columnValues = dataObjThemeFiltered.map(function(d) {
                 return +d[_ddd];
             });
-            // latterObj = _.orderBy(_columnValues, [], ['desc']);
-            // console.log("_columnValues", latterObj);
 
             dataScaleArray[scaleIndex].minData = d3.min(_columnValues);
             dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
-
-            // console.log("minData",dataScaleArray[scaleIndex].minData);
-            // console.log("maxData",dataScaleArray[scaleIndex].maxData);
     }
 
     colorScale
         .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
         .range([minColor, maxColor]);
 
-    // console.log("changeColor fl_map", fl_map)
     if (fl_map == "drawMap") {
         PubSub.publish('draw:map');
     } else if (fl_map == "updateMap") {
