@@ -151,7 +151,7 @@ const contentContainer = sidepanel ? sidepanel.querySelector(".slider-content") 
 -------------------- */
 var legendGradientId = "legend-gradient";
 var legendOuterWidth = 380;  // 凡例SVG全体の横幅
-var legendOuterHeight = 60;  // 凡例SVG全体の高さ
+var legendOuterHeight = 40;  // 凡例SVG全体の高さ
 var legendBarWidth = 100;    // グラデーションバーの幅
 var legendBarHeight = 10;    // グラデーションバーの高さ
 var legendWidthMargin = (legendOuterWidth - legendBarWidth)/2;
@@ -370,7 +370,7 @@ var initLegend = function() {
 
     // グラデーションバーの位置（例：少し右へ寄せる）
     var barX = legendWidthMargin;
-    var barY = 26;
+    var barY = 16;
 
     // グラデーションバー本体
     svg.append("rect")
