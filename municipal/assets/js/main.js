@@ -162,7 +162,7 @@ var initBaseMap = function() {
     console.log("initBaseMap");
 
     mapObject = new maplibregl.Map({
-        "container": "mapboxContainer",
+        "container": "mapContainer",
         "center": [POI[0]["longitude"], POI[0]["latitude"]],
         "zoom": POI[0]["zoom"],
         "minZoom": 4,
@@ -1139,7 +1139,7 @@ var initPrint = function() {
 
             d3.selectAll(".sidebar").style("display", "block");
             d3.selectAll("#info4print").style("display", "none");
-            d3.select("#mapboxContainer .maplibregl-control-container").style("display", "block");
+            d3.select("#mapContainer .maplibregl-control-container").style("display", "block");
         });
 
         /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
@@ -1148,7 +1148,7 @@ var initPrint = function() {
 
             d3.selectAll(".sidebar").style("display", "none");
             d3.selectAll("#info4print").style("display", "block");
-            d3.select("#mapboxContainer .maplibregl-control-container").style("display", "none");
+            d3.select("#mapContainer .maplibregl-control-container").style("display", "none");
 
             d3.selectAll("#dir1print").text(dir1[dir1Index]);
             d3.selectAll("#dir2print").text(dir2[dir2Index]);
