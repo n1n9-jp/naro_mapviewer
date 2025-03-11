@@ -1001,6 +1001,8 @@ var drawMap = function() {
 
         mapObject.on('mousemove', 'naro_prob', (e) => {
 
+                // console.log("e", e);
+
                 // マウスポインターの形状管理
                 mapObject.getCanvas().style.cursor = 'pointer';
 
@@ -1029,13 +1031,23 @@ var drawMap = function() {
                     var _address_4 = "";
                 }
 
+                var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
+
+                // colorIndex
+                var _selectedVarColor = "";
                 if (e.features[0].properties[valueNameArray[colorIndex]]) {
-                    var _addressB = e.features[0].properties[valueNameArray[colorIndex]];
+                    _selectedVarColor = e.features[0].properties[valueNameArray[colorIndex]];
                 } else {
-                    var _addressB = "undefined";
+                    _selectedVarColor = "不明";
                 }
 
-                var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
+                // colorIndex
+                var _selectedVarDepth = "";
+                if (e.features[0].properties[valueNameArray[depthIndex]]) {
+                    _selectedVarDepth = e.features[0].properties[valueNameArray[depthIndex]];
+                } else {
+                    _selectedVarDepth = "不明";
+                }
 
                 // 対象自治体の中心点を取得
                 const coordinates = e.features[0].geometry.coordinates.slice();
@@ -1050,7 +1062,12 @@ var drawMap = function() {
                 var _lat = (_bboxPolygon.bbox[3] + _bboxPolygon.bbox[1]) /2;
 
                 // ポップアップを表示
-                popup.setLngLat([_lng, _lat]).setHTML(_addressA + "<br />" + "value: " + _addressB).addTo(mapObject);
+                popup
+                    .setLngLat([_lng, _lat])
+                    .setHTML(_addressA + "<br />"
+                         + "色への値: " + _selectedVarColor + "<br />"
+                         + "高さへの値: " + _selectedVarDepth)
+                    .addTo(mapObject);
 
         });
 
