@@ -403,8 +403,25 @@ var initLegend = function() {
         .attr("text-anchor", "start")
         .text(dataScaleArray[scaleIndex].maxData);
 
-    PubSub.publish('load:basemap');
+    PubSub.publish('init:modal');
 };
+
+
+
+var initModal = function() {
+    console.log("initModal");
+
+    const closeModalButton = document.getElementById('closeModal');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalDialog = document.getElementById('modalDialog');
+    
+    closeModalButton.addEventListener('click', function() {
+        modalBackdrop.classList.add('hidden');
+        modalDialog.classList.add('hidden');
+    });
+
+    PubSub.publish('load:basemap');
+}
 
 
 
@@ -941,18 +958,20 @@ var drawMap = function() {
 
             // console.log( "assets/data_detail/" + dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _selected + ".png");
 
-            var lightbox = lity('popup.html');
+            modalBackdrop.classList.remove('hidden');
+            modalDialog.classList.remove('hidden');
 
+
+            // var lightbox = lity('popup.html');
             window.setTimeout(function(){
-                // console.log("_selected", _selected);
                 
-                var iframeElem = document.getElementsByTagName('iframe');
-                var iframeDocument = iframeElem[1].contentDocument || iframeElem[1].contentWindow.document;
+                // var iframeElem = document.getElementsByTagName('iframe');
+                // var iframeDocument = iframeElem[1].contentDocument || iframeElem[1].contentWindow.document;
 
-                var _pElem1 = iframeDocument.getElementsByClassName('kirakirakira')[0];
+                var _pElem1 = document.getElementById('kirakirakira');
                 _pElem1.textContent = _selected;
 
-            }, 3000);
+            }, 10);
 
         });
 
@@ -1194,6 +1213,7 @@ PubSub.subscribe('load:filelist', loadFileList);
 PubSub.subscribe('init:dataslider', initDataSlider);
 PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
+PubSub.subscribe('init:modal', initModal);
 PubSub.subscribe('load:basemap', loadBasemap);
 PubSub.subscribe('load:themedata', loadThemeData);
 PubSub.subscribe('init:vizslider', initVizSlider);
