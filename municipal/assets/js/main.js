@@ -1075,8 +1075,8 @@ var updateLegend = function() {
 
 
     /* つくば市のデータ値 */
-    var _p = tsukubaGeoJson[0].properties[valueNameArray[colorIndex]];
-    d3.select("#heightLegend").text("Tsukuba City: " + _p);
+    // var _p = tsukubaGeoJson[0].properties[valueNameArray[colorIndex]];
+    // d3.select("#heightLegend").text("Tsukuba City: " + _p);
 
 
 
