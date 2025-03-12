@@ -88,7 +88,7 @@ var maxHeight = 50000;
 ------------------------------ */
 
 var varList = [];
-var varListRemove = ['Year', 'MuniCode'];
+var varListRemove = ['Year', 'agricultural_key', 'FileName'];
 var valueNameArray = []
 var colorIndex = 0;
 var depthIndex = 0;
@@ -473,48 +473,42 @@ var loadThemeData = function() {
     console.log("loadThemeData");
 
     // detect swiper
-    // filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
+    filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
 
     // load: theme data
-    // Promise.all([
-    //     d3.csv("assets/data_index/" + filepath)
-    // ]).then(function (_data) {
+    Promise.all([
+        d3.csv("assets/data_index/" + filepath)
+    ]).then(function (_data) {
   
-    //     dataObjTheme = _.cloneDeep(_data[0]);
+        dataObjTheme = _.cloneDeep(_data[0]);
 
-    //     varList = _data[0].columns;
-    //     valueNameArray = _.difference(varList, varListRemove);
-    //     console.log(valueNameArray);
+        varList = _data[0].columns;
+        valueNameArray = _.difference(varList, varListRemove);
+        console.log("valueNameArray", valueNameArray);
 
-    //     /* 自治体コードが4桁の場合、右端に0を付与 */
-    //     for (var i=0; i<dataObjTheme.length; i++){
+        /* 自治体コードが4桁の場合、右端に0を付与 */
+        for (var i=0; i<dataObjTheme.length; i++){
 
-    //         var _row = dataObjTheme[i];
+            var _row = dataObjTheme[i];
 
-    //         if (_row["MuniCode"].length == 4){
-    //             _row["MuniCode"] = "0" + _row["MuniCode"];
-    //         }
-    //         _row["Year"] =      parseInt(_row["Year"]);
-    //         _row["MuniCode"] =  parseInt(_row["MuniCode"]);
-    //         _row["mean"] =      parseFloat(_row["mean"]);
-    //         _row["sd"] =        parseFloat(_row["sd"]);
+            // if (typeof _row["agricultural_key"] == 'string') {
+            //     _row["agricultural_key"] = _row["agricultural_key"].replace(/[ \.]/g, '');
+            // }
+            _row["Year"] = parseInt(_row["Year"]);
+            _row["H0"] = parseFloat(_row["H0"]);
+            _row["L0"] = parseFloat(_row["L0"]);
+        }
 
-    //         for (var j = 0; j <= 50; j++) {
-    //             _row["H" + j] = parseFloat(_row["H" + j]);
-    //             _row["L" + j] = parseFloat(_row["L" + j]);
-    //         }
-
-    //     }
-        
-    //     console.log("dataObjTheme", dataObjTheme);
-    //     _data = null;
-
-    //     yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
+        console.log("dataObjTheme", dataObjTheme);
+        _data = null;
 
     //     PubSub.publish('init:vizslider');
     // });
+        yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
+        console.log("yearArray", yearArray);
 
-    PubSub.publish('init:vizslider');
+        PubSub.publish('init:vizslider');
+    });
 }
 
 
