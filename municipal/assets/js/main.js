@@ -436,8 +436,50 @@ var loadBasemap = function() {
         dataBaseMapDetailed = _.cloneDeep(_data[0]);
         dataBaseMapSimple = _.cloneDeep(_data[1]);
 
-        PubSub.publish('load:themedata');
+        PubSub.publish('navlink:setup');
     });
+}
+
+
+
+var setupNav = function() {
+    console.log("setupNav");
+
+    // 各navリンクのクリックイベント設定
+    navLinks.forEach(link => {
+        if (link) {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            if (this.id === "datachange" || this.id === "vizchange") {
+            if (slideOverContainer && sidepanel) {
+
+                selectedNav = this.id;
+                console.log("selectedNav", selectedNav);
+
+                PubSub.publish('navlink:disabled');
+                PubSub.publish('panel:open');
+            }
+            }
+        });
+        }
+    });
+
+    PubSub.publish('panel:setup');
+}
+
+
+
+var setupPanel = function() {
+    console.log("setupPanel");
+
+    if (closeButton && slideOverContainer && sidepanel) {
+        closeButton.addEventListener("click", () => {
+          PubSub.publish('panel:close');
+        });
+    }
+
+    PubSub.publish('load:themedata');
 }
 
 
@@ -663,50 +705,8 @@ var initVizSlider = function() {
       }
     });
 
-    PubSub.publish('navlink:setup');
-};
-
-
-
-var setupNav = function() {
-    console.log("setupNav");
-
-    // 各navリンクのクリックイベント設定
-    navLinks.forEach(link => {
-        if (link) {
-        link.addEventListener("click", function(e) {
-            e.preventDefault();
-
-            if (this.id === "datachange" || this.id === "vizchange") {
-            if (slideOverContainer && sidepanel) {
-
-                selectedNav = this.id;
-                console.log("selectedNav", selectedNav);
-
-                PubSub.publish('navlink:disabled');
-                PubSub.publish('panel:open');
-            }
-            }
-        });
-        }
-    });
-
-    PubSub.publish('panel:setup');
-}
-
-
-
-var setupPanel = function() {
-    console.log("setupPanel");
-
-    if (closeButton && slideOverContainer && sidepanel) {
-        closeButton.addEventListener("click", () => {
-          PubSub.publish('panel:close');
-        });
-    }
-
     PubSub.publish('filter:bydata');
-}
+};
 
 
 
