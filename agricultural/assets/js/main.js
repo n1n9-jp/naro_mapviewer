@@ -502,8 +502,6 @@ var loadThemeData = function() {
         console.log("dataObjTheme", dataObjTheme);
         _data = null;
 
-    //     PubSub.publish('init:vizslider');
-    // });
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
         console.log("yearArray", yearArray);
 
@@ -803,7 +801,7 @@ var closePanel = function() {
 var filterByYear = function() {
     console.log("filterByYear");
     
-    dataObjThemeFiltered = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
+    // dataObjThemeFiltered = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
     
     PubSub.publish('join:data');
 }
@@ -1073,7 +1071,6 @@ var drawMap = function() {
         // mapObject.getSource('naro').setData(dataBaseMapDetailed);
     }
 
-    PubSub.publish('update:legend');
 }
 
 
