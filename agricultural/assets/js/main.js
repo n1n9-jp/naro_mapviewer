@@ -108,9 +108,6 @@ var scaleDepthIndex = 0;
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
 var nullColor = "#c3c7c9";
-var colorScale = d3.scaleLinear()
-    .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-    .range([minColor, maxColor]);
 
 /* Height */
 var minHeight = 0;
@@ -1271,10 +1268,6 @@ var changeColor = function() {
             dataScaleArray[scaleIndex].minData = d3.min(_columnValues);
             dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
     }
-
-    colorScale
-        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-        .range([minColor, maxColor]);
 
     if (fl_map == "drawMap") {
         PubSub.publish('draw:map');

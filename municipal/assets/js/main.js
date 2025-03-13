@@ -97,9 +97,6 @@ var scaleDepthIndex = 0;
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
 var nullColor = "#c3c7c9";
-var colorScale = d3.scaleLinear()
-    .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-    .range([minColor, maxColor]);
 
 /* Height */
 var minHeight = 0;
