@@ -1109,6 +1109,9 @@ var drawMap = function() {
         mapObject.setPaintProperty(
             "naro_prob",
             'fill-extrusion-height',
+            ['case',
+                ['==', ['feature-state', valueNameArray[depthIndex]], null],
+                0,
                 ['interpolate', ['linear'],
                 ['get', valueNameArray[depthIndex]],
                 depthDataScaleArray[scaleIndex].minData, minHeight,
