@@ -560,7 +560,7 @@ var loadBasemap = function() {
     console.log("loadBasemap");
 
     Promise.all([
-        d3.json("assets/data_lib/" + "JapanMapDetail_light.json"),
+        d3.json("assets/data_lib/" + "JapanMapDetail.json"),
         d3.json("assets/data_lib/" + "JapanMapSimple.json")
     ]).then(function (_data) {
         dataBaseMapDetailed = _.cloneDeep(_data[0]);
