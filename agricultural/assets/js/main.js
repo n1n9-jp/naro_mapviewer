@@ -107,6 +107,7 @@ var depthIndex = 0;
 var yearArray = new Array();
 var yearIndex = 0;
 
+var fullAddress = "";
 
 
 /* ------------------------------
@@ -991,28 +992,6 @@ var drawMap = function() {
         /* Mapbox interaction */
         mapObject.on('click', 'naro_prob', function (e) {
 
-            var _selectedArea = "";
-
-            var _v1 = e.features[0].properties.N03_001;
-            if (_v1 !== null && _v1 !== undefined) {
-                _selectedArea = _selectedArea + _v1;
-            }
-
-            var _v2 = e.features[0].properties.N03_002;
-            if (_v2 !== null && _v2 !== undefined) {
-                _selectedArea = _selectedArea + _v2;
-            }
-  
-            var _v3 = e.features[0].properties.N03_003;
-            if (_v3 !== null && _v3 !== undefined) {
-                _selectedArea = _selectedArea + _v3;
-            }
-
-            var _v4 = e.features[0].properties.N03_004;
-            if (_v4 !== null && _v4 !== undefined) {
-                _selectedArea = _selectedArea + _v4;
-            }
-
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
 
@@ -1022,7 +1001,7 @@ var drawMap = function() {
                             d3.csv("assets/data_detail/" + filepath)
                     ]).then(function (_data) {
 
-                            var _DetailTitle = _data[0][0]["Title"] + " - " + _selectedArea;
+                            var _DetailTitle = _data[0][0]["Title"] + " - " + fullAddress;
                             d3.select("#detailTitle").text(_DetailTitle);
                             d3.select("#detailImageURL").attr("src", _data[0][0]["ImageURL"]);
                             d3.select("#detailDesc").text(_data[0][0]["Description"]);
@@ -1041,7 +1020,7 @@ var drawMap = function() {
                 mapObject.getCanvas().style.cursor = 'pointer';
                 console.log("eee", e.features[0].properties);
 
-                var _address = 
+                fullAddress = 
                 e.features[0].properties["PREF_NAME"] +
                 e.features[0].properties["CITY_NAME"] +
                 e.features[0].properties["KCITY_NAME"] +
@@ -1073,7 +1052,7 @@ var drawMap = function() {
                 popup
                     .setLngLat([_lng, _lat])
                     .setHTML(
-                        _address + "<br />"
+                        fullAddress + "<br />"
                          + "色への値: " + _colorValue + "<br />"
                          + "高さへの値: " + _heightValue)
                     .addTo(mapObject);
