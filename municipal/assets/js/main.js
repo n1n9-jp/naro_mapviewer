@@ -892,8 +892,8 @@ var drawMap = function() {
                 'fill-extrusion-height': [
                     'interpolate', ['linear'],
                     ['get', valueNameArray[depthIndex]],
-                    dataScaleArray[scaleIndex].minData, 0,
-                    dataScaleArray[scaleIndex].maxData, 50000
+                    dataScaleArray[scaleIndex].minData, minHeight,
+                    dataScaleArray[scaleIndex].maxData, maxHeight
                 ],
                 'fill-extrusion-vertical-gradient': true
             },
