@@ -4,8 +4,8 @@
 
 /* MapObject */
 var mapObject;
-var minZoomLevel = 4;
-var maxZoomLevel = 16;
+var minZoomLevel = 8;
+var maxZoomLevel = 14;
 
 /* Map Tile */
 var maptileURL = [];
