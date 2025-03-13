@@ -13,6 +13,14 @@ var maptileURL = "http://127.0.0.1:5500/tileset/{z}/{x}/{y}.pbf";
 
 var POI = [
   {
+    city: "Sapporo Station",
+    longitude: 141.350755,
+    latitude: 43.068661,
+    zoom: minZoomLevel,
+    pitch: 75,
+    bearing: 0,
+  },
+  {
     city: "NARO",
     longitude: 140.110249,
     latitude: 36.027363,
