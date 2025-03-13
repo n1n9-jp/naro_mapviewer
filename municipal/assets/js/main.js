@@ -656,9 +656,11 @@ var initVizSlider = function() {
         },
         on: {
             slideChange: function(e) {
-            scaleIndex = e.activeIndex;
+            scaleColorIndex = e.activeIndex;
+            scaleDepthIndex = e.activeIndex;
             fl_map = "updateMap";
             PubSub.publish('change:color');
+            PubSub.publish('change:depth');
             }
         }
     });
