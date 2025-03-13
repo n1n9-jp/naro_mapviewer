@@ -52,8 +52,6 @@ var dir3Index = 0;
 var filepath;
 
 /* Data Object */
-var dataBaseMapSimple;      // Base Map Simple
-var dataBaseMapDetailed;    // Base Map Detail
 var dataObjTheme;           // Theme Data
 var dataObjThemeFiltered;   // Theme Data Filtered
 
@@ -587,16 +585,6 @@ var initModal = function() {
 
 var loadBasemap = function() {
     console.log("loadBasemap");
-
-    // Promise.all([
-    //     d3.json("assets/data_lib/" + "JapanMapDetail_light.json"),
-    //     d3.json("assets/data_lib/" + "JapanMapSimple.json")
-    // ]).then(function (_data) {
-    //     dataBaseMapDetailed = _.cloneDeep(_data[0]);
-    //     dataBaseMapSimple = _.cloneDeep(_data[1]);
-
-    //     PubSub.publish('load:themedata');
-    // });
 
     PubSub.publish('navlink:setup');
 }
