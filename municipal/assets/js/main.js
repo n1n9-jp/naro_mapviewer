@@ -360,7 +360,6 @@ var initLegend = function() {
         .attr("id", legendGradientId)
         .attr("x1", "0%").attr("y1", "0%")
         .attr("x2", "100%").attr("y2", "0%");
-
     gradient.append("stop")
         .attr("offset", "0%")
         .attr("stop-color", minColor);
@@ -383,7 +382,6 @@ var initLegend = function() {
     // バー左側に最小値(右揃え)
     var minTextX = barX - 5;
     var minTextY = barY + legendBarHeight / 2;
-
     svg.append("text")
         .attr("id", "legendMinText")
         .attr("x", minTextX)
@@ -395,7 +393,6 @@ var initLegend = function() {
     // バー右側に最大値(左揃え)
     var maxTextX = barX + legendBarWidth + 5;
     var maxTextY = barY + legendBarHeight / 2;
-
     svg.append("text")
         .attr("id", "legendMaxText")
         .attr("x", maxTextX)
