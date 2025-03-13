@@ -420,65 +420,148 @@ var initMapUI = function() {
 var initLegend = function() {
     console.log("initLegend");
 
-    // すでにある要素をクリア
+    // 既存の凡例内容をクリア
     d3.select("#legendBar").selectAll("*").remove();
 
-    // SVG を作成
+    // SVG全体のサイズ（横幅380px、高さ40px）
+    var legendOuterWidth = 380;
+    var legendOuterHeight = 40;
+
+    // SVG 作成
     var svg = d3.select("#legendBar")
         .append("svg")
         .attr("id", "legendSvg")
         .attr("width", legendOuterWidth)
         .attr("height", legendOuterHeight);
 
-    // グラデーション定義
+    // 共通：凡例グループの描画開始 Y 座標
+    var groupY = 20;  
+
+    // --------------------
+    // 色の凡例グループ（左側）
+    // --------------------
+    var colorLegendBarWidth = 50;
+    var barHeight = 10;  
+    // 左半分の中心に配置
+    var colorGroupX = (legendOuterWidth / 2) / 2 - colorLegendBarWidth / 2;
+    
+    // 定義：色のグラデーション
     var defs = svg.append("defs");
-    var gradient = defs.append("linearGradient")
-        .attr("id", legendGradientId)
+    var colorGradient = defs.append("linearGradient")
+        .attr("id", "legend-gradient")
         .attr("x1", "0%").attr("y1", "0%")
         .attr("x2", "100%").attr("y2", "0%");
-
-    gradient.append("stop")
+    colorGradient.append("stop")
         .attr("offset", "0%")
         .attr("stop-color", minColor);
-    gradient.append("stop")
+    colorGradient.append("stop")
         .attr("offset", "100%")
         .attr("stop-color", maxColor);
+    
+    var colorGroup = svg.append("g")
+        .attr("class", "colorLegend")
+        .attr("transform", "translate(" + colorGroupX + "," + groupY + ")");
+    
+    // ラベル「色」
+    colorGroup.append("text")
+        .attr("x", colorLegendBarWidth / 2)
+        .attr("y", -5)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")
+        .text("色");
+    
+    // 色の凡例バー
+    colorGroup.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", colorLegendBarWidth)
+        .attr("height", barHeight)
+        .style("fill", "url(#legend-gradient)");
 
-    // グラデーションバーの位置（例：少し右へ寄せる）
-    var barX = legendWidthMargin;
-    var barY = 16;
-
-    // グラデーションバー本体
-    svg.append("rect")
-        .attr("x", barX)
-        .attr("y", barY)
-        .attr("width", legendBarWidth)
-        .attr("height", legendBarHeight)
-        .style("fill", "url(#" + legendGradientId + ")");
-
-    // バー左側に最小値(右揃え)
-    var minTextX = barX - 5;
-    var minTextY = barY + legendBarHeight / 2;
-
-    svg.append("text")
-        .attr("id", "legendMinText")
-        .attr("x", minTextX)
-        .attr("y", minTextY)
+    // 最小値（左側）に ID を追加
+    colorGroup.append("text")
+        .attr("id", "legendColorMinText")
+        .attr("x", -5)
+        .attr("y", barHeight / 2)
         .attr("dy", "0.35em")
         .attr("text-anchor", "end")
-        .text(dataScaleArray[scaleIndex].minData);
-
-    // バー右側に最大値(左揃え)
-    var maxTextX = barX + legendBarWidth + 5;
-    var maxTextY = barY + legendBarHeight / 2;
-
-    svg.append("text")
-        .attr("id", "legendMaxText")
-        .attr("x", maxTextX)
-        .attr("y", maxTextY)
+        .attr("font-size", "10px")
+        .text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].minData));
+    
+    // 最大値（右側）に ID を追加
+    colorGroup.append("text")
+        .attr("id", "legendColorMaxText")
+        .attr("x", colorLegendBarWidth + 5)
+        .attr("y", barHeight / 2)
         .attr("dy", "0.35em")
         .attr("text-anchor", "start")
-        .text(dataScaleArray[scaleIndex].maxData);
+        .attr("font-size", "10px")
+        .text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].maxData));
+
+    // --------------------
+    // 高さの凡例グループ（右側：折れ線グラフ）
+    // --------------------
+    var heightLegendChartWidth = 50;
+    var heightLegendChartHeight = 20;  // 折れ線グラフの描画領域
+    // 右半分の中心に配置
+    var heightGroupX = (legendOuterWidth / 2) + ((legendOuterWidth / 2) / 2) - heightLegendChartWidth / 2;
+    
+    var heightGroup = svg.append("g")
+        .attr("class", "heightLegend")
+        .attr("transform", "translate(" + heightGroupX + "," + groupY + ")");
+    
+    // ラベル「高さ」
+    heightGroup.append("text")
+        .attr("x", heightLegendChartWidth / 2)
+        .attr("y", -5)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")
+        .text("高さ");
+
+    // 折れ線グラフ用の線（左下→右上）
+    var lineData = [
+        { x: 0, y: heightLegendChartHeight-6 },  // 最小値側（左下）
+        { x: heightLegendChartWidth, y: 0 }       // 最大値側（右上）
+    ];
+    var lineGenerator = d3.line()
+        .x(function(d) { return d.x; })
+        .y(function(d) { return d.y; });
+    
+    heightGroup.append("path")
+        .attr("d", lineGenerator(lineData))
+        .attr("stroke", "#000")
+        .attr("stroke-width", 1)
+        .attr("fill", "none");
+    
+    // 端点に小さな円を追加
+    heightGroup.selectAll("circle")
+        .data(lineData)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; })
+        .attr("r", 2)
+        .attr("fill", "#000");
+    
+    // 最小値テキスト（左下端、y 座標を少し上げる）
+    heightGroup.append("text")
+        .attr("id", "legendHeightMinText")
+        .attr("x", -5)
+        .attr("y", heightLegendChartHeight - 6)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "end")
+        .attr("font-size", "10px")
+        .text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].minData));
+        
+    // 最大値テキスト（右上端）
+    heightGroup.append("text")
+        .attr("id", "legendHeightMaxText")
+        .attr("x", heightLegendChartWidth + 5)
+        .attr("y", 0)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "start")
+        .attr("font-size", "10px")
+        .text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].maxData));
 
     PubSub.publish('init:modal');
 };
