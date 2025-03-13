@@ -1172,12 +1172,12 @@ var updateMap = function() {
         "naro_prob",
         'fill-extrusion-color',
         ['case',
-          ['==', ['feature-state', 'L0'], null],
+          ['==', ['feature-state', valueNameArray[colorIndex]], null],
           nullColor,
           ['interpolate', ['linear'],
-            ['feature-state', 'L0'],
-            dataScaleArray[scaleIndex].minData, minColor,
-            dataScaleArray[scaleIndex].maxData, maxColor
+            ['feature-state', valueNameArray[colorIndex]],
+            colorDataScaleArray[scaleColorIndex].minData, minColor,
+            colorDataScaleArray[scaleColorIndex].maxData, maxColor
           ]
         ]
     );
@@ -1189,9 +1189,9 @@ var updateMap = function() {
           ['==', ['feature-state', 'L0'], null],
           0,
           ['interpolate', ['linear'],
-            ['feature-state', 'L0'],
-            dataScaleArray[scaleIndex].minData, minHeight,
-            dataScaleArray[scaleIndex].maxData, maxHeight
+            ['feature-state', valueNameArray[depthIndex]],
+            depthDataScaleArray[scaleDepthIndex].minData, minHeight,
+            depthDataScaleArray[scaleDepthIndex].maxData, maxHeight
           ]
         ]
     );

@@ -1208,12 +1208,12 @@ var initPrint = function() {
 var changeColor = function() {
     console.log("changeColor");
 
-    if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
+    if (scaleColorIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
-        dataScaleArray[scaleIndex].minData = minDataFixed;
-        dataScaleArray[scaleIndex].maxData = maxDataFixed;
+        colorDataScaleArray[scaleColorIndex].minData = minDataFixed;
+        colorDataScaleArray[scaleColorIndex].maxData = maxDataFixed;
 
-    } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
+    } else if (scaleColorIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
             var _ddd = valueNameArray[colorIndex];
 
@@ -1221,8 +1221,8 @@ var changeColor = function() {
                 return +d[_ddd];
             });
 
-            dataScaleArray[scaleIndex].minData = d3.min(_columnValues);
-            dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
+            colorDataScaleArray[scaleColorIndex].minData = d3.min(_columnValues);
+            colorDataScaleArray[scaleColorIndex].maxData = d3.max(_columnValues);
     }
 
 var changeDepth = function() {
