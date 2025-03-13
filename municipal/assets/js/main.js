@@ -1226,6 +1226,25 @@ var changeColor = function() {
     colorScale
         .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
         .range([minColor, maxColor]);
+var changeDepth = function() {
+    console.log("changeDepth");
+
+    if (scaleDepthIndex == 0) { // 0 の場合は、固定値の最小値と最大値
+
+        depthDataScaleArray[scaleDepthIndex].minData = minDataFixed;
+        depthDataScaleArray[scaleDepthIndex].maxData = maxDataFixed;
+
+    } else if (scaleDepthIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
+
+            var _ddd = valueNameArray[depthIndex];
+
+            var _columnValues = dataObjThemeFiltered.map(function(d) {
+                return +d[_ddd];
+            });
+
+            depthDataScaleArray[scaleDepthIndex].minData = d3.min(_columnValues);
+            depthDataScaleArray[scaleDepthIndex].maxData = d3.max(_columnValues);
+    }
 
     if (fl_map == "drawMap") {
         PubSub.publish('draw:map');
@@ -1279,6 +1298,7 @@ PubSub.subscribe('update:legend', updateLegend);
 
 PubSub.subscribe('init:print', initPrint);
 PubSub.subscribe('change:color', changeColor);
+PubSub.subscribe('change:depth', changeDepth);
 PubSub.subscribe('change:dimension', changeDimension);
 
 PubSub.publish('init:basemap');
