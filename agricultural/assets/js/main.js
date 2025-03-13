@@ -8,8 +8,8 @@ var minZoomLevel = 8;
 var maxZoomLevel = 14;
 
 /* Map Tile */
-// var maptileURL = "http://127.0.0.1:5501/tileset/{z}/{x}/{y}.pbf";
 var maptileURL = "http://127.0.0.1:5500/tileset/{z}/{x}/{y}.pbf";
+// var maptileURL = "./tileset/{z}/{x}/{y}.pbf";
 
 var POI = [
   {
@@ -251,7 +251,7 @@ var initBaseMap = function() {
                 source: "vector-tiles",
                 "source-layer": "arg",
                 paint: {
-                    "fill-extrusion-color": "#0000ff",
+                    "fill-extrusion-color": nullColor,
                     "fill-extrusion-opacity": 0.6,
                     // "fill-extrusion-outline-color": "#ffffff"
                 }
