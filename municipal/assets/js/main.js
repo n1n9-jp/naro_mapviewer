@@ -120,8 +120,8 @@ var scaleArray = ["Relative","Absolute"]
 var scaleIndex = 0;
 
 /* Swiper UI 2d3d Change */
-var d23Array = ["3D","2D"]
-var d23ArrayIndex = 0;
+var dimensionArray = ["3D","2D"]
+var dimensionArrayIndex = 0;
 
 /* Flag */
 var fl_firsttime = true;
@@ -191,7 +191,7 @@ var initBaseMap = function() {
 
 
     mapObject.on('pitchend', () => {
-        if (d23ArrayIndex === 1 && mapObject.getPitch() !== 0) {
+        if (dimensionArrayIndex === 1 && mapObject.getPitch() !== 0) {
             mapObject.setPitch(0);
         }
     });
@@ -638,33 +638,33 @@ var initVizSlider = function() {
 
 
     /* 2d3d Change Slider */
-    d3.select("#swiper2d3dChange").selectAll("div").remove();
+    d3.select("#swiperDimensionChange").selectAll("div").remove();
 
-    d3.select("#swiper2d3dChange")
+    d3.select("#swiperDimensionChange")
     .selectAll("div")
-    .data(d23Array)
+    .data(dimensionArray)
     .enter()
     .append("div")
     .attr("class", "swiper-slide")
     .text(function(d) { return d; });
 
-    if (swiper2d3dChange && typeof swiper2d3dChange.destroy === "function") {
-        swiper2d3dChange.destroy(true, true);
+    if (swiperDimensionChange && typeof swiperDimensionChange.destroy === "function") {
+        swiperDimensionChange.destroy(true, true);
     }
 
-    swiper2d3dChange = new Swiper('#swiper-container-2d3d', {
+    swiperDimensionChange = new Swiper('#swiper-container-dimension', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
         navigation: {
-            nextEl: '#swiper-button-next-2d3d',
-            prevEl: '#swiper-button-prev-2d3d',
+            nextEl: '#swiper-button-next-dimension',
+            prevEl: '#swiper-button-prev-dimension',
         },
         on: {
             slideChange: function(e) {
-            d23ArrayIndex = e.activeIndex;
-            console.log("d23ArrayIndex", d23ArrayIndex);
-            console.log("d23Array", d23Array[d23ArrayIndex]);
+            dimensionArrayIndex = e.activeIndex;
+            console.log("dimensionArrayIndex", dimensionArrayIndex);
+            console.log("dimensionArray", dimensionArray[dimensionArrayIndex]);
             PubSub.publish('change:dimension');
             }
         }
@@ -1211,13 +1211,13 @@ var changeColor = function() {
 var changeDimension = function() {
     console.log("changeDimension");
 
-    if (d23ArrayIndex === 0) { // 3D モードに切り替え
+    if (dimensionArrayIndex === 0) { // 3D モードに切り替え
 
         mapObject.easeTo({ pitch: 60, duration: 1000 });
         mapObject.dragRotate.enable();
         mapObject.touchZoomRotate.enable();
 
-      } else if (d23ArrayIndex === 1) { // 2D モードに切り替え
+      } else if (dimensionArrayIndex === 1) { // 2D モードに切り替え
 
         mapObject.easeTo({ pitch: 0, duration: 1000 });
         mapObject.dragRotate.disable();
