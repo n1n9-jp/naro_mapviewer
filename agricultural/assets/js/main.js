@@ -72,9 +72,9 @@ const themeDataMapping = {};
 -------------------- */
 
 /* Data Scale */
-var _obj1 = {minData: 0.0, maxData: 300.0};
+var _obj1 = {minData: 0.0, maxData: 1.0};
 var minDataFixed = 0.0;
-var maxDataFixed = 300.0;
+var maxDataFixed = 1.0;
 var _obj2 = {minData: minDataFixed, maxData: maxDataFixed};
 var dataScaleArray = [];
 dataScaleArray.push(_obj1);
