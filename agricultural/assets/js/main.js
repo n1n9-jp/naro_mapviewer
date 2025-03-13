@@ -600,49 +600,6 @@ var loadBasemap = function() {
 
 
 
-var loadThemeData = function() {
-    console.log("loadThemeData");
-
-    var _t = formatNumber(prefArray[prefIndex]["id"]);
-    filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _t + ".csv";
-    console.log("filepath", filepath);
-
-    // load: theme data
-    Promise.all([
-        d3.csv("assets/data_index/" + filepath)
-    ]).then(function (_data) {
-  
-        dataObjTheme = _.cloneDeep(_data[0]);
-
-        varList = _data[0].columns;
-        valueNameArray = _.difference(varList, varListRemove);
-        console.log("valueNameArray", valueNameArray);
-
-        for (var i=0; i<dataObjTheme.length; i++){
-
-            var _row = dataObjTheme[i];
-            _row["Year"] = parseInt(_row["Year"]);
-            valueNameArray.forEach(function(col) {
-                _row[col] = parseFloat(_row[col]);
-            });
-        }          
-
-        console.log("dataObjTheme", dataObjTheme);
-        _data = null;
-
-        yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
-        console.log("yearArray", yearArray);
-
-
-
-        PubSub.publish('init:vizslider');
-    });
-}
-
-
-
-
-
 var setupNav = function() {
     console.log("setupNav");
 
@@ -681,6 +638,46 @@ var setupPanel = function() {
     }
 
     PubSub.publish('load:themedata');
+}
+
+
+
+var loadThemeData = function() {
+    console.log("loadThemeData");
+
+    var _t = formatNumber(prefArray[prefIndex]["id"]);
+    filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _t + ".csv";
+    // console.log("filepath", filepath);
+
+    // load: theme data
+    Promise.all([
+        d3.csv("assets/data_index/" + filepath)
+    ]).then(function (_data) {
+  
+        dataObjTheme = _.cloneDeep(_data[0]);
+
+        varList = _data[0].columns;
+        valueNameArray = _.difference(varList, varListRemove);
+        // console.log("valueNameArray", valueNameArray);
+
+        for (var i=0; i<dataObjTheme.length; i++){
+            var _row = dataObjTheme[i];
+            _row["Year"] = parseInt(_row["Year"]);
+            valueNameArray.forEach(function(col) {
+                _row[col] = parseFloat(_row[col]);
+            });
+        }          
+
+        // console.log("dataObjTheme", dataObjTheme);
+        _data = null;
+
+        yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
+        // console.log("yearArray", yearArray);
+
+
+
+        PubSub.publish('init:vizslider');
+    });
 }
 
 
