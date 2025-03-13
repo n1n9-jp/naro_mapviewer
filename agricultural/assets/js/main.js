@@ -1009,92 +1009,69 @@ var filterByYear = function() {
     console.log("themeDataMapping", themeDataMapping);
 
 
-    PubSub.publish('join:data');
+    // PubSub.publish('join:data');
+
+    // joinData の完了を待ってから更新を行う
+    joinData().then(() => {
+        // joinData の処理完了後、色や高さの更新を発火
+        PubSub.publish('change:color');
+        // 他にも必要なら追加の更新処理をここで実行
+    }).catch(error => {
+        console.error("joinData でエラーが発生しました", error);
+    });
+
 }
 
 
 
+// joinData の非同期処理化
 var joinData = function() {
     console.log("joinData");
+    return new Promise((resolve, reject) => {
+        try {
+            // 現在の描画済みフィーチャーを取得
+            const features = mapObject.queryRenderedFeatures({ layers: ["naro_prob"] });
 
-    const features = mapObject.queryRenderedFeatures({ layers: ["naro_prob"] });
-    console.log("features", features);
+            // 以前のデータの初期化（色・高さの初期状態に設定）
+            mapObject.setPaintProperty("naro_prob", 'fill-extrusion-color', nullColor);
+            mapObject.setPaintProperty("naro_prob", 'fill-extrusion-height', 0);
 
+            // 各フィーチャーに対してテーマデータを結合
+            features.forEach(feature => {
+                if (feature && feature.id !== undefined) {
+                    const _tileKey = feature.properties.KEY;
+                    const themeRecord = themeDataMapping[_tileKey];
+                    if (themeRecord) {
+                        mapObject.setFeatureState({
+                            source: 'vector-tiles',
+                            id: feature.id,
+                            sourceLayer: 'arg'
+                        }, {
+                            L0: parseFloat(themeRecord.L0),
+                            H0: parseFloat(themeRecord.H0)
+                        });
+                    }
+                }
+            });
 
+            // 各種表示要素の更新
+            d3.select("#selectedDir1").text(dir1[dir1Index]);
+            d3.select("#selectedDir2").text(dir2[dir2Index]);
+            d3.select("#selectedDir3").text(dir3[dir3Index]);
+            d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
+            d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
+            d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
+            d3.select("#selectedYear").text(yearArray[yearIndex]);
 
-    // 以前のデータの削除
-    features.forEach(feature => {
-      if (feature.id !== undefined) {
-        mapObject.removeFeatureState({
-          source: 'vector-tiles',
-          id: feature.id,
-          sourceLayer: 'arg' // ベクトルタイル側のレイヤ名に合わせる
-        }, {
-            L0: 0,
-            H0: 0
-        });
-      }
-    });
+            fl_map = "drawMap";
 
-
-    
-    mapObject.setPaintProperty(
-        "naro_prob",
-        'fill-extrusion-color',
-        nullColor
-      );
-      mapObject.setPaintProperty(
-        "naro_prob",
-        'fill-extrusion-height',
-        0
-    );
-
-
-
-    // データの結合
-    features.forEach(feature => {
-
-        console.log("features.forEach");
-
-        const _tileKey = feature.properties.KEY;
-        const themeRecord = themeDataMapping[_tileKey]
-        
-        // console.log("_tileKey", _tileKey);
-        // console.log(typeof _tileKey);
-
-        // console.log("feature.id", feature.id);
-        // console.log(typeof feature.id);
-
-        if (themeRecord && feature.id !== undefined) {
-            // console.log("keymatched");
-
-            mapObject.setFeatureState({
-            source: 'vector-tiles',
-            id: feature.id,
-            sourceLayer: 'arg' // ベクトルタイル側のレイヤ名に合わせる
-        }, {
-            L0: parseFloat(themeRecord.L0),
-            H0: parseFloat(themeRecord.H0)
-        });
+            // joinData の処理が完了したので resolve を呼ぶ
+            resolve();
+        } catch (e) {
+            reject(e);
         }
     });
-
-
-
-    d3.select("#selectedDir1").text(dir1[dir1Index]);
-    d3.select("#selectedDir2").text(dir2[dir2Index]);
-    d3.select("#selectedDir3").text(dir3[dir3Index]);
-    d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
-    d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
-    d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
-    d3.select("#selectedYear").text(yearArray[yearIndex]);
-    
-
-
-    fl_map = "drawMap";
-    PubSub.publish('change:color');
-}
-
+};
 
 
 
