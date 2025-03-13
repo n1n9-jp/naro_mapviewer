@@ -8,11 +8,8 @@ var minZoomLevel = 8;
 var maxZoomLevel = 14;
 
 /* Map Tile */
-// var maptileURL = [];
-// maptileURL[0] = "https://api.maptiler.com/maps/positron/style.json?key=p3yGzZkqo3eCxtEynu6W";
-// maptileURL[1] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
-// var maptileIndex = 0;
-
+// var maptileURL = "http://127.0.0.1:5501/tileset/{z}/{x}/{y}.pbf";
+var maptileURL = "http://127.0.0.1:5500/agricultural/tileset/{z}/{x}/{y}.pbf";
 
 var POI = [
     {
@@ -205,7 +202,7 @@ var initBaseMap = function() {
             sources: {
               "vector-tiles": {
                 type: "vector",
-                tiles: ["http://127.0.0.1:5501/tileset/{z}/{x}/{y}.pbf"],
+                tiles: [maptileURL],
                 minzoom: minZoomLevel,
                 maxzoom: maxZoomLevel
               }
