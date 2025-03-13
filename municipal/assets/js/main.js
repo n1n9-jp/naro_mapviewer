@@ -246,7 +246,7 @@ var loadFileList = function() {
     console.log("loadFileList");
 
     Promise.all([
-        d3.csv("assets/data_lib/filelist.csv")
+        d3.csv("data/data_lib/filelist.csv")
     ]).then(function (_data) {
 
         for(var i=0; i<_data[0].length; i++) {
@@ -560,8 +560,8 @@ var loadBasemap = function() {
     console.log("loadBasemap");
 
     Promise.all([
-        d3.json("assets/data_lib/" + "JapanMapDetail.json"),
-        d3.json("assets/data_lib/" + "JapanMapSimple.json")
+        d3.json("data/data_lib/" + "JapanMapDetail.json"),
+        d3.json("data/data_lib/" + "JapanMapSimple.json")
     ]).then(function (_data) {
         dataBaseMapDetailed = _.cloneDeep(_data[0]);
         dataBaseMapSimple = _.cloneDeep(_data[1]);
@@ -622,7 +622,7 @@ var loadThemeData = function() {
 
     // load: theme data
     Promise.all([
-        d3.csv("assets/data_index/" + filepath)
+        d3.csv("data/data_index/" + filepath)
     ]).then(function (_data) {
   
         dataObjTheme = _.cloneDeep(_data[0]);
@@ -1117,7 +1117,7 @@ var drawMap = function() {
             window.setTimeout(function(){
 
                     Promise.all([
-                            d3.csv("assets/data_detail/" + filepath)
+                            d3.csv("data/data_detail/" + filepath)
                     ]).then(function (_data) {
 
                             var _DetailTitle = _data[0][0]["Title"] + " - " + _selectedArea;
