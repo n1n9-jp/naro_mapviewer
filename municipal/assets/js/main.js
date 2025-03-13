@@ -54,22 +54,46 @@ var dataObjThemeFiltered;   // Theme Data Filtered
 
 
 /* --------------------
-　スケール
+　スケール：データ
 -------------------- */
 
-/* Data Scale */
-var _obj1 = {minData: 0.0, maxData: 300.0};
-var minDataFixed = 0.0;
-var maxDataFixed = 300.0;
-var _obj2 = {minData: minDataFixed, maxData: maxDataFixed};
-var dataScaleArray = [];
-dataScaleArray.push(_obj1);
-dataScaleArray.push(_obj2);
-var scaleIndex = 0;
+/* Color Data Scale */
 // 0 の場合は、固定値の最小値と最大値
 // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
-/* Color Scale */
+var _obj1 = {minData: 0.0, maxData: 300.0};
+var minDataFixed = 0.0;
+var maxDataFixed = 10.0;
+var _obj2 = {minData: minDataFixed, maxData: maxDataFixed};
+
+var colorDataScaleArray = [];
+colorDataScaleArray.push(_obj1);
+colorDataScaleArray.push(_obj2);
+var scaleColorIndex = 0;
+
+
+
+/* Depth Data Scale */
+// 0 の場合は、固定値の最小値と最大値
+// 1 の場合は、テーマデータ内の実際の最小値と最大値
+
+var _depthobj1 = {minData: 0.0, maxData: 300.0};
+var minDepthDataFixed = 0.0;
+var maxDepthDataFixed = 10.0;
+var _depthobj2 = {minData: minDepthDataFixed, maxData: maxDepthDataFixed};
+
+var depthDataScaleArray = [];
+depthDataScaleArray.push(_depthobj1);
+depthDataScaleArray.push(_depthobj2);
+var scaleDepthIndex = 0;
+
+
+
+/* --------------------
+　スケール：表現
+-------------------- */
+
+/* Color */
 var minColor = "#333333";
 var maxColor = "#FFFFFF";
 var nullColor = "#c3c7c9";
@@ -77,7 +101,7 @@ var colorScale = d3.scaleLinear()
     .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
     .range([minColor, maxColor]);
 
-/* Height Scale */
+/* Height */
 var minHeight = 0;
 var maxHeight = 50000;
 
@@ -117,7 +141,7 @@ var selectedNav = "";
 
 /* Swiper UI Visualization Scale */
 var scaleArray = ["Relative","Absolute"]
-var scaleIndex = 0;
+var scaleColorIndex = 0;
 
 /* Swiper UI 2d3d Change */
 var dimensionArray = ["3D","2D"]
