@@ -78,7 +78,7 @@ var _obj2 = {minData: minDataFixed, maxData: maxDataFixed};
 var colorDataScaleArray = [];
 colorDataScaleArray.push(_obj1);
 colorDataScaleArray.push(_obj2);
-var scaleColorIndex = 0;
+// var scaleColorIndex = 0;
 
 
 
@@ -94,7 +94,7 @@ var _depthobj2 = {minData: minDepthDataFixed, maxData: maxDepthDataFixed};
 var depthDataScaleArray = [];
 depthDataScaleArray.push(_depthobj1);
 depthDataScaleArray.push(_depthobj2);
-var scaleDepthIndex = 0;
+// var scaleDepthIndex = 0;
 
 
 
@@ -323,6 +323,7 @@ var initDataSlider = function() {
         });
 
     swiperDir1 = new Swiper('#swiper-container-dir1', {
+        initialSlide: dir1Index,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -354,6 +355,7 @@ var initDataSlider = function() {
         });
 
     swiperDir2 = new Swiper('#swiper-container-dir2', {
+        initialSlide: dir2Index,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -385,6 +387,7 @@ var initDataSlider = function() {
         });
 
     swiperDir3 = new Swiper('#swiper-container-dir3', {
+        initialSlide: dir3Index,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -489,7 +492,7 @@ var initLegend = function() {
         .attr("dy", "0.35em")
         .attr("text-anchor", "end")
         .attr("font-size", "10px")
-        .text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].minData));
+        .text(formatTwoDecimal(colorDataScaleArray[scaleIndex].minData));
     
     // 最大値（右側）に ID を追加
     colorGroup.append("text")
@@ -499,7 +502,7 @@ var initLegend = function() {
         .attr("dy", "0.35em")
         .attr("text-anchor", "start")
         .attr("font-size", "10px")
-        .text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].maxData));
+        .text(formatTwoDecimal(colorDataScaleArray[scaleIndex].maxData));
 
     // --------------------
     // 高さの凡例グループ（右側：折れ線グラフ）
@@ -554,7 +557,7 @@ var initLegend = function() {
         .attr("dy", "0.35em")
         .attr("text-anchor", "end")
         .attr("font-size", "10px")
-        .text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].minData));
+        .text(formatTwoDecimal(depthDataScaleArray[scaleIndex].minData));
         
     // 最大値テキスト（右上端）
     heightGroup.append("text")
@@ -564,7 +567,7 @@ var initLegend = function() {
         .attr("dy", "0.35em")
         .attr("text-anchor", "start")
         .attr("font-size", "10px")
-        .text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].maxData));
+        .text(formatTwoDecimal(depthDataScaleArray[scaleIndex].maxData));
 
     PubSub.publish('init:modal');
 };
@@ -702,6 +705,7 @@ var initVizSlider = function() {
     }
 
     swiperColor = new Swiper('#swiper-container-color', {
+        initialSlide: colorIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -736,6 +740,7 @@ var initVizSlider = function() {
     }
 
     swiperDepth = new Swiper('#swiper-container-depth', {
+        initialSlide: depthIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -770,6 +775,7 @@ var initVizSlider = function() {
     }
 
     swiperScale = new Swiper('#swiper-container-scale', {
+        initialSlide: scaleIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -779,8 +785,7 @@ var initVizSlider = function() {
         },
         on: {
             slideChange: function(e) {
-            scaleColorIndex = e.activeIndex;
-            scaleDepthIndex = e.activeIndex;
+            scaleIndex = e.activeIndex;
             fl_map = "updateMap";
             PubSub.publish('change:color');
             PubSub.publish('change:depth');
@@ -806,6 +811,7 @@ var initVizSlider = function() {
     }
 
     swiperDimensionChange = new Swiper('#swiper-container-dimension', {
+        initialSlide: dimensionArrayIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -841,6 +847,7 @@ var initVizSlider = function() {
     }
 
     swiperYear = new Swiper('#swiper-container-year', {
+      initialSlide: yearIndex,
       slidesPerView: 2,
       spaceBetween: 1,
       centeredSlides: true,
@@ -1081,7 +1088,7 @@ var joinData = function() {
     d3.select("#selectedDir3").text(dir3[dir3Index]);
     d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
     d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
-    d3.select("#selectedForScale").text(scaleArray[scaleColorIndex]);
+    d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
     d3.select("#selectedYear").text(yearArray[yearIndex]);
     
 
@@ -1116,8 +1123,8 @@ var drawMap = function() {
               nullColor,
               ['interpolate', ['linear'],
                 ['feature-state', 'L0'],
-                colorDataScaleArray[scaleColorIndex].minData, minColor,
-                colorDataScaleArray[scaleColorIndex].maxData, maxColor
+                colorDataScaleArray[scaleIndex].minData, minColor,
+                colorDataScaleArray[scaleIndex].maxData, maxColor
               ]
             ]
         );
@@ -1127,8 +1134,8 @@ var drawMap = function() {
             'fill-extrusion-height',
                 ['interpolate', ['linear'],
                 ['get', valueNameArray[depthIndex]],
-                depthDataScaleArray[scaleDepthIndex].minData, minHeight,
-                depthDataScaleArray[scaleDepthIndex].maxData, maxHeight]
+                depthDataScaleArray[scaleIndex].minData, minHeight,
+                depthDataScaleArray[scaleIndex].maxData, maxHeight]
         );
 
 
@@ -1261,8 +1268,8 @@ var updateMap = function() {
           nullColor,
           ['interpolate', ['linear'],
             ['feature-state', valueNameArray[colorIndex]],
-            colorDataScaleArray[scaleColorIndex].minData, minColor,
-            colorDataScaleArray[scaleColorIndex].maxData, maxColor
+            colorDataScaleArray[scaleIndex].minData, minColor,
+            colorDataScaleArray[scaleIndex].maxData, maxColor
           ]
         ]
     );
@@ -1275,8 +1282,8 @@ var updateMap = function() {
           0,
           ['interpolate', ['linear'],
             ['feature-state', valueNameArray[depthIndex]],
-            depthDataScaleArray[scaleDepthIndex].minData, minHeight,
-            depthDataScaleArray[scaleDepthIndex].maxData, maxHeight
+            depthDataScaleArray[scaleIndex].minData, minHeight,
+            depthDataScaleArray[scaleIndex].maxData, maxHeight
           ]
         ]
     );
@@ -1293,11 +1300,11 @@ var updateLegend = function() {
 
     var _svg = d3.select("#legendSvg");
     if (!_svg.empty()){
-        d3.select("#legendColorMinText").text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].minData));
-        d3.select("#legendColorMaxText").text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].maxData));
+        d3.select("#legendColorMinText").text(formatTwoDecimal(colorDataScaleArray[scaleIndex].minData));
+        d3.select("#legendColorMaxText").text(formatTwoDecimal(colorDataScaleArray[scaleIndex].maxData));
         
-        d3.select("#legendHeightMinText").text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].minData));
-        d3.select("#legendHeightMaxText").text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].maxData));
+        d3.select("#legendHeightMinText").text(formatTwoDecimal(depthDataScaleArray[scaleIndex].minData));
+        d3.select("#legendHeightMaxText").text(formatTwoDecimal(depthDataScaleArray[scaleIndex].maxData));
     }
 };
 
@@ -1331,8 +1338,8 @@ var changeColor = function() {
 
     if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
-        colorDataScaleArray[scaleColorIndex].minData = minDataFixed;
-        colorDataScaleArray[scaleColorIndex].maxData = maxDataFixed;
+        colorDataScaleArray[scaleIndex].minData = minDataFixed;
+        colorDataScaleArray[scaleIndex].maxData = maxDataFixed;
 
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
@@ -1342,8 +1349,8 @@ var changeColor = function() {
                 return +d[_ddd];
             });
 
-            colorDataScaleArray[scaleColorIndex].minData = d3.min(_columnValues);
-            colorDataScaleArray[scaleColorIndex].maxData = d3.max(_columnValues);
+            colorDataScaleArray[scaleIndex].minData = d3.min(_columnValues);
+            colorDataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
     }
 
     if (fl_map == "drawMap") {
@@ -1358,12 +1365,12 @@ var changeColor = function() {
 var changeDepth = function() {
     console.log("changeDepth");
 
-    if (scaleDepthIndex == 0) { // 0 の場合は、固定値の最小値と最大値
+    if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
-        depthDataScaleArray[scaleDepthIndex].minData = minDataFixed;
-        depthDataScaleArray[scaleDepthIndex].maxData = maxDataFixed;
+        depthDataScaleArray[scaleIndex].minData = minDataFixed;
+        depthDataScaleArray[scaleIndex].maxData = maxDataFixed;
 
-    } else if (scaleDepthIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
+    } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
             var _ddd = valueNameArray[depthIndex];
 
@@ -1371,8 +1378,8 @@ var changeDepth = function() {
                 return +d[_ddd];
             });
 
-            depthDataScaleArray[scaleDepthIndex].minData = d3.min(_columnValues);
-            depthDataScaleArray[scaleDepthIndex].maxData = d3.max(_columnValues);
+            depthDataScaleArray[scaleIndex].minData = d3.min(_columnValues);
+            depthDataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
     }
 
     if (fl_map == "drawMap") {
