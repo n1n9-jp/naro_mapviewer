@@ -790,6 +790,16 @@ var initVizSlider = function() {
         slideChange: function(e) {
             prefIndex = e.activeIndex;
             console.log("prefIndexprefIndex", prefIndex);
+
+            var _lon = prefArray[prefIndex]["lon"];
+            var _lat = prefArray[prefIndex]["lat"]
+
+            mapObject.flyTo({
+                center: [_lon, _lat],
+                speed: 1.2,
+                curve: 1.42
+            });
+
             fl_map = "updateMap";
             PubSub.publish('load:themedata');
         }
