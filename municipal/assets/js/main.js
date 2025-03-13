@@ -1149,6 +1149,15 @@ var updateMap = function() {
         ]
     );
   
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-height',
+            ['interpolate', ['linear'],
+            ['get', valueNameArray[depthIndex]],
+            depthDataScaleArray[scaleDepthIndex].minData, minHeight,
+            depthDataScaleArray[scaleDepthIndex].maxData, maxHeight]
+    );
+    
     PubSub.publish('update:legend');
 }
 
