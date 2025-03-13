@@ -1208,29 +1208,16 @@ var drawMap = function() {
 var updateMap = function() {
     console.log("updateMap");
 
-
-    /* 大地図 */
-    mapObject.setPaintProperty(
-        "naro_prob",
-        'fill-extrusion-height',
-            ['interpolate', ['linear'],
-            ['get', valueNameArray[depthIndex]],
-            dataScaleArray[scaleIndex].minData, minHeight,
-            dataScaleArray[scaleIndex].maxData, maxHeight]
-    );
-
     mapObject.setPaintProperty(
         "naro_prob",
         'fill-extrusion-color',
         ['case',
-          // データが null の場合は nullColor を設定
           ['==', ['get', valueNameArray[colorIndex]], null],
           nullColor,
-          // それ以外は interpolate で色を計算
           ['interpolate', ['linear'],
             ['get', valueNameArray[colorIndex]],
-            dataScaleArray[scaleIndex].minData, minColor,
-            dataScaleArray[scaleIndex].maxData, maxColor
+            colorDataScaleArray[scaleColorIndex].minData, minColor,
+            colorDataScaleArray[scaleColorIndex].maxData, maxColor
           ]
         ]
     );
@@ -1246,6 +1233,10 @@ var updateMap = function() {
     
     PubSub.publish('update:legend');
 }
+
+
+
+
 
 
 
