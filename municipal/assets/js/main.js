@@ -667,7 +667,7 @@ var initVizSlider = function() {
 
 
 
-    /* 2d3d Change Slider */
+    /* Dimension Change Slider */
     d3.select("#swiperDimensionChange").selectAll("div").remove();
 
     d3.select("#swiperDimensionChange")

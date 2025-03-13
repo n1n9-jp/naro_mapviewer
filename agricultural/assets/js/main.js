@@ -152,7 +152,7 @@ var selectedNav = "";
 var scaleArray = ["Relative","Absolute"]
 var scaleIndex = 0;
 
-/* Swiper UI 2d3d Change */
+/* Swiper UI Dimension Change */
 var dimensionArray = ["3D","2D"]
 var dimensionArrayIndex = 0;
 
