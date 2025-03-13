@@ -180,6 +180,16 @@ var legendWidthMargin = (legendOuterWidth - legendBarWidth)/2;
 
 
 /* ------------------------------
+　ユーティリティ関数
+------------------------------ */
+function formatNumber(num) {
+    return num.toString().padStart(2, '0');
+}
+var formatTwoDecimal = d3.format(".2f");
+
+
+
+/* ------------------------------
 　関数
 ------------------------------ */
 
