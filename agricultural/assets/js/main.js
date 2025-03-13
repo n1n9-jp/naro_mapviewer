@@ -770,7 +770,9 @@ var initVizSlider = function() {
 
     if (swiperScale && typeof swiperScale.destroy === "function") {
         swiperScale.destroy(true, true);
+        // console.log("swiperScale.destroy scaleIndex", scaleIndex);
     }
+    // console.log("scaleIndex", scaleIndex);
 
     swiperScale = new Swiper('#swiper-container-scale', {
         initialSlide: scaleIndex,
@@ -1005,8 +1007,8 @@ var filterByYear = function() {
     dataObjThemeFiltered.forEach(record => {
         themeDataMapping[record.agricultural_key] = record;
     });
-    console.log("dataObjThemeFiltered", dataObjThemeFiltered);
-    console.log("themeDataMapping", themeDataMapping);
+    // console.log("dataObjThemeFiltered", dataObjThemeFiltered);
+    // console.log("themeDataMapping", themeDataMapping);
 
 
     // PubSub.publish('join:data');
@@ -1221,7 +1223,6 @@ var drawMap = function() {
 
     } else {
         // mapObject.getSource('naro').setData(dataBaseMapDetailed);
-
         console.log("not fl_firsttime");
     }
 
