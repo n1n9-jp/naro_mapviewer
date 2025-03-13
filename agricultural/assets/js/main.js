@@ -1223,6 +1223,7 @@ var drawMap = function() {
 
     } else {
         // mapObject.getSource('naro').setData(dataBaseMapDetailed);
+        PubSub.publish('update:legend');
         console.log("not fl_firsttime");
     }
 
