@@ -1338,8 +1338,8 @@ var changeColor = function() {
 
     if (scaleIndex == 0) { // 0 の場合は、固定値の最小値と最大値
 
-        dataScaleArray[scaleIndex].minData = minDataFixed;
-        dataScaleArray[scaleIndex].maxData = maxDataFixed;
+        colorDataScaleArray[scaleColorIndex].minData = minDataFixed;
+        colorDataScaleArray[scaleColorIndex].maxData = maxDataFixed;
 
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
@@ -1349,8 +1349,8 @@ var changeColor = function() {
                 return +d[_ddd];
             });
 
-            dataScaleArray[scaleIndex].minData = d3.min(_columnValues);
-            dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
+            colorDataScaleArray[scaleColorIndex].minData = d3.min(_columnValues);
+            colorDataScaleArray[scaleColorIndex].maxData = d3.max(_columnValues);
     }
 
     if (fl_map == "drawMap") {
