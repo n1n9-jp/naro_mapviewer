@@ -1225,6 +1225,15 @@ var changeColor = function() {
             colorDataScaleArray[scaleColorIndex].maxData = d3.max(_columnValues);
     }
 
+    if (fl_map == "drawMap") {
+        PubSub.publish('draw:map');
+    } else if (fl_map == "updateMap") {
+        PubSub.publish('update:map');
+    }
+}
+
+
+
 var changeDepth = function() {
     console.log("changeDepth");
 
