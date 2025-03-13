@@ -198,6 +198,7 @@ var legendWidthMargin = (legendOuterWidth - legendBarWidth)/2;
 /* ------------------------------
 　ユーティリティ関数
 ------------------------------ */
+// 数字の加工
 function formatNumber(num) {
     return num.toString().padStart(2, '0');
 }
@@ -214,6 +215,7 @@ function debounce(func, delay) {
     }
 }
 
+  
 
 /* ------------------------------
 　関数
@@ -870,7 +872,7 @@ var initVizSlider = function() {
           yearIndex = e.activeIndex;
         //   console.log("swiperYear", yearArray[yearIndex]);
           fl_map = "updateMap";
-          PubSub.publish('filter:bydata');
+            PubSub.publish('filter:bydata');
         }
       }
     });
@@ -1125,7 +1127,9 @@ var drawMap = function() {
                 ['interpolate', ['linear'],
                 ['get', valueNameArray[depthIndex]],
                 depthDataScaleArray[scaleIndex].minData, minHeight,
-                depthDataScaleArray[scaleIndex].maxData, maxHeight]
+                depthDataScaleArray[scaleIndex].maxData, maxHeight
+                ]
+            ]
         );
 
 
