@@ -911,6 +911,38 @@ var joinData = function() {
     const features = mapObject.queryRenderedFeatures({ layers: ["naro_prob"] });
     console.log("features", features);
 
+
+
+    // 以前のデータの削除
+    features.forEach(feature => {
+      if (feature.id !== undefined) {
+        mapObject.removeFeatureState({
+          source: 'vector-tiles',
+          id: feature.id,
+          sourceLayer: 'arg' // ベクトルタイル側のレイヤ名に合わせる
+        }, {
+            L0: 0,
+            H0: 0
+        });
+      }
+    });
+
+
+    
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-color',
+        nullColor
+      );
+      mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-height',
+        0
+    );
+
+
+
+    // データの結合
     features.forEach(feature => {
 
         console.log("features.forEach");
