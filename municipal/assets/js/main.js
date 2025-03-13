@@ -278,6 +278,7 @@ var initDataSlider = function() {
         });
 
     swiperDir1 = new Swiper('#swiper-container-dir1', {
+        initialSlide: dir1Index,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -309,6 +310,7 @@ var initDataSlider = function() {
         });
 
     swiperDir2 = new Swiper('#swiper-container-dir2', {
+        initialSlide: dir2Index,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -340,6 +342,7 @@ var initDataSlider = function() {
         });
 
     swiperDir3 = new Swiper('#swiper-container-dir3', {
+        initialSlide: dir3Index,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -667,6 +670,7 @@ var initVizSlider = function() {
     }
 
     swiperColor = new Swiper('#swiper-container-color', {
+        initialSlide: colorIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -701,6 +705,7 @@ var initVizSlider = function() {
     }
 
     swiperDepth = new Swiper('#swiper-container-depth', {
+        initialSlide: depthIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -735,6 +740,7 @@ var initVizSlider = function() {
     }
 
     swiperScale = new Swiper('#swiper-container-scale', {
+        initialSlide: scaleIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -771,6 +777,7 @@ var initVizSlider = function() {
     }
 
     swiperDimensionChange = new Swiper('#swiper-container-dimension', {
+        initialSlide: dimensionArrayIndex,
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
@@ -806,6 +813,7 @@ var initVizSlider = function() {
     }
 
     swiperYear = new Swiper('#swiper-container-year', {
+      yearIndex: yearIndex,
       slidesPerView: 2,
       spaceBetween: 1,
       centeredSlides: true,
