@@ -134,6 +134,7 @@ var yearIndex = 0;
 var fullAddress = "";
 
 
+
 /* ------------------------------
 　ナビゲーション
 ------------------------------ */
@@ -238,7 +239,7 @@ var initBaseMap = function() {
                 id: "naro_prob",
                 type: "fill-extrusion",
                 source: "vector-tiles",
-                "source-layer": "arg", // ※実際のレイヤ名に合わせて変更
+                "source-layer": "arg",
                 paint: {
                     "fill-extrusion-color": "#0000ff",
                     "fill-extrusion-opacity": 0.6,
@@ -296,7 +297,7 @@ var loadFileList = function() {
             _row["lon"] = parseInt(_row["lon"]);
         };
 
-        console.log("prefArray", prefArray);
+        // console.log("prefArray", prefArray);
 
         PubSub.publish('init:dataslider');
     });
@@ -655,7 +656,7 @@ var setupNav = function() {
             if (slideOverContainer && sidepanel) {
 
                 selectedNav = this.id;
-                console.log("selectedNav", selectedNav);
+                // console.log("selectedNav", selectedNav);
 
                 PubSub.publish('navlink:disabled');
                 PubSub.publish('panel:open');
@@ -822,8 +823,8 @@ var initVizSlider = function() {
         on: {
             slideChange: function(e) {
             dimensionArrayIndex = e.activeIndex;
-            console.log("dimensionArrayIndex", dimensionArrayIndex);
-            console.log("dimensionArray", dimensionArray[dimensionArrayIndex]);
+            // console.log("dimensionArrayIndex", dimensionArrayIndex);
+            // console.log("dimensionArray", dimensionArray[dimensionArrayIndex]);
             PubSub.publish('change:dimension');
             }
         }
@@ -858,7 +859,7 @@ var initVizSlider = function() {
       on: {
         slideChange: function(e) {
           yearIndex = e.activeIndex;
-          console.log("swiperYear", yearArray[yearIndex]);
+        //   console.log("swiperYear", yearArray[yearIndex]);
           fl_map = "updateMap";
           PubSub.publish('filter:bydata');
         }
@@ -896,11 +897,11 @@ var initVizSlider = function() {
       on: {
         slideChange: function(e) {
             prefIndex = e.activeIndex;
-            console.log("prefIndexprefIndex", prefIndex);
+            // console.log("prefIndexprefIndex", prefIndex);
 
-            console.log("prefArray[prefIndex]", prefArray[prefIndex]);
-            console.log("lat", prefArray[prefIndex]["lat"]);
-            console.log("lon", prefArray[prefIndex]["lon"]);
+            // console.log("prefArray[prefIndex]", prefArray[prefIndex]);
+            // console.log("lat", prefArray[prefIndex]["lat"]);
+            // console.log("lon", prefArray[prefIndex]["lon"]);
 
             var _lon = prefArray[prefIndex]["lon"];
             var _lat = prefArray[prefIndex]["lat"]
@@ -959,7 +960,7 @@ var openPanel = function() {
     void sidepanel.offsetWidth; // 強制再描画
     sidepanel.classList.remove("-translate-y-full");
     sidepanel.classList.add("translate-y-0");
-    console.log("Slide-over panel opened");
+    // console.log("Slide-over panel opened");
   
 
 
@@ -981,7 +982,7 @@ var closePanel = function() {
 
     sidepanel.classList.remove("translate-y-0");
     sidepanel.classList.add("-translate-y-full");
-    console.log("Slide-over panel closing");
+    // console.log("Slide-over panel closing");
 
     setTimeout(() => {
       slideOverContainer.classList.add("hidden");
@@ -995,11 +996,11 @@ var filterByYear = function() {
     console.log("filterByYear");
     
     //年度で絞り込む
-    console.log("yearArray[yearIndex]", yearArray[yearIndex]);
+    // console.log("yearArray[yearIndex]", yearArray[yearIndex]);
     var _temp = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
     
     //広域自治体で絞り込む
-    console.log("prefArray[prefIndex]", prefArray[prefIndex]);
+    // console.log("prefArray[prefIndex]", prefArray[prefIndex]);
     var _t = formatNumber(prefArray[prefIndex]["id"]);
     dataObjThemeFiltered = _temp.filter(row => row.FileName === _t);
 
@@ -1157,24 +1158,24 @@ var drawMap = function() {
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
 
-            console.log("---------------------");
-            console.log("filepath", filepath);
+            // console.log("---------------------");
+            // console.log("filepath", filepath);
 
             window.setTimeout(function(){
 
                     Promise.all([
                             d3.csv("assets/data_detail/" + filepath)
                     ]).then(function (_data) {
-                            console.log("_data[0][0]", _data[0][0]);
+                            // console.log("_data[0][0]", _data[0][0]);
 
                             var _DetailTitle = _data[0][0]["Title"] + " - " + fullAddress;
                             d3.select("#detailTitle").text(_DetailTitle);
                             d3.select("#detailImageURL").attr("src", _data[0][0]["ImageURL"]);
                             d3.select("#detailDesc").text(_data[0][0]["Description"]);
         
-                            console.log("_DetailTitle", _DetailTitle);
-                            console.log("ImageURL", _data[0][0]["ImageURL"]);
-                            console.log("Description", _data[0][0]["Description"]);
+                            // console.log("_DetailTitle", _DetailTitle);
+                            // console.log("ImageURL", _data[0][0]["ImageURL"]);
+                            // console.log("Description", _data[0][0]["Description"]);
                     });
 
             }, 50);
@@ -1187,7 +1188,7 @@ var drawMap = function() {
 
                 // マウスポインターの形状管理
                 mapObject.getCanvas().style.cursor = 'pointer';
-                console.log("eee", e.features[0].properties);
+                // console.log("eee", e.features[0].properties);
 
                 fullAddress = 
                 e.features[0].properties["PREF_NAME"] +
@@ -1198,9 +1199,9 @@ var drawMap = function() {
                 const feature = e.features[0];
                 const state = feature.state || {};
 
-                console.log("state", state);
-                console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
-                console.log("valueNameArray[depthIndex]", valueNameArray[depthIndex]);
+                // console.log("state", state);
+                // console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
+                // console.log("valueNameArray[depthIndex]", valueNameArray[depthIndex]);
 
                 // state.colorValue と state.heightValue を利用
                 const _colorValue = state[valueNameArray[colorIndex]];  
@@ -1257,8 +1258,8 @@ var drawMap = function() {
 var updateMap = function() {
     console.log("updateMap");
 
-    console.log("colorIndex", colorIndex);
-    console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
+    // console.log("colorIndex", colorIndex);
+    // console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
 
     mapObject.setPaintProperty(
         "naro_prob",
@@ -1315,14 +1316,14 @@ var initPrint = function() {
 
         /* プリント・ダイアログ閉じたあとの挙動 */
         window.addEventListener('afterprint', (event) => {
-            console.log('After print');
+            // console.log('After print');
 
             d3.select("#mapContainer .maplibregl-control-container").style("display", "block");
         });
 
         /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
         document.querySelector('#printBtn').addEventListener('click', () => {
-            console.log('print');
+            // console.log('print');
 
             d3.select("#mapContainer .maplibregl-control-container").style("display", "none");
 
