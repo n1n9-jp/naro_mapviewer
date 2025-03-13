@@ -791,6 +791,10 @@ var initVizSlider = function() {
             prefIndex = e.activeIndex;
             console.log("prefIndexprefIndex", prefIndex);
 
+            console.log("prefArray[prefIndex]", prefArray[prefIndex]);
+            console.log("lat", prefArray[prefIndex]["lat"]);
+            console.log("lon", prefArray[prefIndex]["lon"]);
+
             var _lon = prefArray[prefIndex]["lon"];
             var _lat = prefArray[prefIndex]["lat"]
 
@@ -1037,17 +1041,24 @@ var drawMap = function() {
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
 
+            console.log("---------------------");
+            console.log("filepath", filepath);
+
             window.setTimeout(function(){
 
                     Promise.all([
                             d3.csv("assets/data_detail/" + filepath)
                     ]).then(function (_data) {
+                            console.log("_data[0][0]", _data[0][0]);
 
                             var _DetailTitle = _data[0][0]["Title"] + " - " + fullAddress;
                             d3.select("#detailTitle").text(_DetailTitle);
                             d3.select("#detailImageURL").attr("src", _data[0][0]["ImageURL"]);
                             d3.select("#detailDesc").text(_data[0][0]["Description"]);
         
+                            console.log("_DetailTitle", _DetailTitle);
+                            console.log("ImageURL", _data[0][0]["ImageURL"]);
+                            console.log("Description", _data[0][0]["Description"]);
                     });
 
             }, 50);
@@ -1072,6 +1083,8 @@ var drawMap = function() {
                 const state = feature.state || {};
 
                 console.log("state", state);
+                console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
+                console.log("valueNameArray[depthIndex]", valueNameArray[depthIndex]);
 
                 // state.colorValue と state.heightValue を利用
                 const _colorValue = state[valueNameArray[colorIndex]];  
