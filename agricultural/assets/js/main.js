@@ -9,7 +9,7 @@ var maxZoomLevel = 14;
 
 /* Map Tile */
 // var maptileURL = "http://127.0.0.1:5501/tileset/{z}/{x}/{y}.pbf";
-var maptileURL = "http://127.0.0.1:5500/agricultural/tileset/{z}/{x}/{y}.pbf";
+var maptileURL = "http://127.0.0.1:5500/tileset/{z}/{x}/{y}.pbf";
 
 var POI = [
   {
