@@ -292,6 +292,7 @@ var initDataSlider = function() {
         initialSlide: dir1Index,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-dir1',
@@ -324,6 +325,7 @@ var initDataSlider = function() {
         initialSlide: dir2Index,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-dir2',
@@ -356,6 +358,7 @@ var initDataSlider = function() {
         initialSlide: dir3Index,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-dir3',
@@ -684,6 +687,7 @@ var initVizSlider = function() {
         initialSlide: colorIndex,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-color',
@@ -719,6 +723,7 @@ var initVizSlider = function() {
         initialSlide: depthIndex,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-depth',
@@ -754,6 +759,7 @@ var initVizSlider = function() {
         initialSlide: scaleIndex,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-scale',
@@ -791,6 +797,7 @@ var initVizSlider = function() {
         initialSlide: dimensionArrayIndex,
         slidesPerView: 2,
         spaceBetween: 1,
+        runCallbacksOnInit: false,
         centeredSlides: true,
         navigation: {
             nextEl: '#swiper-button-next-dimension',
@@ -827,6 +834,7 @@ var initVizSlider = function() {
       yearIndex: yearIndex,
       slidesPerView: 2,
       spaceBetween: 1,
+      runCallbacksOnInit: false,
       centeredSlides: true,
       navigation: {
         nextEl: '#swiper-button-next-year',
