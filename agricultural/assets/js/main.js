@@ -1049,8 +1049,8 @@ var joinData = function() {
                             id: feature.id,
                             sourceLayer: 'arg'
                         }, {
-                            L0: parseFloat(themeRecord.L0),
-                            H0: parseFloat(themeRecord.H0)
+                            [ valueNameArray[colorIndex] ]: parseFloat(themeRecord[valueNameArray[colorIndex]]),
+                            [ valueNameArray[depthIndex] ]: parseFloat(themeRecord[valueNameArray[depthIndex]])
                         });
                     }
                 }
@@ -1096,10 +1096,10 @@ var drawMap = function() {
             "naro_prob",
             'fill-extrusion-color',
             ['case',
-              ['==', ['feature-state', 'L0'], null],
+              ['==', ['feature-state', valueNameArray[colorIndex]], null],
               nullColor,
               ['interpolate', ['linear'],
-                ['feature-state', 'L0'],
+                ['feature-state', valueNameArray[colorIndex]],
                 colorDataScaleArray[scaleIndex].minData, minColor,
                 colorDataScaleArray[scaleIndex].maxData, maxColor
               ]
@@ -1255,7 +1255,7 @@ var updateMap = function() {
         "naro_prob",
         'fill-extrusion-height',
         ['case',
-          ['==', ['feature-state', 'L0'], null],
+          ['==', ['feature-state', valueNameArray[depthIndex]], null],
           0,
           ['interpolate', ['linear'],
             ['feature-state', valueNameArray[depthIndex]],
