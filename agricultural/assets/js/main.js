@@ -1138,7 +1138,7 @@ var drawMap = function() {
                 depthDataScaleArray[scaleDepthIndex].maxData, maxHeight]
         );
 
-        
+
 
         /* --------------------
             ポップアップ
@@ -1298,24 +1298,13 @@ var updateMap = function() {
 var updateLegend = function() {
     console.log("updateLegend");
 
-    // グラデーションの色が変わる場合は更新
-    d3.select("#" + legendGradientId)
-        .selectAll("stop")
-        .data([
-            { offset: "0%", color: minColor },
-            { offset: "100%", color: maxColor }
-        ])
-        .attr("offset", function(d) { return d.offset; })
-        .attr("stop-color", function(d) { return d.color; });
-
-    // 最小値・最大値テキストを再設定 (小数点以下13桁でもそのまま)
-    var svg = d3.select("#legendSvg");
-    if (!svg.empty()){
-        svg.select("#legendMinText")
-            .text(dataScaleArray[scaleIndex].minData);
-
-        svg.select("#legendMaxText")
-            .text(dataScaleArray[scaleIndex].maxData);
+    var _svg = d3.select("#legendSvg");
+    if (!_svg.empty()){
+        d3.select("#legendColorMinText").text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].minData));
+        d3.select("#legendColorMaxText").text(formatTwoDecimal(colorDataScaleArray[scaleColorIndex].maxData));
+        
+        d3.select("#legendHeightMinText").text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].minData));
+        d3.select("#legendHeightMaxText").text(formatTwoDecimal(depthDataScaleArray[scaleDepthIndex].maxData));
     }
 };
 
