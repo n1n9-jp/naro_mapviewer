@@ -1225,9 +1225,6 @@ var changeColor = function() {
             dataScaleArray[scaleIndex].maxData = d3.max(_columnValues);
     }
 
-    colorScale
-        .domain([dataScaleArray[scaleIndex].minData, dataScaleArray[scaleIndex].maxData])
-        .range([minColor, maxColor]);
 var changeDepth = function() {
     console.log("changeDepth");
 
