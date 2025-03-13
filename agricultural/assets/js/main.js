@@ -1123,13 +1123,22 @@ var drawMap = function() {
               nullColor,
               ['interpolate', ['linear'],
                 ['feature-state', 'L0'],
-                dataScaleArray[scaleIndex].minData, minColor,
-                dataScaleArray[scaleIndex].maxData, maxColor
+                colorDataScaleArray[scaleColorIndex].minData, minColor,
+                colorDataScaleArray[scaleColorIndex].maxData, maxColor
               ]
             ]
         );
 
+        mapObject.setPaintProperty(
+            "naro_prob",
+            'fill-extrusion-height',
+                ['interpolate', ['linear'],
+                ['get', valueNameArray[depthIndex]],
+                depthDataScaleArray[scaleDepthIndex].minData, minHeight,
+                depthDataScaleArray[scaleDepthIndex].maxData, maxHeight]
+        );
 
+        
 
         /* --------------------
             ポップアップ

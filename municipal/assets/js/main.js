@@ -1003,16 +1003,16 @@ var drawMap = function() {
                     [
                         'interpolate', ['linear'],
                         ['get', valueNameArray[colorIndex]],
-                        dataScaleArray[scaleIndex].minData, minColor,
-                        dataScaleArray[scaleIndex].maxData, maxColor
+                        colorDataScaleArray[scaleColorIndex].minData, minColor,
+                        colorDataScaleArray[scaleColorIndex].maxData, maxColor
                     ]
                 ],
 
                 'fill-extrusion-height': [
                     'interpolate', ['linear'],
                     ['get', valueNameArray[depthIndex]],
-                    dataScaleArray[scaleIndex].minData, minHeight,
-                    dataScaleArray[scaleIndex].maxData, maxHeight
+                    depthDataScaleArray[scaleDepthIndex].minData, minHeight,
+                    depthDataScaleArray[scaleDepthIndex].maxData, maxHeight
                 ],
                 'fill-extrusion-vertical-gradient': true
             },
