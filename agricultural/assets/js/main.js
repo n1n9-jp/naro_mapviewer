@@ -203,6 +203,16 @@ function formatNumber(num) {
 }
 var formatTwoDecimal = d3.format(".2f");
 
+// デバウンス関数
+function debounce(func, delay) {
+    let timer;
+    return function(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    }
+}
 
 
 /* ------------------------------
@@ -1396,7 +1406,8 @@ PubSub.subscribe('init:mapui', initMapUI);
 PubSub.subscribe('init:legend', initLegend);
 PubSub.subscribe('init:modal', initModal);
 PubSub.subscribe('load:basemap', loadBasemap);
-PubSub.subscribe('load:themedata', loadThemeData);
+// PubSub.subscribe('load:themedata', loadThemeData);
+PubSub.subscribe('load:themedata', debounce(loadThemeData, 200));
 PubSub.subscribe('init:vizslider', initVizSlider);
 
 PubSub.subscribe('navlink:setup', setupNav);
@@ -1406,15 +1417,19 @@ PubSub.subscribe('panel:setup', setupPanel);
 PubSub.subscribe('panel:open', openPanel);
 PubSub.subscribe('panel:close', closePanel);
 
-PubSub.subscribe('filter:bydata', filterByYear);
+// PubSub.subscribe('filter:bydata', filterByYear);
+PubSub.subscribe('filter:bydata', debounce(filterByYear, 200));
+
 PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap);
 PubSub.subscribe('update:map', updateMap);
 PubSub.subscribe('update:legend', updateLegend);
 
 PubSub.subscribe('init:print', initPrint);
-PubSub.subscribe('change:color', changeColor);
-PubSub.subscribe('change:depth', changeDepth);
+// PubSub.subscribe('change:color', changeColor);
+PubSub.subscribe('change:color', debounce(changeColor, 200));
+// PubSub.subscribe('change:depth', changeDepth);
+PubSub.subscribe('change:depth', debounce(changeDepth, 200));
 PubSub.subscribe('change:dimension', changeDimension);
 
 PubSub.publish('init:basemap');
