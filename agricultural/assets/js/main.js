@@ -78,7 +78,6 @@ var _obj2 = {minData: minDataFixed, maxData: maxDataFixed};
 var colorDataScaleArray = [];
 colorDataScaleArray.push(_obj1);
 colorDataScaleArray.push(_obj2);
-// var scaleColorIndex = 0;
 
 
 
@@ -94,7 +93,6 @@ var _depthobj2 = {minData: minDepthDataFixed, maxData: maxDepthDataFixed};
 var depthDataScaleArray = [];
 depthDataScaleArray.push(_depthobj1);
 depthDataScaleArray.push(_depthobj2);
-// var scaleDepthIndex = 0;
 
 
 
