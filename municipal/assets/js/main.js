@@ -108,12 +108,16 @@ var maxHeight = 50000;
 　データの変更
 ------------------------------ */
 
+// 変数名リスト
 var varList = [];
 var varListRemove = ['Year', 'MuniCode'];
-var valueNameArray = []
+var valueNameArray = [];
+
+// 色と高さへ割り当てる変数管理
 var colorIndex = 0;
 var depthIndex = 0;
 
+// 年度管理
 var yearArray = new Array();
 var yearIndex = 0;
 

@@ -117,15 +117,20 @@ var maxHeight = 5000;
 　データの変更
 ------------------------------ */
 
+// 変数名リスト
 var varList = [];
 var varListRemove = ['Year', 'agricultural_key', 'FileName'];
-var valueNameArray = []
+var valueNameArray = [];
+
+// 色と高さへ割り当てる変数管理
 var colorIndex = 0;
 var depthIndex = 0;
 
+// 年度管理
 var yearArray = new Array();
 var yearIndex = 0;
 
+// 詳細データを取り出す際のURL
 var fullAddress = "";
 
 
