@@ -948,7 +948,7 @@ var joinData = function() {
     d3.select("#selectedDir3").text(dir3[dir3Index]);
     d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
     d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
-    d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
+    d3.select("#selectedForScale").text(scaleArray[scaleColorIndex]);
     d3.select("#selectedYear").text(yearArray[yearIndex]);
 
 
