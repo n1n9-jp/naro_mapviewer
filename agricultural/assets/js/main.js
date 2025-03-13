@@ -4,8 +4,8 @@
 
 /* MapObject */
 var mapObject;
-var minZoomLevel = 4;
-var maxZoomLevel = 16;
+var minZoomLevel = 8;
+var maxZoomLevel = 14;
 
 /* Map Tile */
 // var maptileURL = [];
@@ -13,8 +13,17 @@ var maxZoomLevel = 16;
 // maptileURL[1] = "https://api.maptiler.com/maps/darkmatter/style.json?key=p3yGzZkqo3eCxtEynu6W";
 // var maptileIndex = 0;
 
+
 var POI = [
-  {
+    {
+    city: "Sapporo Station",
+    longitude: 141.350755,
+    latitude: 43.068661,
+    zoom: minZoomLevel,
+    pitch: 45,
+    bearing: 0,
+    },
+    {
     city: "Tokyo Station",
     longitude: 139.767125,
     latitude: 35.681236,
@@ -51,6 +60,11 @@ var dataBaseMapDetailed;    // Base Map Detail
 var dataObjTheme;           // Theme Data
 var dataObjThemeFiltered;   // Theme Data Filtered
 
+var prefArray = []
+var prefIndex = 0;
+
+const themeDataMapping = {};
+
 
 
 /* --------------------
@@ -79,7 +93,7 @@ var colorScale = d3.scaleLinear()
 
 /* Height Scale */
 var minHeight = 0;
-var maxHeight = 50000;
+var maxHeight = 5000;
 
 
 
@@ -120,8 +134,8 @@ var scaleArray = ["Relative","Absolute"]
 var scaleIndex = 0;
 
 /* Swiper UI 2d3d Change */
-var d23Array = ["3D","2D"]
-var d23ArrayIndex = 0;
+var dimensionArray = ["3D","2D"]
+var dimensionArrayIndex = 0;
 
 /* Flag */
 var fl_firsttime = true;
@@ -159,6 +173,15 @@ var legendWidthMargin = (legendOuterWidth - legendBarWidth)/2;
 
 
 /* ------------------------------
+　ユーティリティ関数
+------------------------------ */
+function formatNumber(num) {
+    return num.toString().padStart(2, '0');
+}
+
+
+
+/* ------------------------------
 　関数
 ------------------------------ */
 
@@ -182,52 +205,48 @@ var initBaseMap = function() {
             sources: {
               "vector-tiles": {
                 type: "vector",
-                tiles: ["http://127.0.0.1:5501/asb/{z}/{x}/{y}.pbf"],
-                minzoom: 0,
-                maxzoom: 14
+                tiles: ["http://127.0.0.1:5501/tileset/{z}/{x}/{y}.pbf"],
+                minzoom: minZoomLevel,
+                maxzoom: maxZoomLevel
               }
             },
             layers: [
               {
-                id: "layer-fill",
-                type: "fill",
+                id: "naro_prob",
+                type: "fill-extrusion",
                 source: "vector-tiles",
-                "source-layer": "5_joint", // ※実際のレイヤ名に合わせて変更
+                "source-layer": "arg", // ※実際のレイヤ名に合わせて変更
                 paint: {
-                  "fill-color": "#0000ff",
-                  "fill-opacity": 0.6,
-                  'fill-outline-color': '#ffffff'
+                    "fill-extrusion-color": "#0000ff",
+                    "fill-extrusion-opacity": 0.6,
+                    // "fill-extrusion-outline-color": "#ffffff"
                 }
               }
             ]
         }
     });
 
-
-
-    var _stylecount = 0;
-    mapObject.on('styledata', () => {
-        _stylecount++;
-        if (_stylecount == 2) {
+    mapObject.on('sourcedata', function(e) {
+        if (e.sourceId === 'vector-tiles' && e.isSourceLoaded) {
             PubSub.publish('load:filelist');
         }
     });
 
-
-
     mapObject.on('pitchend', () => {
-        if (d23ArrayIndex === 1 && mapObject.getPitch() !== 0) {
+        if (dimensionArrayIndex === 1 && mapObject.getPitch() !== 0) {
             mapObject.setPitch(0);
         }
     });
 }
 
 
+
 var loadFileList = function() {
     console.log("loadFileList");
 
     Promise.all([
-        d3.csv("assets/data_lib/filelist.csv")
+        d3.csv("assets/data_lib/filelist.csv"),
+        d3.csv("assets/data_lib/prefecture.csv")
     ]).then(function (_data) {
 
         for(var i=0; i<_data[0].length; i++) {
@@ -241,9 +260,20 @@ var loadFileList = function() {
         dir2 = _.uniq(dir2);
         dir3 = _.uniq(dir3);
 
-        for (i=0; i<dir3.length; i++) {
-            dir3[0] = dir3[0].replace(".csv", "");
-        }
+        // for (i=0; i<dir3.length; i++) {
+        //     dir3[0] = dir3[0].replace(".csv", "");
+        // }
+
+        prefArray = _.cloneDeep(_data[1]);
+
+        for (var i=0; i<prefArray.length; i++){
+            var _row = prefArray[i];
+            _row["id"] = parseInt(_row["id"]);
+            _row["lat"] = parseInt(_row["lat"]);
+            _row["lon"] = parseInt(_row["lon"]);
+        };
+
+        console.log("prefArray", prefArray);
 
         PubSub.publish('init:dataslider');
     });
@@ -356,10 +386,11 @@ var initDataSlider = function() {
 var initMapUI = function() {
     console.log("initMapUI");
 
-    var _nav = new maplibregl.NavigationControl();
-    mapObject.addControl(_nav, 'top-right');
-
-
+    if (!mapObject._navControlAdded) {
+        var navControl = new maplibregl.NavigationControl();
+        mapObject.addControl(navControl, 'top-right');
+        mapObject._navControlAdded = true;
+    }
 
     PubSub.publish('init:legend');
 }
@@ -464,7 +495,7 @@ var loadBasemap = function() {
     //     PubSub.publish('load:themedata');
     // });
 
-    PubSub.publish('load:themedata');
+    PubSub.publish('navlink:setup');
 }
 
 
@@ -472,8 +503,9 @@ var loadBasemap = function() {
 var loadThemeData = function() {
     console.log("loadThemeData");
 
-    // detect swiper
-    filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + ".csv";
+    var _t = formatNumber(prefArray[prefIndex]["id"]);
+    filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _t + ".csv";
+    console.log("filepath", filepath);
 
     // load: theme data
     Promise.all([
@@ -486,18 +518,14 @@ var loadThemeData = function() {
         valueNameArray = _.difference(varList, varListRemove);
         console.log("valueNameArray", valueNameArray);
 
-        /* 自治体コードが4桁の場合、右端に0を付与 */
         for (var i=0; i<dataObjTheme.length; i++){
 
             var _row = dataObjTheme[i];
-
-            // if (typeof _row["agricultural_key"] == 'string') {
-            //     _row["agricultural_key"] = _row["agricultural_key"].replace(/[ \.]/g, '');
-            // }
             _row["Year"] = parseInt(_row["Year"]);
-            _row["H0"] = parseFloat(_row["H0"]);
-            _row["L0"] = parseFloat(_row["L0"]);
-        }
+            valueNameArray.forEach(function(col) {
+                _row[col] = parseFloat(_row[col]);
+            });
+        }          
 
         console.log("dataObjTheme", dataObjTheme);
         _data = null;
@@ -505,14 +533,62 @@ var loadThemeData = function() {
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
         console.log("yearArray", yearArray);
 
+
+
         PubSub.publish('init:vizslider');
     });
 }
 
 
 
+
+
+var setupNav = function() {
+    console.log("setupNav");
+
+    // 各navリンクのクリックイベント設定
+    navLinks.forEach(link => {
+        if (link) {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            if (this.id === "datachange" || this.id === "vizchange") {
+            if (slideOverContainer && sidepanel) {
+
+                selectedNav = this.id;
+                console.log("selectedNav", selectedNav);
+
+                PubSub.publish('navlink:disabled');
+                PubSub.publish('panel:open');
+            }
+            }
+        });
+        }
+    });
+
+    PubSub.publish('panel:setup');
+}
+
+
+
+var setupPanel = function() {
+    console.log("setupPanel");
+
+    if (closeButton && slideOverContainer && sidepanel) {
+        closeButton.addEventListener("click", () => {
+          PubSub.publish('panel:close');
+        });
+    }
+
+    PubSub.publish('load:themedata');
+}
+
+
+
 var initVizSlider = function() {
     console.log("initVizSlider");
+
+
 
     /* Color Scale Slider */
     d3.select("#swiperColor").selectAll("div").remove();
@@ -616,34 +692,34 @@ var initVizSlider = function() {
 
 
 
-    /* 2d3d Change Slider */
-    d3.select("#swiper2d3dChange").selectAll("div").remove();
+    /* Dimension Change Slider */
+    d3.select("#swiperDimensionChange").selectAll("div").remove();
 
-    d3.select("#swiper2d3dChange")
+    d3.select("#swiperDimensionChange")
     .selectAll("div")
-    .data(d23Array)
+    .data(dimensionArray)
     .enter()
     .append("div")
     .attr("class", "swiper-slide")
     .text(function(d) { return d; });
 
-    if (swiper2d3dChange && typeof swiper2d3dChange.destroy === "function") {
-        swiper2d3dChange.destroy(true, true);
+    if (swiperDimensionChange && typeof swiperDimensionChange.destroy === "function") {
+        swiperDimensionChange.destroy(true, true);
     }
 
-    swiper2d3dChange = new Swiper('#swiper-container-2d3d', {
+    swiperDimensionChange = new Swiper('#swiper-container-dimension', {
         slidesPerView: 2,
         spaceBetween: 1,
         centeredSlides: true,
         navigation: {
-            nextEl: '#swiper-button-next-2d3d',
-            prevEl: '#swiper-button-prev-2d3d',
+            nextEl: '#swiper-button-next-dimension',
+            prevEl: '#swiper-button-prev-dimension',
         },
         on: {
             slideChange: function(e) {
-            d23ArrayIndex = e.activeIndex;
-            console.log("d23ArrayIndex", d23ArrayIndex);
-            console.log("d23Array", d23Array[d23ArrayIndex]);
+            dimensionArrayIndex = e.activeIndex;
+            console.log("dimensionArrayIndex", dimensionArrayIndex);
+            console.log("dimensionArray", dimensionArray[dimensionArrayIndex]);
             PubSub.publish('change:dimension');
             }
         }
@@ -684,50 +760,48 @@ var initVizSlider = function() {
       }
     });
 
-    PubSub.publish('navlink:setup');
-};
 
 
-
-var setupNav = function() {
-    console.log("setupNav");
-
-    // 各navリンクのクリックイベント設定
-    navLinks.forEach(link => {
-        if (link) {
-        link.addEventListener("click", function(e) {
-            e.preventDefault();
-
-            if (this.id === "datachange" || this.id === "vizchange") {
-            if (slideOverContainer && sidepanel) {
-
-                selectedNav = this.id;
-                console.log("selectedNav", selectedNav);
-
-                PubSub.publish('navlink:disabled');
-                PubSub.publish('panel:open');
-            }
-            }
-        });
-        }
+    /* Prefecture Slider */
+    d3.select("#swiperPref").selectAll("div").remove();
+  
+    d3.select("#swiperPref")
+      .selectAll("div")
+      .data(prefArray)
+      .enter()
+      .append("div")
+      .attr("class", "swiper-slide")
+      .text(function(d) { 
+        return d.nam_ja; 
     });
-
-    PubSub.publish('panel:setup');
-}
-
-
-
-var setupPanel = function() {
-    console.log("setupPanel");
-
-    if (closeButton && slideOverContainer && sidepanel) {
-        closeButton.addEventListener("click", () => {
-          PubSub.publish('panel:close');
-        });
+  
+    if (swiperPref && typeof swiperPref.destroy === "function") {
+        swiperPref.destroy(true, true);
     }
 
+    swiperPref = new Swiper('#swiper-container-pref', {
+      slidesPerView: 2,
+      spaceBetween: 1,
+      centeredSlides: true,
+      initialSlide: prefIndex,
+      navigation: {
+        nextEl: '#swiper-button-next-pref',
+        prevEl: '#swiper-button-prev-pref',
+      },
+      on: {
+        slideChange: function(e) {
+            prefIndex = e.activeIndex;
+            console.log("prefIndexprefIndex", prefIndex);
+            fl_map = "updateMap";
+            PubSub.publish('load:themedata');
+        }
+      }
+    });
+
+
+
     PubSub.publish('filter:bydata');
-}
+};
 
 
 
@@ -801,8 +875,23 @@ var closePanel = function() {
 var filterByYear = function() {
     console.log("filterByYear");
     
-    // dataObjThemeFiltered = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
+    //年度で絞り込む
+    console.log("yearArray[yearIndex]", yearArray[yearIndex]);
+    var _temp = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
     
+    //広域自治体で絞り込む
+    console.log("prefArray[prefIndex]", prefArray[prefIndex]);
+    var _t = formatNumber(prefArray[prefIndex]["id"]);
+    dataObjThemeFiltered = _temp.filter(row => row.FileName === _t);
+
+    //扱いやすいよう加工する
+    dataObjThemeFiltered.forEach(record => {
+        themeDataMapping[record.agricultural_key] = record;
+    });
+    console.log("dataObjThemeFiltered", dataObjThemeFiltered);
+    console.log("themeDataMapping", themeDataMapping);
+
+
     PubSub.publish('join:data');
 }
 
@@ -811,40 +900,35 @@ var filterByYear = function() {
 var joinData = function() {
     console.log("joinData");
 
-    /* combine base map& theme data */
+    const features = mapObject.queryRenderedFeatures({ layers: ["naro_prob"] });
+    console.log("features", features);
 
-    // for(var i=0; i<dataBaseMapDetailed.features.length; i++) {
+    features.forEach(feature => {
 
-    //     var _muniid = dataBaseMapDetailed.features[i]["properties"]["N03_007"];
-    //     var _props = dataBaseMapDetailed.features[i]["properties"];
+        console.log("features.forEach");
 
-    //     var _fl = false;
+        const _tileKey = feature.properties.KEY;
+        const themeRecord = themeDataMapping[_tileKey]
+        
+        // console.log("_tileKey", _tileKey);
+        // console.log(typeof _tileKey);
 
-    //     for (var j = 0; j < dataObjThemeFiltered.length; j++) {
-    //         if (dataObjThemeFiltered[j]["MuniCode"] == _muniid) {
-    //           var _row = dataObjThemeFiltered[j];
-              
-    //           _props.mean = parseFloat(_row.mean);
-    //           _props.sd = parseFloat(_row.sd);
-          
-    //           for (var k = 0; k <= 50; k++) {
-    //             _props["L" + k] = parseFloat(_row["L" + k]);
-    //             _props["H" + k] = parseFloat(_row["H" + k]);
-    //           }
-    //           _fl = true;
-    //         }
-    //     }
+        // console.log("feature.id", feature.id);
+        // console.log(typeof feature.id);
 
-    //     if (!_fl){
-    //         _props["mean"] = null;
-    //         _props["sd"] = null;
+        if (themeRecord && feature.id !== undefined) {
+            // console.log("keymatched");
 
-    //         for (var k = 0; k <= 50; k++) {
-    //             _props["L" + k] = null;
-    //             _props["H" + k] = null;
-    //         }
-    //     }
-    // }
+            mapObject.setFeatureState({
+            source: 'vector-tiles',
+            id: feature.id,
+            sourceLayer: 'arg' // ベクトルタイル側のレイヤ名に合わせる
+        }, {
+            L0: parseFloat(themeRecord.L0),
+            H0: parseFloat(themeRecord.H0)
+        });
+        }
+    });
 
 
 
@@ -874,54 +958,25 @@ var drawMap = function() {
 
     if (fl_firsttime){
 
-        /* Add Source */
-        // mapObject.addSource('naro', {
-        //     'type': 'geojson',
-        //     'data': dataBaseMapDetailed
-        // });
-
-        // mapObject.addSource('naro_simple', {
-        //     'type': 'geojson',
-        //     'data': dataBaseMapSimple
-        // });
-
-
+        console.log("fl_firsttime");
 
         /* --------------------
             メイン用
         -------------------- */
 
-        // 3D押出しレイヤー
-        // mapObject.addLayer({
-        //     'id': 'naro_prob',
-        //     'type': 'fill-extrusion',
-        //     'source': 'naro',
-        //     'layout': {},
-        //     'paint': {
-        //         'fill-extrusion-color': [
-        //             'case',
-
-        //             // データが null だった場合
-        //             ['==', ['get', valueNameArray[colorIndex]], null], nullColor,
-
-        //             // データが存在する場合
-        //             [
-        //                 'interpolate', ['linear'],
-        //                 ['get', valueNameArray[colorIndex]],
-        //                 dataScaleArray[scaleIndex].minData, minColor,
-        //                 dataScaleArray[scaleIndex].maxData, maxColor
-        //             ]
-        //         ],
-
-        //         'fill-extrusion-height': [
-        //             'interpolate', ['linear'],
-        //             ['get', valueNameArray[depthIndex]],
-        //             dataScaleArray[scaleIndex].minData, 0,
-        //             dataScaleArray[scaleIndex].maxData, 50000
-        //         ],
-        //         'fill-extrusion-vertical-gradient': true
-        //     },
-        // });
+        mapObject.setPaintProperty(
+            "naro_prob",
+            'fill-extrusion-color',
+            ['case',
+              ['==', ['feature-state', 'L0'], null],
+              nullColor,
+              ['interpolate', ['linear'],
+                ['feature-state', 'L0'],
+                dataScaleArray[scaleIndex].minData, minColor,
+                dataScaleArray[scaleIndex].maxData, maxColor
+              ]
+            ]
+        );
 
 
 
@@ -987,52 +1042,26 @@ var drawMap = function() {
 
                 // マウスポインターの形状管理
                 mapObject.getCanvas().style.cursor = 'pointer';
+                console.log("eee", e.features[0].properties);
 
-                // 対象自治体の住所を生成
-                if (e.features[0].properties["N03_001"]) {
-                    var _address_1 = e.features[0].properties["N03_001"];
-                } else {
-                    var _address_1 = "";
-                }
+                var _address = 
+                e.features[0].properties["PREF_NAME"] +
+                e.features[0].properties["CITY_NAME"] +
+                e.features[0].properties["KCITY_NAME"] +
+                e.features[0].properties["RCOM_NAME"];
 
-                if (e.features[0].properties["N03_002"]) {
-                    var _address_2 = e.features[0].properties["N03_002"];
-                } else {
-                    var _address_2 = "";
-                }
+                const feature = e.features[0];
+                const state = feature.state || {};
 
-                if (e.features[0].properties["N03_003"]) {
-                    var _address_3 = e.features[0].properties["N03_003"];
-                } else {
-                    var _address_3 = "";
-                }
+                console.log("state", state);
 
-                if (e.features[0].properties["N03_004"]) {
-                    var _address_4 = e.features[0].properties["N03_004"];
-                } else {
-                    var _address_4 = "";
-                }
+                // state.colorValue と state.heightValue を利用
+                const _colorValue = state[valueNameArray[colorIndex]];  
+                const _heightValue = state[valueNameArray[depthIndex]];
 
-                var _addressA = _address_1 + _address_2 + _address_3 + _address_4;
-
-                // colorIndex
-                var _selectedVarColor = "";
-                if (e.features[0].properties[valueNameArray[colorIndex]]) {
-                    _selectedVarColor = e.features[0].properties[valueNameArray[colorIndex]];
-                } else {
-                    _selectedVarColor = "不明";
-                }
-
-                // colorIndex
-                var _selectedVarDepth = "";
-                if (e.features[0].properties[valueNameArray[depthIndex]]) {
-                    _selectedVarDepth = e.features[0].properties[valueNameArray[depthIndex]];
-                } else {
-                    _selectedVarDepth = "不明";
-                }
-
+                
                 // 対象自治体の中心点を取得
-                const coordinates = e.features[0].geometry.coordinates.slice();
+                var coordinates = e.features[0].geometry.coordinates.slice();
                 if (coordinates[0].length == 1) {
                     var _line = turf.lineString(coordinates[0][0]);
                 } else {
@@ -1046,9 +1075,10 @@ var drawMap = function() {
                 // ポップアップを表示
                 popup
                     .setLngLat([_lng, _lat])
-                    .setHTML(_addressA + "<br />"
-                         + "色への値: " + _selectedVarColor + "<br />"
-                         + "高さへの値: " + _selectedVarDepth)
+                    .setHTML(
+                        _address + "<br />"
+                         + "色への値: " + _colorValue + "<br />"
+                         + "高さへの値: " + _heightValue)
                     .addTo(mapObject);
 
         });
@@ -1069,6 +1099,8 @@ var drawMap = function() {
 
     } else {
         // mapObject.getSource('naro').setData(dataBaseMapDetailed);
+
+        console.log("not fl_firsttime");
     }
 
 }
@@ -1078,33 +1110,37 @@ var drawMap = function() {
 var updateMap = function() {
     console.log("updateMap");
 
+    console.log("colorIndex", colorIndex);
+    console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
 
-    /* 大地図 */
-    // mapObject.setPaintProperty(
-    //     "naro_prob",
-    //     'fill-extrusion-height',
-    //         ['interpolate', ['linear'],
-    //         ['get', valueNameArray[depthIndex]],
-    //         dataScaleArray[scaleIndex].minData, minHeight,
-    //         dataScaleArray[scaleIndex].maxData, maxHeight]
-    // );
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-color',
+        ['case',
+          ['==', ['feature-state', 'L0'], null],
+          nullColor,
+          ['interpolate', ['linear'],
+            ['feature-state', 'L0'],
+            dataScaleArray[scaleIndex].minData, minColor,
+            dataScaleArray[scaleIndex].maxData, maxColor
+          ]
+        ]
+    );
 
-    // mapObject.setPaintProperty(
-    //     "naro_prob",
-    //     'fill-extrusion-color',
-    //     ['case',
-    //       // データが null の場合は nullColor を設定
-    //       ['==', ['get', valueNameArray[colorIndex]], null],
-    //       nullColor,
-    //       // それ以外は interpolate で色を計算
-    //       ['interpolate', ['linear'],
-    //         ['get', valueNameArray[colorIndex]],
-    //         dataScaleArray[scaleIndex].minData, minColor,
-    //         dataScaleArray[scaleIndex].maxData, maxColor
-    //       ]
-    //     ]
-    // );
-  
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-height',
+        ['case',
+          ['==', ['feature-state', 'L0'], null],
+          0,
+          ['interpolate', ['linear'],
+            ['feature-state', 'L0'],
+            dataScaleArray[scaleIndex].minData, minHeight,
+            dataScaleArray[scaleIndex].maxData, maxHeight
+          ]
+        ]
+    );
+
     PubSub.publish('update:legend');
 }
 
@@ -1197,13 +1233,13 @@ var changeColor = function() {
 var changeDimension = function() {
     console.log("changeDimension");
 
-    if (d23ArrayIndex === 0) { // 3D モードに切り替え
+    if (dimensionArrayIndex === 0) { // 3D モードに切り替え
 
         mapObject.easeTo({ pitch: 60, duration: 1000 });
         mapObject.dragRotate.enable();
         mapObject.touchZoomRotate.enable();
 
-      } else if (d23ArrayIndex === 1) { // 2D モードに切り替え
+      } else if (dimensionArrayIndex === 1) { // 2D モードに切り替え
 
         mapObject.easeTo({ pitch: 0, duration: 1000 });
         mapObject.dragRotate.disable();
