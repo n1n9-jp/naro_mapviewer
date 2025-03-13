@@ -12,15 +12,15 @@ var maxZoomLevel = 14;
 var maptileURL = "http://127.0.0.1:5500/agricultural/tileset/{z}/{x}/{y}.pbf";
 
 var POI = [
-    {
-    city: "Sapporo Station",
-    longitude: 141.350755,
-    latitude: 43.068661,
+  {
+    city: "NARO",
+    longitude: 140.110249,
+    latitude: 36.027363,
     zoom: minZoomLevel,
-    pitch: 45,
+    pitch: 75,
     bearing: 0,
-    },
-    {
+  },
+  {
     city: "Tokyo Station",
     longitude: 139.767125,
     latitude: 35.681236,
