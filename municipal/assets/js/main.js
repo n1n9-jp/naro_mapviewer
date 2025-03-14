@@ -696,6 +696,7 @@ var initVizSlider = function() {
         on: {
             slideChange: function(e) {
             colorIndex = e.activeIndex;
+            d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
             fl_map = "updateMap";
             PubSub.publish('change:color');
             }
@@ -732,6 +733,7 @@ var initVizSlider = function() {
         on: {
             slideChange: function(e) {
             depthIndex = e.activeIndex;
+            d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
             fl_map = "updateMap";
             PubSub.publish('change:depth');
             }
@@ -768,7 +770,7 @@ var initVizSlider = function() {
         on: {
             slideChange: function(e) {
             scaleIndex = e.activeIndex;
-            scaleIndex = e.activeIndex;
+            d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
             fl_map = "updateMap";
             PubSub.publish('change:color');
             PubSub.publish('change:depth');
