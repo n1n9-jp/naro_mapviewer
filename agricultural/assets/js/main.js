@@ -279,8 +279,8 @@ var loadFileList = function() {
     console.log("loadFileList");
 
     Promise.all([
-        d3.csv("assets/data_lib/filelist.csv"),
-        d3.csv("assets/data_lib/prefecture.csv")
+        d3.csv("data/data_lib/filelist.csv"),
+        d3.csv("data/data_lib/prefecture.csv")
     ]).then(function (_data) {
 
         for(var i=0; i<_data[0].length; i++) {
@@ -664,7 +664,7 @@ var loadThemeData = function() {
 
     // load: theme data
     Promise.all([
-        d3.csv("assets/data_index/" + filepath)
+        d3.csv("data/data_index/" + filepath)
     ]).then(function (_data) {
   
         dataObjTheme = _.cloneDeep(_data[0]);
@@ -1167,7 +1167,7 @@ var drawMap = function() {
             window.setTimeout(function(){
 
                     Promise.all([
-                            d3.csv("assets/data_detail/" + filepath)
+                            d3.csv("data/data_detail/" + filepath)
                     ]).then(function (_data) {
                             // console.log("_data[0][0]", _data[0][0]);
 
