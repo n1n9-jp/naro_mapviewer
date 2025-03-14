@@ -1123,10 +1123,10 @@ var drawMap = function() {
             "naro_prob",
             'fill-extrusion-color',
             ['case',
-              ['==', ['feature-state', valueNameArray[colorIndex]], null],
-              nullColor,
+            ['==', ['coalesce', ['feature-state', valueNameArray[colorIndex]], null], null],
+            nullColor,
               ['interpolate', ['linear'],
-                ['feature-state', valueNameArray[colorIndex]],
+                ['coalesce', ['feature-state', valueNameArray[colorIndex]], 0],
                 colorDataScaleArray[scaleIndex].minData, minColor,
                 colorDataScaleArray[scaleIndex].maxData, maxColor
               ]
@@ -1137,10 +1137,10 @@ var drawMap = function() {
             "naro_prob",
             'fill-extrusion-height',
             ['case',
-                ['==', ['feature-state', valueNameArray[depthIndex]], null],
+                ['==', ['coalesce', ['feature-state', valueNameArray[depthIndex]], null], null],
                 0,
                 ['interpolate', ['linear'],
-                ['get', valueNameArray[depthIndex]],
+                ['coalesce', ['feature-state', valueNameArray[depthIndex]], 0],
                 depthDataScaleArray[scaleIndex].minData, minHeight,
                 depthDataScaleArray[scaleIndex].maxData, maxHeight
                 ]
@@ -1273,10 +1273,10 @@ var updateMap = function() {
         "naro_prob",
         'fill-extrusion-color',
         ['case',
-          ['==', ['feature-state', valueNameArray[colorIndex]], null],
+        ['==', ['coalesce', ['feature-state', valueNameArray[colorIndex]], null], null],
           nullColor,
           ['interpolate', ['linear'],
-            ['feature-state', valueNameArray[colorIndex]],
+            ['coalesce', ['feature-state', valueNameArray[colorIndex]], 0],
             colorDataScaleArray[scaleIndex].minData, minColor,
             colorDataScaleArray[scaleIndex].maxData, maxColor
           ]
@@ -1287,10 +1287,10 @@ var updateMap = function() {
         "naro_prob",
         'fill-extrusion-height',
         ['case',
-          ['==', ['feature-state', valueNameArray[depthIndex]], null],
+        ['==', ['coalesce', ['feature-state', valueNameArray[depthIndex]], null], null],
           0,
           ['interpolate', ['linear'],
-            ['feature-state', valueNameArray[depthIndex]],
+            ['coalesce', ['feature-state', valueNameArray[depthIndex]], 0],
             depthDataScaleArray[scaleIndex].minData, minHeight,
             depthDataScaleArray[scaleIndex].maxData, maxHeight
           ]
