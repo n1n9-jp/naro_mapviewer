@@ -278,38 +278,37 @@ var initBaseMap = function() {
 var loadFileList = function() {
     console.log("loadFileList");
 
-    Promise.all([
+    return Promise.all([
         d3.csv("data/data_lib/filelist.csv"),
         d3.csv("data/data_lib/prefecture.csv")
     ]).then(function (_data) {
 
-        for(var i=0; i<_data[0].length; i++) {
-            var _t = _data[0][i].filepath.split('/');
+        _data[0].forEach(function(row) {
+            var _t = row.filepath.split('/');
             dir1.push(_t[0]);
             dir2.push(_t[1]);
             dir3.push(_t[2]);
-        }
+        });
 
         dir1 = _.uniq(dir1);
         dir2 = _.uniq(dir2);
         dir3 = _.uniq(dir3);
 
-        // for (i=0; i<dir3.length; i++) {
-        //     dir3[0] = dir3[0].replace(".csv", "");
-        // }
-
         prefArray = _.cloneDeep(_data[1]);
-
-        for (var i=0; i<prefArray.length; i++){
-            var _row = prefArray[i];
-            _row["id"] = parseInt(_row["id"]);
+        prefArray.forEach(function(_row) {
+            _row["id"]  = parseInt(_row["id"]);
             _row["lat"] = parseInt(_row["lat"]);
             _row["lon"] = parseInt(_row["lon"]);
-        };
+        });
 
-        // console.log("prefArray", prefArray);
-
+        console.log("prefArray", prefArray);
+        return { dir1: dir1, dir2: dir2, dir3: dir3, prefArray: prefArray };
+    })
+    .then(function () {
         PubSub.publish('init:dataslider');
+    })
+    .catch(function(err) {
+        console.error("loadFileList でエラーが発生しました:", err);
     });
 }
 
@@ -663,7 +662,7 @@ var loadThemeData = function() {
     // console.log("filepath", filepath);
 
     // load: theme data
-    Promise.all([
+    return Promise.all([
         d3.csv("data/data_index/" + filepath)
     ]).then(function (_data) {
   
@@ -686,11 +685,17 @@ var loadThemeData = function() {
 
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
         // console.log("yearArray", yearArray);
+        console.log("loadThemeData 完了:", valueNameArray);
+        return;  // Promise を resolve する
 
-
-
+        // PubSub.publish('init:vizslider');
+    })
+    .then(function() {
         PubSub.publish('init:vizslider');
+    }).catch(function(err) {
+        console.error("loadThemeData でエラーが発生しました:", err);
     });
+    
 }
 
 
