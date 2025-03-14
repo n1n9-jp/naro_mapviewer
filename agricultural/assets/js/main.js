@@ -1044,55 +1044,64 @@ var filterByYear = function() {
 
 
 
-// joinData の非同期処理化
 var joinData = function() {
     console.log("joinData");
     return new Promise((resolve, reject) => {
-        try {
-            // 現在の描画済みフィーチャーを取得
-            const features = mapObject.queryRenderedFeatures({ layers: ["naro_prob"] });
-
-            // 以前のデータの初期化（色・高さの初期状態に設定）
-            mapObject.setPaintProperty("naro_prob", 'fill-extrusion-color', nullColor);
-            mapObject.setPaintProperty("naro_prob", 'fill-extrusion-height', 0);
-
-            // 各フィーチャーに対してテーマデータを結合
-            features.forEach(feature => {
-                if (feature && feature.id !== undefined) {
-                    const _tileKey = feature.properties.KEY;
-                    const themeRecord = themeDataMapping[_tileKey];
-                    if (themeRecord) {
-                        mapObject.setFeatureState({
-                            source: 'vector-tiles',
-                            id: feature.id,
-                            sourceLayer: 'arg'
-                        }, {
-                            [ valueNameArray[colorIndex] ]: parseFloat(themeRecord[valueNameArray[colorIndex]]),
-                            [ valueNameArray[depthIndex] ]: parseFloat(themeRecord[valueNameArray[depthIndex]])
-                        });
-                    }
-                }
+      try {
+        // 現在の描画済みフィーチャーを取得
+        const features = mapObject.queryRenderedFeatures({ layers: ["naro_prob"] });
+  
+        // 以前のデータの初期状態を設定
+        mapObject.setPaintProperty("naro_prob", 'fill-extrusion-color', nullColor);
+        mapObject.setPaintProperty("naro_prob", 'fill-extrusion-height', 0);
+  
+        features.forEach(feature => {
+          if (feature && feature.id !== undefined) {
+            const _tileKey = feature.properties.KEY;
+            let themeRecord = themeDataMapping[_tileKey];
+            let colorVal = null;
+            let depthVal = null;
+            if (themeRecord) {
+              colorVal = parseFloat(themeRecord[valueNameArray[colorIndex]]);
+              depthVal = parseFloat(themeRecord[valueNameArray[depthIndex]]);
+              if (isNaN(colorVal)) { colorVal = null; }
+              if (isNaN(depthVal)) { depthVal = null; }
+            }
+            // すべてのフィーチャーに対して state を設定する
+            mapObject.setFeatureState({
+              source: 'vector-tiles',
+              id: feature.id,
+              sourceLayer: 'arg'
+            }, {
+              [ valueNameArray[colorIndex] ]: colorVal,
+              [ valueNameArray[depthIndex] ]: depthVal
             });
-
-            // 各種表示要素の更新
-            d3.select("#selectedDir1").text(dir1[dir1Index]);
-            d3.select("#selectedDir2").text(dir2[dir2Index]);
-            d3.select("#selectedDir3").text(dir3[dir3Index]);
-            d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
-            d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
-            d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
-            d3.select("#selectedYear").text(yearArray[yearIndex]);
-
-            fl_map = "drawMap";
-
-            // joinData の処理が完了したので resolve を呼ぶ
-            resolve();
-        } catch (e) {
-            reject(e);
-        }
+          }
+        });
+  
+        // 各種表示要素の更新
+        d3.select("#selectedDir1").text(dir1[dir1Index]);
+        d3.select("#selectedDir2").text(dir2[dir2Index]);
+        d3.select("#selectedDir3").text(dir3[dir3Index]);
+        d3.select("#selectedForColor").text(valueNameArray[colorIndex]);
+        d3.select("#selectedForDepth").text(valueNameArray[depthIndex]);
+        d3.select("#selectedForScale").text(scaleArray[scaleIndex]);
+        d3.select("#selectedYear").text(yearArray[yearIndex]);
+  
+        // 初回描画の場合は drawMap を使う（その後は updateMap になるので state を再設定しても良い）
+        fl_map = "drawMap";
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    })
+    .then(() => {
+        PubSub.publish('change:color');
+    }).catch(error => {
+        console.error("joinData でエラーが発生しました", error);
     });
 };
-
+  
 
 
 var drawMap = function() {
