@@ -1427,6 +1427,7 @@ PubSub.subscribe('init:modal', initModal);
 PubSub.subscribe('load:basemap', loadBasemap);
 // PubSub.subscribe('load:themedata', loadThemeData);
 PubSub.subscribe('load:themedata', debounce(loadThemeData, 200));
+PubSub.subscribe('load:themedata', debounce(loadThemeData, 300));
 PubSub.subscribe('init:vizslider', initVizSlider);
 
 PubSub.subscribe('navlink:setup', setupNav);
@@ -1437,7 +1438,7 @@ PubSub.subscribe('panel:open', openPanel);
 PubSub.subscribe('panel:close', closePanel);
 
 // PubSub.subscribe('filter:bydata', filterByYear);
-PubSub.subscribe('filter:bydata', debounce(filterByYear, 200));
+PubSub.subscribe('filter:bydata', debounce(filterByYear, 300));
 
 PubSub.subscribe('join:data', joinData);
 PubSub.subscribe('draw:map', drawMap);
@@ -1446,9 +1447,10 @@ PubSub.subscribe('update:legend', updateLegend);
 
 PubSub.subscribe('init:print', initPrint);
 // PubSub.subscribe('change:color', changeColor);
-PubSub.subscribe('change:color', debounce(changeColor, 200));
+PubSub.subscribe('change:color', debounce(changeColor, 300));
 // PubSub.subscribe('change:depth', changeDepth);
 PubSub.subscribe('change:depth', debounce(changeDepth, 200));
+PubSub.subscribe('change:depth', debounce(changeDepth, 300));
 PubSub.subscribe('change:dimension', changeDimension);
 
 PubSub.publish('init:basemap');
