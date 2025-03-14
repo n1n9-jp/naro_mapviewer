@@ -948,28 +948,22 @@ var joinData = function() {
 
         for (var j = 0; j < dataObjThemeFiltered.length; j++) {
             if (dataObjThemeFiltered[j]["MuniCode"] == _muniid) {
-              var _row = dataObjThemeFiltered[j];
-              
-              _props.mean = parseFloat(_row.mean);
-              _props.sd = parseFloat(_row.sd);
-          
-              for (var k = 0; k <= 50; k++) {
-                _props["L" + k] = parseFloat(_row["L" + k]);
-                _props["H" + k] = parseFloat(_row["H" + k]);
-              }
-              _fl = true;
+                var _row = dataObjThemeFiltered[j];
+                valueNameArray.forEach(function(key) {
+                    var val = parseFloat(_row[key]);
+                    _props[key] = isNaN(val) ? _row[key] : val;
+                });
+                _fl = true;
+                break;
             }
         }
 
-        if (!_fl){
-            _props["mean"] = null;
-            _props["sd"] = null;
-
-            for (var k = 0; k <= 50; k++) {
-                _props["L" + k] = null;
-                _props["H" + k] = null;
-            }
+        if (!_fl) {
+            valueNameArray.forEach(function(key) {
+                _props[key] = null;
+            });
         }
+
     }
 
 
