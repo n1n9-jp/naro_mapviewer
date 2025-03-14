@@ -1038,16 +1038,7 @@ var filterByYear = function() {
     // console.log("themeDataMapping", themeDataMapping);
 
 
-    // PubSub.publish('join:data');
-
-    // joinData の完了を待ってから更新を行う
-    joinData().then(() => {
-        // joinData の処理完了後、色や高さの更新を発火
-        PubSub.publish('change:color');
-        // 他にも必要なら追加の更新処理をここで実行
-    }).catch(error => {
-        console.error("joinData でエラーが発生しました", error);
-    });
+    PubSub.publish('join:data');
 
 }
 
