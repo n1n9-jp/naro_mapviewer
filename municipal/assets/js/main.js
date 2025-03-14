@@ -98,7 +98,7 @@ var nullColor = "#c3c7c9";
 
 /* Height */
 var minHeight = 0;
-var maxHeight = 50000;
+var maxHeight = 5000;
 
 
 
