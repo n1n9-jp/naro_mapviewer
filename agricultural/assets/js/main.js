@@ -298,8 +298,8 @@ var loadFileList = function() {
         prefArray = _.cloneDeep(_data[1]);
         prefArray.forEach(function(_row) {
             _row["id"]  = parseInt(_row["id"]);
-            _row["lat"] = parseInt(_row["lat"]);
-            _row["lon"] = parseInt(_row["lon"]);
+            _row["lat"] = parseFloat(_row["lat"]);
+            _row["lon"] = parseFloat(_row["lon"]);
         });
 
         console.log("prefArray", prefArray);
