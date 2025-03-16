@@ -184,6 +184,7 @@ var legendWidthMargin = (legendOuterWidth - legendBarWidth)/2;
 /* ------------------------------
 　ユーティリティ関数
 ------------------------------ */
+// 数字の加工
 function formatNumber(num) {
     return num.toString().padStart(2, '0');
 }
@@ -1316,6 +1317,8 @@ var changeColor = function() {
     } else if (scaleIndex == 1) { // 1 の場合は、テーマデータ内の実際の最小値と最大値
 
             var _ddd = valueNameArray[colorIndex];
+            console.log("_ddd", _ddd);
+            console.log("dataObjThemeFiltered", dataObjThemeFiltered);
 
             var _columnValues = dataObjThemeFiltered.map(function(d) {
                 return +d[_ddd];

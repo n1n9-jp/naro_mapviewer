@@ -260,11 +260,12 @@ var initBaseMap = function() {
         }
     });
 
-    mapObject.on('sourcedata', function(e) {
-        if (e.sourceId === 'vector-tiles' && e.isSourceLoaded) {
-            PubSub.publish('load:filelist');
-        }
-    });
+    // mapObject.on('sourcedata', function(e) {
+    //     if (e.sourceId === 'vector-tiles' && e.isSourceLoaded) {
+    //         PubSub.publish('load:filelist');
+    //     }
+    // });
+    PubSub.publish('load:filelist');
 
     mapObject.on('pitchend', () => {
         if (dimensionArrayIndex === 1 && mapObject.getPitch() !== 0) {
@@ -313,10 +314,9 @@ var loadFileList = function() {
 }
 
 
+
 var initDataSlider = function() {
     console.log("initDataSlider");
-
-
 
     /* Dir1 Var Slider */
     var _dir1Items = d3.select("#swiperDir1")
@@ -946,6 +946,34 @@ var initVizSlider = function() {
 
 
 
+    // mapObject.on('data', debounce(function(e) {
+    //     if (e.sourceId === 'vector-tiles' && e.dataType === 'tile' && e.tile && e.tile.loaded) {
+    //         joinData().then(() => {
+    //             if (fl_map == "drawMap") {
+    //                 PubSub.publish('draw:map');
+    //               } else if (fl_map == "updateMap") {
+    //                 PubSub.publish('update:map');
+    //             }
+    //         }).catch(err => {
+    //             console.error("joinData の再実行中にエラーが発生しました:", err);
+    //         });
+    //     }
+    // }, 300));  
+
+    // mapObject.on('render', debounce(function() {
+    //     joinData().then(() => {
+    //       if (fl_map == "drawMap") {
+    //         PubSub.publish('draw:map');
+    //       } else if (fl_map == "updateMap") {
+    //         PubSub.publish('update:map');
+    //       }
+    //     }).catch(err => {
+    //       console.error("render イベント中の joinData でエラーが発生しました:", err);
+    //     });
+    // }, 300));
+
+
+
     PubSub.publish('filter:bydata');
 };
 
@@ -1107,6 +1135,10 @@ var joinData = function() {
 var drawMap = function() {
     console.log("drawMap");
 
+    if (!valueNameArray[colorIndex] || !valueNameArray[depthIndex]) {
+        console.warn("valueNameArray の値が未定義です。", valueNameArray, colorIndex, depthIndex);
+        return;
+    }
 
 
     /* draw: basemap */
@@ -1426,7 +1458,6 @@ PubSub.subscribe('init:legend', initLegend);
 PubSub.subscribe('init:modal', initModal);
 PubSub.subscribe('load:basemap', loadBasemap);
 // PubSub.subscribe('load:themedata', loadThemeData);
-PubSub.subscribe('load:themedata', debounce(loadThemeData, 200));
 PubSub.subscribe('load:themedata', debounce(loadThemeData, 300));
 PubSub.subscribe('init:vizslider', initVizSlider);
 
@@ -1449,7 +1480,6 @@ PubSub.subscribe('init:print', initPrint);
 // PubSub.subscribe('change:color', changeColor);
 PubSub.subscribe('change:color', debounce(changeColor, 300));
 // PubSub.subscribe('change:depth', changeDepth);
-PubSub.subscribe('change:depth', debounce(changeDepth, 200));
 PubSub.subscribe('change:depth', debounce(changeDepth, 300));
 PubSub.subscribe('change:dimension', changeDimension);
 
