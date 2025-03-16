@@ -232,7 +232,7 @@ var initBaseMap = function() {
         "minPitch": 0,
         "maxPitch": 85,
         "bearing": POI[0]["bearing"], 
-        "hash": true,
+        "hash": false,
         "interactive": true,
         "style": {
             version: 8,
