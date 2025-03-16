@@ -1449,10 +1449,10 @@ PubSub.subscribe('update:map', updateMap);
 PubSub.subscribe('update:legend', updateLegend);
 
 PubSub.subscribe('init:print', initPrint);
-// PubSub.subscribe('change:color', changeColor);
-PubSub.subscribe('change:color', debounce(changeColor, 300));
-// PubSub.subscribe('change:depth', changeDepth);
-PubSub.subscribe('change:depth', debounce(changeDepth, 300));
+PubSub.subscribe('change:color', changeColor);
+// PubSub.subscribe('change:color', debounce(changeColor, 300));
+PubSub.subscribe('change:depth', changeDepth);
+// PubSub.subscribe('change:depth', debounce(changeDepth, 300));
 PubSub.subscribe('change:dimension', changeDimension);
 
 PubSub.publish('init:basemap');
