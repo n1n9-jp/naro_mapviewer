@@ -921,6 +921,7 @@ var initVizSlider = function() {
                 speed: 1.2,
                 curve: 1.42
             });
+            console.log("flyTo");
 
             // 飛行移動完了時に joinData を実行する
             mapObject.once('moveend', function() {
@@ -1043,15 +1044,21 @@ var filterByYear = function() {
     //年度で絞り込む
     var _temp = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
     
-    //広域自治体で絞り込む
+    console.log("Current prefArray[prefIndex]:", prefArray[prefIndex]);
     var _t = formatNumber(prefArray[prefIndex]["id"]);
+
+    //広域自治体で絞り込む
     dataObjThemeFiltered = _temp.filter(row => row.FileName === _t);
+    console.log("dataObjThemeFiltered", dataObjThemeFiltered);
 
     //扱いやすいよう加工する
     dataObjThemeFiltered.forEach(record => {
         themeDataMapping[record.agricultural_key] = record;
     });
 
+    //内容の確認
+    console.log("dataObjThemeFiltered", dataObjThemeFiltered);
+    console.log("themeDataMapping", themeDataMapping);
 
     PubSub.publish('join:data');
 
@@ -1130,13 +1137,11 @@ var drawMap = function() {
 
     /* draw: basemap */
 
-    if (fl_firsttime){
 
-        console.log("fl_firsttime");
 
-        /* --------------------
-            メイン用
-        -------------------- */
+    /* --------------------
+        メイン用
+    -------------------- */
 
     var _colorMin = parseFloat(colorDataScaleArray[scaleIndex].minData);
     var _colorMax = parseFloat(colorDataScaleArray[scaleIndex].maxData);
@@ -1176,6 +1181,9 @@ var drawMap = function() {
 
 
 
+    if (fl_firsttime){
+
+        console.log("fl_firsttime");
         /* --------------------
             ポップアップ
         -------------------- */
