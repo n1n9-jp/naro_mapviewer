@@ -1129,33 +1129,41 @@ var drawMap = function() {
             メイン用
         -------------------- */
 
-        mapObject.setPaintProperty(
-            "naro_prob",
-            'fill-extrusion-color',
-            ['case',
-            ['==', ['coalesce', ['feature-state', valueNameArray[colorIndex]], null], null],
-            nullColor,
-              ['interpolate', ['linear'],
-                ['coalesce', ['feature-state', valueNameArray[colorIndex]], 0],
-                colorDataScaleArray[scaleIndex].minData, minColor,
-                colorDataScaleArray[scaleIndex].maxData, maxColor
-              ]
-            ]
-        );
+    var _colorMin = parseFloat(colorDataScaleArray[scaleIndex].minData);
+    var _colorMax = parseFloat(colorDataScaleArray[scaleIndex].maxData);
+    var _depthMin = parseFloat(depthDataScaleArray[scaleIndex].minData);
+    var _depthMax = parseFloat(depthDataScaleArray[scaleIndex].maxData);
 
-        mapObject.setPaintProperty(
-            "naro_prob",
-            'fill-extrusion-height',
-            ['case',
-                ['==', ['coalesce', ['feature-state', valueNameArray[depthIndex]], null], null],
-                0,
-                ['interpolate', ['linear'],
-                ['coalesce', ['feature-state', valueNameArray[depthIndex]], 0],
-                depthDataScaleArray[scaleIndex].minData, minHeight,
-                depthDataScaleArray[scaleIndex].maxData, maxHeight
-                ]
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-color',
+        ['case',
+        ['==', ['coalesce', ['feature-state', valueNameArray[colorIndex]], null], null],
+        nullColor,
+            ['interpolate', ['linear'],
+            ['coalesce', ['feature-state', valueNameArray[colorIndex]], 0],
+            _colorMin, minColor,
+            _colorMax, maxColor
             ]
-        );
+        ]
+    );
+
+    mapObject.setPaintProperty(
+        "naro_prob",
+        'fill-extrusion-height',
+        ['case',
+            ['==', ['coalesce', ['feature-state', valueNameArray[depthIndex]], null], null],
+            0,
+            ['interpolate', ['linear'],
+            ['coalesce', ['feature-state', valueNameArray[depthIndex]], 0],
+            _depthMin, minHeight,
+            _depthMax, maxHeight
+            ]
+        ]
+    );
+
+
+
 
 
 
@@ -1263,6 +1271,11 @@ var drawMap = function() {
 var updateMap = function() {
     console.log("updateMap");
 
+    var _colorMin = parseFloat(colorDataScaleArray[scaleIndex].minData);
+    var _colorMax = parseFloat(colorDataScaleArray[scaleIndex].maxData);
+    var _depthMin = parseFloat(depthDataScaleArray[scaleIndex].minData);
+    var _depthMax = parseFloat(depthDataScaleArray[scaleIndex].maxData);
+
 
     mapObject.setPaintProperty(
         "naro_prob",
@@ -1272,8 +1285,8 @@ var updateMap = function() {
           nullColor,
           ['interpolate', ['linear'],
             ['coalesce', ['feature-state', valueNameArray[colorIndex]], 0],
-            colorDataScaleArray[scaleIndex].minData, minColor,
-            colorDataScaleArray[scaleIndex].maxData, maxColor
+            _colorMin, minColor,
+            _colorMax, maxColor
           ]
         ]
     );
@@ -1286,8 +1299,8 @@ var updateMap = function() {
           0,
           ['interpolate', ['linear'],
             ['coalesce', ['feature-state', valueNameArray[depthIndex]], 0],
-            depthDataScaleArray[scaleIndex].minData, minHeight,
-            depthDataScaleArray[scaleIndex].maxData, maxHeight
+            _depthMin, minHeight,
+            _depthMax, maxHeight
           ]
         ]
     );
