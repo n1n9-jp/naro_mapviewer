@@ -883,9 +883,8 @@ var initVizSlider = function() {
       },
       on: {
         slideChange: function(e) {
-          yearIndex = e.activeIndex;
-        //   console.log("swiperYear", yearArray[yearIndex]);
-          fl_map = "updateMap";
+            yearIndex = e.activeIndex;
+            fl_map = "drawMap";
             PubSub.publish('filter:bydata');
         }
       }
@@ -938,7 +937,7 @@ var initVizSlider = function() {
                 curve: 1.42
             });
 
-            fl_map = "updateMap";
+            fl_map = "drawMap";
             PubSub.publish('load:themedata');
         }
       }
