@@ -625,7 +625,6 @@ var setupNav = function() {
             if (slideOverContainer && sidepanel) {
 
                 selectedNav = this.id;
-                // console.log("selectedNav", selectedNav);
 
                 PubSub.publish('navlink:disabled');
                 PubSub.publish('panel:open');
@@ -659,7 +658,6 @@ var loadThemeData = function() {
 
     var _t = formatNumber(prefArray[prefIndex]["id"]);
     filepath = dir1[dir1Index] + "/" + dir2[dir2Index] + "/" + dir3[dir3Index] + "/" + _t + ".csv";
-    // console.log("filepath", filepath);
 
     // load: theme data
     return Promise.all([
@@ -670,7 +668,6 @@ var loadThemeData = function() {
 
         varList = _data[0].columns;
         valueNameArray = _.difference(varList, varListRemove);
-        // console.log("valueNameArray", valueNameArray);
 
         for (var i=0; i<dataObjTheme.length; i++){
             var _row = dataObjTheme[i];
@@ -680,15 +677,11 @@ var loadThemeData = function() {
             });
         }          
 
-        // console.log("dataObjTheme", dataObjTheme);
         _data = null;
 
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
-        // console.log("yearArray", yearArray);
         console.log("loadThemeData 完了:", valueNameArray);
-        return;  // Promise を resolve する
 
-        // PubSub.publish('init:vizslider');
     })
     .then(function() {
         PubSub.publish('init:vizslider');
@@ -792,9 +785,7 @@ var initVizSlider = function() {
 
     if (swiperScale && typeof swiperScale.destroy === "function") {
         swiperScale.destroy(true, true);
-        // console.log("swiperScale.destroy scaleIndex", scaleIndex);
     }
-    // console.log("scaleIndex", scaleIndex);
 
     swiperScale = new Swiper('#swiper-container-scale', {
         initialSlide: scaleIndex,
@@ -847,8 +838,6 @@ var initVizSlider = function() {
         on: {
             slideChange: function(e) {
             dimensionArrayIndex = e.activeIndex;
-            // console.log("dimensionArrayIndex", dimensionArrayIndex);
-            // console.log("dimensionArray", dimensionArray[dimensionArrayIndex]);
             PubSub.publish('change:dimension');
             }
         }
@@ -922,11 +911,7 @@ var initVizSlider = function() {
       on: {
         slideChange: function(e) {
             prefIndex = e.activeIndex;
-            // console.log("prefIndexprefIndex", prefIndex);
-
-            // console.log("prefArray[prefIndex]", prefArray[prefIndex]);
-            // console.log("lat", prefArray[prefIndex]["lat"]);
-            // console.log("lon", prefArray[prefIndex]["lon"]);
+            console.log("prefArray[prefIndex]", prefArray[prefIndex]);
 
             var _lon = prefArray[prefIndex]["lon"];
             var _lat = prefArray[prefIndex]["lat"]
@@ -939,6 +924,8 @@ var initVizSlider = function() {
 
             fl_map = "drawMap";
             PubSub.publish('load:themedata');
+            // fl_map = "drawMap";
+            // PubSub.publish('load:themedata');
         }
       }
     });
@@ -1013,9 +1000,6 @@ var openPanel = function() {
     void sidepanel.offsetWidth; // 強制再描画
     sidepanel.classList.remove("-translate-y-full");
     sidepanel.classList.add("translate-y-0");
-    // console.log("Slide-over panel opened");
-  
-
 
     if (contentTitle) {
       if (selectedNav === "datachange") {
@@ -1035,7 +1019,6 @@ var closePanel = function() {
 
     sidepanel.classList.remove("translate-y-0");
     sidepanel.classList.add("-translate-y-full");
-    // console.log("Slide-over panel closing");
 
     setTimeout(() => {
       slideOverContainer.classList.add("hidden");
@@ -1049,11 +1032,9 @@ var filterByYear = function() {
     console.log("filterByYear");
     
     //年度で絞り込む
-    // console.log("yearArray[yearIndex]", yearArray[yearIndex]);
     var _temp = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
     
     //広域自治体で絞り込む
-    // console.log("prefArray[prefIndex]", prefArray[prefIndex]);
     var _t = formatNumber(prefArray[prefIndex]["id"]);
     dataObjThemeFiltered = _temp.filter(row => row.FileName === _t);
 
@@ -1061,8 +1042,6 @@ var filterByYear = function() {
     dataObjThemeFiltered.forEach(record => {
         themeDataMapping[record.agricultural_key] = record;
     });
-    // console.log("dataObjThemeFiltered", dataObjThemeFiltered);
-    // console.log("themeDataMapping", themeDataMapping);
 
 
     PubSub.publish('join:data');
@@ -1197,24 +1176,17 @@ var drawMap = function() {
             modalBackdrop.classList.remove('hidden');
             modalDialog.classList.remove('hidden');
 
-            // console.log("---------------------");
-            // console.log("filepath", filepath);
-
             window.setTimeout(function(){
 
                     Promise.all([
                             d3.csv("data/data_detail/" + filepath)
                     ]).then(function (_data) {
-                            // console.log("_data[0][0]", _data[0][0]);
 
                             var _DetailTitle = _data[0][0]["Title"] + " - " + fullAddress;
                             d3.select("#detailTitle").text(_DetailTitle);
                             d3.select("#detailImageURL").attr("src", _data[0][0]["ImageURL"]);
                             d3.select("#detailDesc").text(_data[0][0]["Description"]);
-        
-                            // console.log("_DetailTitle", _DetailTitle);
-                            // console.log("ImageURL", _data[0][0]["ImageURL"]);
-                            // console.log("Description", _data[0][0]["Description"]);
+    
                     });
 
             }, 50);
@@ -1227,7 +1199,6 @@ var drawMap = function() {
 
                 // マウスポインターの形状管理
                 mapObject.getCanvas().style.cursor = 'pointer';
-                // console.log("eee", e.features[0].properties);
 
                 fullAddress = 
                 e.features[0].properties["PREF_NAME"] +
@@ -1237,10 +1208,6 @@ var drawMap = function() {
 
                 const feature = e.features[0];
                 const state = feature.state || {};
-
-                // console.log("state", state);
-                // console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
-                // console.log("valueNameArray[depthIndex]", valueNameArray[depthIndex]);
 
                 // state.colorValue と state.heightValue を利用
                 const _colorValue = state[valueNameArray[colorIndex]];  
@@ -1289,7 +1256,6 @@ var drawMap = function() {
         PubSub.publish('update:legend');
         console.log("not fl_firsttime");
     }
-
 }
 
 
@@ -1297,8 +1263,6 @@ var drawMap = function() {
 var updateMap = function() {
     console.log("updateMap");
 
-    // console.log("colorIndex", colorIndex);
-    // console.log("valueNameArray[colorIndex]", valueNameArray[colorIndex]);
 
     mapObject.setPaintProperty(
         "naro_prob",
@@ -1355,15 +1319,11 @@ var initPrint = function() {
 
         /* プリント・ダイアログ閉じたあとの挙動 */
         window.addEventListener('afterprint', (event) => {
-            // console.log('After print');
-
             d3.select("#mapContainer .maplibregl-control-container").style("display", "block");
         });
 
         /* プリントボタン設置 & プリント・ダイアログ開いたあとの挙動 */
         document.querySelector('#printBtn').addEventListener('click', () => {
-            // console.log('print');
-
             d3.select("#mapContainer .maplibregl-control-container").style("display", "none");
 
             window.print();
