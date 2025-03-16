@@ -1034,6 +1034,12 @@ var closePanel = function() {
 var filterByYear = function() {
     console.log("filterByYear");
     
+    // 以前のデータをクリア
+    for (let key in themeDataMapping) {
+        delete themeDataMapping[key];
+    }
+    dataObjThemeFiltered = [];
+
     //年度で絞り込む
     var _temp = dataObjTheme.filter(row => row.Year === yearArray[yearIndex]);
     
