@@ -922,8 +922,11 @@ var initVizSlider = function() {
                 curve: 1.42
             });
 
-            fl_map = "drawMap";
-            PubSub.publish('load:themedata');
+            // 飛行移動完了時に joinData を実行する
+            mapObject.once('moveend', function() {
+                fl_map = "drawMap";
+                PubSub.publish('load:themedata');
+            });
             // fl_map = "drawMap";
             // PubSub.publish('load:themedata');
         }
