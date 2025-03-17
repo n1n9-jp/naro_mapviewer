@@ -14,14 +14,6 @@ var maptileURL = mapDomain + mapPath;
 
 var POI = [
   {
-    city: "Sapporo Station",
-    longitude: 141.350755,
-    latitude: 43.068661,
-    zoom: minZoomLevel,
-    pitch: 45,
-    bearing: 0,
-  },
-  {
     city: "NARO",
     longitude: 140.110249,
     latitude: 36.027363,
@@ -57,7 +49,7 @@ var dataObjTheme;           // Theme Data
 var dataObjThemeFiltered;   // Theme Data Filtered
 
 var prefArray = []
-var prefIndex = 0;
+var prefIndex = 7;
 
 const themeDataMapping = {};
 

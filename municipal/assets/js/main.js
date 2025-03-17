@@ -19,7 +19,7 @@ var POI = [
     longitude: 140.110249,
     latitude: 36.027363,
     zoom: minZoomLevel,
-    pitch: 75,
+    pitch: 45,
     bearing: 0,
   },
   {
