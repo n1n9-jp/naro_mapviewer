@@ -681,6 +681,7 @@ var loadThemeData = function() {
 
         yearArray = _.uniq(_.map(dataObjTheme, 'Year'))
         console.log("loadThemeData 完了:", valueNameArray);
+        return;
 
     })
     .then(function() {
