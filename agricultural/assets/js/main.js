@@ -8,8 +8,9 @@ var minZoomLevel = 8;
 var maxZoomLevel = 14;
 
 /* Map Tile */
-var maptileURL = "http://127.0.0.1:5500/tileset/{z}/{x}/{y}.pbf";
-// var maptileURL = "./tileset/{z}/{x}/{y}.pbf";
+var mapDomain = "http://127.0.0.1:5500";
+var mapPath = "/tileset/{z}/{x}/{y}.pbf";
+var maptileURL = mapDomain + mapPath;
 
 var POI = [
   {
